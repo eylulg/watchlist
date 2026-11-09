@@ -1,0 +1,9 @@
+dist
+coverage
+node_modules
+package-lock.json
+src/components/base
+src/components/application
+src/components/foundations
+src/components/shared-assets
+src/styles/theme.css
