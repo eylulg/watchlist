@@ -1,0 +1,257 @@
+"use client";
+
+import { type SubmitEvent, useEffect, useRef, useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { SearchLg } from "@untitledui/icons";
+import { useLocale, useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import type { Key, Selection } from "react-aria-components";
+import { PersonCard } from "@/components/app/person-card";
+import { CardGrid, EmptyResults, ErrorState } from "@/components/app/states";
+import { posterGridClass, statusTextClass } from "@/components/app/styles";
+import { TitleCard, TitleCardSkeleton } from "@/components/app/title-card";
+import { ButtonGroup, ButtonGroupItem } from "@/components/base/button-group/button-group";
+import { Button } from "@/components/base/buttons/button";
+import { Input } from "@/components/base/input/input";
+import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
+import { useRouter } from "@/i18n/navigation";
+import { GRID_POSTER_SIZES } from "@/lib/tmdb/images";
+import { SEARCH_KINDS, type SearchKind, type SearchResult } from "@/lib/tmdb/types";
+import { fetchSearchPage } from "./search-api";
+
+const DEBOUNCE_MS = 300;
+
+const isSearchKind = (value: Key | null | undefined): value is SearchKind => SEARCH_KINDS.some((kind) => kind === value);
+
+const resultKey = (result: SearchResult) => `${result.mediaType}-${String(result.id)}`;
+
+/** TanStack Query keeps a failed page load in its error state, which the view renders. */
+const keepErrorInQueryState = () => undefined;
+
+/** TMDB pages can overlap while results shift between requests, so drop repeats. */
+const uniqueResults = (pages: { results: SearchResult[] }[]) => {
+    const seen = new Set<string>();
+    return pages
+        .flatMap((page) => page.results)
+        .filter((result) => {
+            const key = resultKey(result);
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+};
+
+export const SearchView = () => {
+    const t = useTranslations("Search");
+    const tErrors = useTranslations("Errors");
+    const locale = useLocale();
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const urlQuery = (searchParams.get("q") ?? "").trim();
+    const rawKind = searchParams.get("type");
+    const kind: SearchKind = isSearchKind(rawKind) ? rawKind : "multi";
+
+    const search = useInfiniteQuery({
+        queryKey: ["search", locale, kind, urlQuery],
+        queryFn: ({ pageParam, signal }) => fetchSearchPage({ query: urlQuery, kind, page: pageParam, locale }, signal),
+        initialPageParam: 1,
+        getNextPageParam: (last) => (last.page < last.totalPages ? last.page + 1 : undefined),
+        enabled: urlQuery.length > 0,
+    });
+    const { hasNextPage, isFetchingNextPage, isFetchNextPageError, fetchNextPage } = search;
+
+    const [input, setInput] = useState(urlQuery);
+    const sentinelRef = useRef<HTMLDivElement>(null);
+
+    const results = uniqueResults(search.data?.pages ?? []);
+    const total = search.data?.pages[0]?.totalResults ?? 0;
+    const status = !urlQuery
+        ? ""
+        : search.isPending
+          ? t("searching")
+          : search.isSuccess
+            ? total === 0
+                ? t("noResultsStatus", { query: urlQuery })
+                : t("resultCount", { count: total, shown: results.length, query: urlQuery })
+            : "";
+
+    function replaceUrl(query: string, nextKind: SearchKind) {
+        const params: Record<string, string> = {};
+        if (query) params.q = query;
+        if (nextKind !== "multi") params.type = nextKind;
+        router.replace({ pathname: "/search", query: params }, { scroll: false });
+    }
+
+    // The URL is the source of truth for what is searched; typing updates it once the user pauses.
+    const debouncedReplaceUrl = useDebouncedCallback(replaceUrl, DEBOUNCE_MS);
+
+    // Back and forward change the URL without touching the field, so copy the query back into it.
+    useEffect(() => {
+        function handlePopState() {
+            debouncedReplaceUrl.cancel();
+            setInput(new URLSearchParams(window.location.search).get("q") ?? "");
+        }
+        window.addEventListener("popstate", handlePopState);
+        return () => {
+            window.removeEventListener("popstate", handlePopState);
+        };
+    }, [debouncedReplaceUrl]);
+
+    useEffect(() => {
+        const sentinel = sentinelRef.current;
+        if (!sentinel || !hasNextPage || isFetchingNextPage || isFetchNextPageError || typeof IntersectionObserver === "undefined") return;
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries.some((entry) => entry.isIntersecting)) fetchNextPage().catch(keepErrorInQueryState);
+            },
+            { rootMargin: "600px 0px" },
+        );
+        observer.observe(sentinel);
+        return () => {
+            observer.disconnect();
+        };
+    }, [hasNextPage, isFetchingNextPage, isFetchNextPageError, fetchNextPage]);
+
+    function handleInputChange(value: string) {
+        setInput(value);
+        debouncedReplaceUrl.run(value.trim(), kind);
+    }
+
+    function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+        event.preventDefault();
+        debouncedReplaceUrl.cancel();
+        replaceUrl(input.trim(), kind);
+    }
+
+    function handleKindChange(keys: Selection) {
+        const [next] = keys === "all" ? [] : [...keys];
+        if (!isSearchKind(next)) return;
+        debouncedReplaceUrl.cancel();
+        replaceUrl(input.trim(), next);
+    }
+
+    function handleLoadMore() {
+        fetchNextPage().catch(keepErrorInQueryState);
+    }
+
+    function handleRetry() {
+        search.refetch().catch(keepErrorInQueryState);
+    }
+
+    return (
+        <div className="flex flex-col gap-6">
+            <form role="search" className="flex flex-col gap-4" onSubmit={handleSubmit}>
+                <Input
+                    label={t("label")}
+                    type="search"
+                    icon={SearchLg}
+                    size="md"
+                    placeholder={t("placeholder")}
+                    value={input}
+                    onChange={handleInputChange}
+                    className="max-w-xl"
+                />
+                <div className="overflow-x-auto pb-1">
+                    <ButtonGroup
+                        aria-label={t("kindLabel")}
+                        size="sm"
+                        selectedKeys={[kind]}
+                        disallowEmptySelection
+                        onSelectionChange={handleKindChange}
+                    >
+                        {SEARCH_KINDS.map((option) => (
+                            <ButtonGroupItem key={option} id={option}>
+                                {t(`kinds.${option}`)}
+                            </ButtonGroupItem>
+                        ))}
+                    </ButtonGroup>
+                </div>
+            </form>
+
+            <p role="status" aria-live="polite" className={statusTextClass}>
+                {status}
+            </p>
+
+            <SearchResults
+                query={urlQuery}
+                results={results}
+                isPending={search.isPending}
+                isError={search.isError && results.length === 0}
+                onRetry={handleRetry}
+            />
+
+            {results.length > 0 && (
+                <div ref={sentinelRef} className="flex flex-col items-center gap-3">
+                    {isFetchNextPageError && <p className="text-sm text-error-primary">{tErrors("loadMoreFailed")}</p>}
+                    {hasNextPage && (
+                        <Button color="secondary" size="md" isLoading={isFetchingNextPage} showTextWhileLoading onClick={handleLoadMore}>
+                            {t("loadMore")}
+                        </Button>
+                    )}
+                </div>
+            )}
+        </div>
+    );
+};
+
+interface SearchResultsProps {
+    query: string;
+    results: SearchResult[];
+    isPending: boolean;
+    isError: boolean;
+    onRetry: () => void;
+}
+
+const SearchResults = ({ query, results, isPending, isError, onRetry }: SearchResultsProps) => {
+    const t = useTranslations("Search");
+    const tErrors = useTranslations("Errors");
+
+    if (!query) return <EmptyResults title={t("emptyTitle")} description={t("emptyDescription")} />;
+
+    if (isError) {
+        return (
+            <ErrorState
+                title={tErrors("searchTitle")}
+                message={tErrors("searchMessage")}
+                actions={<Button onClick={onRetry}>{tErrors("retry")}</Button>}
+            />
+        );
+    }
+
+    if (isPending) {
+        return (
+            <div aria-hidden="true" className={posterGridClass}>
+                {Array.from({ length: 12 }, (_, i) => (
+                    <TitleCardSkeleton key={i} />
+                ))}
+            </div>
+        );
+    }
+
+    if (results.length === 0) return <EmptyResults title={t("noResultsTitle")} description={t("noResultsDescription", { query })} />;
+
+    return (
+        <section aria-labelledby="search-results" className="flex flex-col gap-4">
+            <h2 id="search-results" className="sr-only">
+                {t("resultsLabel")}
+            </h2>
+            <CardGrid>
+                {results.map((result) => (
+                    <li key={resultKey(result)}>
+                        {result.mediaType === "person" ? (
+                            <PersonCard
+                                id={result.id}
+                                name={result.name}
+                                profilePath={result.profilePath}
+                                detail={result.knownFor.join(", ") || result.knownForDepartment}
+                                sizes={GRID_POSTER_SIZES}
+                            />
+                        ) : (
+                            <TitleCard title={result} sizes={GRID_POSTER_SIZES} />
+                        )}
+                    </li>
+                ))}
+            </CardGrid>
+        </section>
+    );
+};
