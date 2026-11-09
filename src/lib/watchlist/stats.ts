@@ -1,7 +1,7 @@
 import type { WatchStatus, WatchlistItem } from "./schema";
 
 /** Used when the real length is unknown: a typical film, and a typical season of a drama series. */
-export const FALLBACK_MINUTES = { movie: 110, tv: 10 * 45 } as const;
+const FALLBACK_MINUTES = { movie: 110, tv: 10 * 45 } as const;
 
 export interface WatchlistStats {
     total: number;

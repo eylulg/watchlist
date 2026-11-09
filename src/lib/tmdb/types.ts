@@ -39,7 +39,7 @@ export interface Paged<T> {
     totalResults: number;
 }
 
-export interface Genre {
+interface Genre {
     id: number;
     name: string;
 }
@@ -122,7 +122,7 @@ export interface SeriesDetail extends TitleDetailBase {
 
 export type TitleDetail = MovieDetail | SeriesDetail;
 
-export interface Episode {
+interface Episode {
     id: number;
     episodeNumber: number;
     name: string;

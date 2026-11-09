@@ -23,7 +23,12 @@ export default defineConfig([
     {
         files: ["**/*.{ts,tsx}"],
         ignores: vendorUi,
-        extends: [js.configs.recommended, tseslint.configs.strictTypeChecked, reactHooks.configs.flat.recommended, jsxA11y.flatConfigs.recommended],
+        extends: [
+            js.configs.recommended,
+            tseslint.configs.strictTypeChecked,
+            reactHooks.configs.flat.recommended,
+            jsxA11y.flatConfigs.recommended,
+        ],
         plugins: { "@next/next": nextPlugin },
         languageOptions: {
             ecmaVersion: 2023,
@@ -37,12 +42,16 @@ export default defineConfig([
             ...nextPlugin.configs.recommended.rules,
             ...nextPlugin.configs["core-web-vitals"].rules,
             "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
-            "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", varsIgnorePattern: "^_", destructuredArrayIgnorePattern: "^_" }],
+            "@typescript-eslint/no-unused-vars": [
+                "error",
+                { argsIgnorePattern: "^_", varsIgnorePattern: "^_", destructuredArrayIgnorePattern: "^_" },
+            ],
             // The TMDB key must only be read on the server. Block the obvious ways to leak it to the browser.
             "no-restricted-syntax": [
                 "error",
                 {
-                    selector: "MemberExpression[object.object.name='process'][object.property.name='env'][property.name=/^NEXT_PUBLIC_.*TMDB/]",
+                    selector:
+                        "MemberExpression[object.object.name='process'][object.property.name='env'][property.name=/^NEXT_PUBLIC_.*TMDB/]",
                     message: "Never expose TMDB credentials through NEXT_PUBLIC_ variables.",
                 },
             ],

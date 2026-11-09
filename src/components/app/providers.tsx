@@ -19,7 +19,7 @@ const shouldRetry = (failureCount: number, error: Error) => {
     return failureCount < 2;
 };
 
-export const createQueryClient = () =>
+const createQueryClient = () =>
     new QueryClient({
         defaultOptions: {
             queries: { staleTime: 5 * 60 * 1000, retry: shouldRetry, refetchOnWindowFocus: false },

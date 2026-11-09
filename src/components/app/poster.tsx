@@ -38,7 +38,9 @@ export const Poster = ({ path, alt, sizes, className, priority = false, variant 
                     className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-quaternary"
                 >
                     <Icon aria-hidden="true" className="size-8" />
-                    <span className="px-2 text-center text-xs font-medium text-tertiary">{variant === "profile" ? t("noPhoto") : t("noPoster")}</span>
+                    <span className="px-2 text-center text-xs font-medium text-tertiary">
+                        {variant === "profile" ? t("noPhoto") : t("noPoster")}
+                    </span>
                 </div>
             )}
         </div>

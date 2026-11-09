@@ -10,7 +10,7 @@ export const api = (path: string) => `${DEFAULT_TMDB_API_BASE}${path}`;
 /** Every request made to TMDB (or the app's own API) during a test, for asserting on parameters. */
 export const requests: URL[] = [];
 
-export const handlers = [
+const handlers = [
     http.get(api("/trending/all/:window"), () =>
         HttpResponse.json(
             paged([

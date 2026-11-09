@@ -1,13 +1,13 @@
-import type { WatchStatus, WatchlistItem } from "./schema";
+import type { WatchlistItem } from "./schema";
 
 export const STATUS_FILTERS = ["all", "to-watch", "watching", "watched"] as const;
-export type StatusFilter = (typeof STATUS_FILTERS)[number];
+type StatusFilter = (typeof STATUS_FILTERS)[number];
 
 export const TYPE_FILTERS = ["all", "movie", "tv"] as const;
-export type TypeFilter = (typeof TYPE_FILTERS)[number];
+type TypeFilter = (typeof TYPE_FILTERS)[number];
 
 export const SORT_OPTIONS = ["added-desc", "added-asc", "title", "rating", "release"] as const;
-export type SortOption = (typeof SORT_OPTIONS)[number];
+type SortOption = (typeof SORT_OPTIONS)[number];
 
 export interface WatchlistQuery {
     status: StatusFilter;
@@ -42,5 +42,3 @@ export const filterAndSort = (items: WatchlistItem[], { status, type, sort }: Wa
             return filtered.sort((a, b) => (b.releaseDate || "0").localeCompare(a.releaseDate || "0") || byTitle(a, b));
     }
 };
-
-export const statusOrder: Record<WatchStatus, number> = { "to-watch": 0, watching: 1, watched: 2 };

@@ -63,7 +63,7 @@ const castAndCrew = {
     ],
 };
 
-export const videos = {
+const videos = {
     results: [
         { key: "clip1", name: "A clip", site: "YouTube", type: "Clip", official: true },
         { key: "vimeo1", name: "Vimeo trailer", site: "Vimeo", type: "Trailer", official: false },
@@ -72,7 +72,7 @@ export const videos = {
     ],
 };
 
-export const watchProviders = {
+const watchProviders = {
     results: {
         US: {
             link: "https://www.themoviedb.org/movie/42/watch?locale=US",

@@ -33,8 +33,6 @@ export const setUrl = (href: string) => {
     window.history.replaceState(null, "", url.pathname + url.search + url.hash);
 };
 
-export const currentUrl = () => url;
-
 export const navigationMock = {
     useRouter: () => router,
     usePathname: () => useSyncExternalStore(subscribe, () => url.pathname),

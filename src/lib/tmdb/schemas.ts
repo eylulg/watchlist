@@ -58,7 +58,7 @@ export const multiItemSchema = z.discriminatedUnion("media_type", [
 ]);
 
 /** Keeps items that parse and silently drops the rest, so one odd result never breaks a whole page. */
-export const lenientArray = <T extends z.ZodType>(item: T) =>
+const lenientArray = <T extends z.ZodType>(item: T) =>
     z.array(z.unknown()).transform((items) =>
         items.flatMap((raw) => {
             const parsed = item.safeParse(raw);
@@ -74,7 +74,7 @@ export const pagedSchema = <T extends z.ZodType>(item: T) =>
         total_results: z.number(),
     });
 
-export const genreSchema = z.object({ id: z.number(), name: z.string() });
+const genreSchema = z.object({ id: z.number(), name: z.string() });
 
 const castMemberSchema = z.object({
     id: z.number(),
@@ -92,7 +92,7 @@ const crewMemberSchema = z.object({
     profile_path: nullableString,
 });
 
-export const creditsSchema = z
+const creditsSchema = z
     .object({
         cast: z.array(castMemberSchema).default([]),
         crew: z.array(crewMemberSchema).default([]),
@@ -108,7 +108,7 @@ const videoSchema = z.object({
     published_at: z.string().optional(),
 });
 
-export const videosSchema = z.object({ results: z.array(videoSchema).default([]) }).default({ results: [] });
+const videosSchema = z.object({ results: z.array(videoSchema).default([]) }).default({ results: [] });
 
 const providerSchema = z.object({
     provider_id: z.number(),
@@ -122,7 +122,7 @@ const providerList = z
     .optional()
     .transform((value) => value ?? []);
 
-export const regionProvidersSchema = z.object({
+const regionProvidersSchema = z.object({
     link: nullableString,
     flatrate: providerList,
     free: providerList,
@@ -131,9 +131,9 @@ export const regionProvidersSchema = z.object({
     buy: providerList,
 });
 
-export const watchProvidersSchema = z.object({ results: z.record(z.string(), regionProvidersSchema).default({}) }).default({ results: {} });
+const watchProvidersSchema = z.object({ results: z.record(z.string(), regionProvidersSchema).default({}) }).default({ results: {} });
 
-export const recommendationsSchema = <T extends z.ZodType>(item: T) =>
+const recommendationsSchema = <T extends z.ZodType>(item: T) =>
     z.object({ results: lenientArray(item) }).default({ results: [] as z.infer<T>[] });
 
 export const movieDetailSchema = movieListItemSchema.extend({

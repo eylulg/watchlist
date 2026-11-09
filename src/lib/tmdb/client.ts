@@ -46,10 +46,10 @@ export { SEARCH_KINDS, type SearchKind } from "./types";
 export const DEFAULT_TMDB_API_BASE = "https://api.themoviedb.org/3";
 
 /** TMDB never serves more than 500 pages for list endpoints. */
-export const TMDB_MAX_PAGE = 500;
+const TMDB_MAX_PAGE = 500;
 
 /** Revalidate times in seconds for Next's fetch cache. TMDB data changes slowly, so cache generously. */
-export const REVALIDATE = {
+const REVALIDATE = {
     trending: 60 * 60,
     lists: 6 * 60 * 60,
     search: 10 * 60,
@@ -88,7 +88,7 @@ const getApiBase = () => process.env.TMDB_API_BASE_URL?.trim() || DEFAULT_TMDB_A
 /** v4 read access tokens are JWTs, v3 API keys are 32 hex characters. */
 const isV4Token = (credential: string) => credential.startsWith("eyJ");
 
-export const buildUrl = (path: string, params: Record<string, QueryValue> = {}, credential = getCredential()): URL => {
+const buildUrl = (path: string, params: Record<string, QueryValue> = {}, credential = getCredential()): URL => {
     const url = new URL(`${getApiBase()}${path}`);
     for (const [name, value] of Object.entries(params)) {
         if (value !== undefined && value !== null && value !== "") url.searchParams.set(name, String(value));
@@ -104,7 +104,7 @@ interface FetchOptions {
     tags?: string[];
 }
 
-export const tmdbFetch = async <T extends z.ZodType>(
+const tmdbFetch = async <T extends z.ZodType>(
     path: string,
     schema: T,
     { params = {}, revalidate, tags = [] }: FetchOptions,
@@ -148,7 +148,7 @@ const isEnglish = (locale: AppLocale) => locale === "en";
 /* Mappers                                                             */
 /* ------------------------------------------------------------------ */
 
-export const toMovieSummary = (m: RawMovieListItem): TitleSummary => ({
+const toMovieSummary = (m: RawMovieListItem): TitleSummary => ({
     id: m.id,
     mediaType: "movie",
     title: m.title,
@@ -160,7 +160,7 @@ export const toMovieSummary = (m: RawMovieListItem): TitleSummary => ({
     voteCount: m.vote_count,
 });
 
-export const toTvSummary = (t: RawTvListItem): TitleSummary => ({
+const toTvSummary = (t: RawTvListItem): TitleSummary => ({
     id: t.id,
     mediaType: "tv",
     title: t.name,
@@ -172,7 +172,7 @@ export const toTvSummary = (t: RawTvListItem): TitleSummary => ({
     voteCount: t.vote_count,
 });
 
-export const toPersonSummary = (p: RawPersonListItem): PersonSummary => ({
+const toPersonSummary = (p: RawPersonListItem): PersonSummary => ({
     id: p.id,
     mediaType: "person",
     name: p.name,
@@ -202,7 +202,7 @@ const toPaged = <I, O>(
     totalResults: data.total_results,
 });
 
-export const toCast = (cast: RawCredits["cast"], limit = 12): CastMember[] =>
+const toCast = (cast: RawCredits["cast"], limit = 12): CastMember[] =>
     [...cast]
         .sort((a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER))
         .slice(0, limit)
@@ -224,7 +224,7 @@ const KEY_JOBS = [
 ];
 
 /** Picks the key crew, merges several jobs of one person, and orders them by the most important job. */
-export const toCrew = (
+const toCrew = (
     crew: RawCredits["crew"],
     creators: { id: number; name: string; profile_path: string | null }[] = [],
     limit = 8,
@@ -255,7 +255,7 @@ export const toCrew = (
 const VIDEO_TYPE_ORDER = ["Trailer", "Teaser", "Clip", "Featurette", "Behind the Scenes"];
 
 /** YouTube and Vimeo videos only, trailers first, official before fan uploads. */
-export const toVideos = (videos: RawVideos, limit = 8): Video[] =>
+const toVideos = (videos: RawVideos, limit = 8): Video[] =>
     videos.results
         .filter((v): v is typeof v & { site: "YouTube" | "Vimeo" } => v.site === "YouTube" || v.site === "Vimeo")
         .map((v, index) => ({ v, index }))
@@ -288,7 +288,7 @@ const toProviderList = (list: RawWatchProviders["results"][string]["flatrate"]):
         .sort((a, b) => (a.display_priority ?? 999) - (b.display_priority ?? 999))
         .map((p) => ({ id: p.provider_id, name: p.provider_name, logoPath: p.logo_path }));
 
-export const toProviders = (raw: RawWatchProviders): Record<string, RegionProviders> =>
+const toProviders = (raw: RawWatchProviders): Record<string, RegionProviders> =>
     Object.fromEntries(
         Object.entries(raw.results).map(([region, offers]) => [
             region,
@@ -304,7 +304,7 @@ export const toProviders = (raw: RawWatchProviders): Record<string, RegionProvid
     );
 
 /** Merges cast and crew credits per title, then groups them by year, newest first. Undated titles come first. */
-export const toFilmography = (cast: RawCombinedCredit[], crew: RawCombinedCredit[]): FilmographyYear[] => {
+const toFilmography = (cast: RawCombinedCredit[], crew: RawCombinedCredit[]): FilmographyYear[] => {
     const titles = new Map<string, FilmographyCredit>();
     for (const credit of [...cast, ...crew]) {
         const key = `${credit.media_type}:${String(credit.id)}`;

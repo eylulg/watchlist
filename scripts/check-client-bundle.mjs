@@ -13,7 +13,10 @@ const readKeyFromDotEnv = () => {
         const line = readFileSync(path.join(root, ".env"), "utf8")
             .split("\n")
             .find((entry) => entry.startsWith("TMDB_API_KEY="));
-        return line?.slice("TMDB_API_KEY=".length).trim().replace(/^["']|["']$/g, "");
+        return line
+            ?.slice("TMDB_API_KEY=".length)
+            .trim()
+            .replace(/^["']|["']$/g, "");
     } catch {
         return undefined;
     }

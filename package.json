@@ -17,11 +17,13 @@
     "lint": "eslint . --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "knip": "knip",
     "test": "vitest run",
     "test:watch": "vitest",
     "check:bundle": "node scripts/check-client-bundle.mjs",
     "e2e": "playwright test",
-    "e2e:mock-tmdb": "node e2e/mock-tmdb/server.ts"
+    "e2e:mock-tmdb": "node e2e/mock-tmdb/server.ts",
+    "prepare": "husky"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.3.5",
@@ -43,6 +45,8 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
     "@eslint/js": "^9.39.5",
     "@next/eslint-plugin-next": "^16.4.5",
     "@playwright/test": "^1.65.0",
@@ -60,7 +64,10 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.14.0",
+    "husky": "^9.1.7",
     "jsdom": "^31.0.0",
+    "knip": "^6.44.2",
+    "lint-staged": "^17.6.0",
     "msw": "^2.15.0",
     "postcss": "^8.5.32",
     "prettier": "^3.9.10",

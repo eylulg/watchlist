@@ -1,4 +1,4 @@
-export const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p";
+const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p";
 
 /**
  * Builds a TMDB image URL. next/image resizes it further, so request a generous source size:
@@ -13,5 +13,3 @@ export const GRID_POSTER_SIZES = "(min-width: 1280px) 200px, (min-width: 1024px)
 export const ROW_POSTER_SIZES = "(min-width: 640px) 176px, 40vw";
 /** `sizes` for the poster on detail pages. */
 export const DETAIL_POSTER_SIZES = "(min-width: 768px) 300px, 60vw";
-/** `sizes` for small profile photos and logos. */
-export const AVATAR_SIZES = "96px";
