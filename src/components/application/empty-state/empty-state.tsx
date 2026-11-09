@@ -1,3 +1,5 @@
+"use client";
+
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { Children, createContext, isValidElement, useContext } from "react";
 import { SearchLg } from "@untitledui/icons";
@@ -151,6 +153,7 @@ const AvatarRadius = ({ avatars = [], ...props }: AvatarRadiusProps) => {
 
             {avatars.slice(0, avatarSlots.length).map((avatar, i) => {
                 const slot = avatarSlots[i];
+                if (!slot) return null;
                 const rad = (slot.angle * Math.PI) / 180;
                 const x = Math.sin(rad) * slot.ring;
                 const y = -Math.cos(rad) * slot.ring;
@@ -213,13 +216,13 @@ const AvatarRow = ({ avatars = [], children, ...props }: AvatarRowProps) => {
             }}
         >
             <div className={cx("flex items-center", sizeKey === "sm" ? "gap-3" : "gap-4")}>
-                {leftAvatars.map((avatar, i) => renderAvatar(avatar, sizes[i], i))}
+                {leftAvatars.map((avatar, i) => renderAvatar(avatar, sizes[i] ?? sizes[0], i))}
             </div>
 
             {children}
 
             <div className={cx("flex items-center", sizeKey === "sm" ? "gap-3" : "gap-4")}>
-                {rightAvatars.map((avatar, i) => renderAvatar(avatar, sizes[count - 1 - i], i + count))}
+                {rightAvatars.map((avatar, i) => renderAvatar(avatar, sizes[count - 1 - i] ?? sizes[0], i + count))}
             </div>
         </div>
     );

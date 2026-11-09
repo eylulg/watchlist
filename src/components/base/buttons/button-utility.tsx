@@ -1,3 +1,5 @@
+"use client";
+
 import type { FC, ReactElement, ReactNode, RefAttributes } from "react";
 import { isValidElement } from "react";
 import type { Placement } from "react-aria";

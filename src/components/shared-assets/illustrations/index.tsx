@@ -1,3 +1,5 @@
+"use client";
+
 import type { HTMLAttributes } from "react";
 import { BoxIllustration } from "./box";
 import { CloudIllustration } from "./cloud";

@@ -1,5 +1,7 @@
+"use client";
+
 import type { FC, ReactElement, ReactNode } from "react";
-import { isValidElement } from "react";
+import { type RefAttributes, isValidElement } from "react";
 import type { ButtonProps as AriaButtonProps, LinkProps as AriaLinkProps } from "react-aria-components";
 import { Button as AriaButton, Link as AriaLink } from "react-aria-components";
 import { cx, sortCx } from "@/utils/cx";
@@ -156,7 +158,8 @@ export interface CommonProps {
 /**
  * Props for the button variant (non-link)
  */
-export interface ButtonProps extends CommonProps, Omit<AriaButtonProps, "children" | "className"> {}
+// Local change: accept a ref so callers can move focus to the button.
+export interface ButtonProps extends CommonProps, Omit<AriaButtonProps, "children" | "className">, RefAttributes<HTMLButtonElement> {}
 /**
  * Props for the link variant (anchor tag)
  */

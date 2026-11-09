@@ -1,4 +1,6 @@
-import { type SelectHTMLAttributes, useId } from "react";
+"use client";
+
+import { type Ref, type SelectHTMLAttributes, useId } from "react";
 import { ChevronDown } from "@untitledui/icons";
 import { HintText } from "@/components/base/input/hint-text";
 import { Label } from "@/components/base/input/label";
@@ -10,6 +12,8 @@ interface NativeSelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>
     selectClassName?: string;
     size?: "sm" | "md" | "lg";
     options: { label: string; value: string; disabled?: boolean }[];
+    // Local change: accept a ref so callers can move focus to the select.
+    ref?: Ref<HTMLSelectElement>;
 }
 
 const styles = {
@@ -35,7 +39,7 @@ export const NativeSelect = ({ label, hint, options, className, selectClassName,
     return (
         <div className={cx("w-full in-data-input-wrapper:w-max", className)}>
             {label && (
-                <Label htmlFor={selectId} id={selectId} className="mb-1.5">
+                <Label htmlFor={selectId} className="mb-1.5">
                     {label}
                 </Label>
             )}
@@ -44,8 +48,9 @@ export const NativeSelect = ({ label, hint, options, className, selectClassName,
                 <select
                     {...props}
                     id={selectId}
-                    aria-describedby={hintId}
-                    aria-labelledby={selectId}
+                    // Local change: upstream gave the label the select's id and pointed aria-labelledby and
+                    // aria-describedby at ids that may not exist, which axe reports as duplicate and broken references.
+                    aria-describedby={hint ? hintId : undefined}
                     className={cx(
                         "appearance-none rounded-lg bg-primary font-medium text-primary shadow-xs ring-1 ring-primary outline-hidden transition duration-100 ease-linear ring-inset placeholder:text-fg-quaternary focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-not-allowed disabled:opacity-50",
 

@@ -1,3 +1,5 @@
+"use client";
+
 import type { HTMLAttributes } from "react";
 import { SearchLg } from "@untitledui/icons";
 import { cx } from "@/utils/cx";
