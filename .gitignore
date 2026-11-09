@@ -29,3 +29,6 @@ npm-debug.log*
 .vscode/*
 !.vscode/extensions.json
 .idea/
+
+# Written by `next dev` for coding agents; regenerated on every run
+AGENTS.md
