@@ -1,0 +1,246 @@
+{
+  "Meta": {
+    "title": "Watchlist",
+    "description": "Kişisel film ve dizi izleme listen: ne izleyeceğini, neyi izlediğini ve neleri bitirdiğini takip et. Veriler TMDB'den."
+  },
+  "Nav": {
+    "brand": "Watchlist",
+    "label": "Ana menü",
+    "home": "Ana sayfa",
+    "search": "Ara",
+    "watchlist": "Listem",
+    "settings": "Ayarlar",
+    "darkMode": "Karanlık mod",
+    "watchlistCount": "{count, plural, other {kayıtlı yapım}}",
+    "skipToContent": "İçeriğe geç"
+  },
+  "Footer": {
+    "tmdb": "Bu ürün TMDB API'sini kullanır ancak TMDB tarafından onaylanmamış veya sertifikalandırılmamıştır. Veriler ve görseller <link>The Movie Database (TMDB)</link> kaynaklıdır.",
+    "justwatch": "Yayın platformu verileri <link>JustWatch</link> tarafından sağlanır.",
+    "builtBy": "Eylül Güneş tarafından geliştirildi.",
+    "source": "GitHub'da kaynak kod"
+  },
+  "Common": {
+    "movie": "Film",
+    "series": "Dizi",
+    "person": "Kişi",
+    "noPoster": "Afiş yok",
+    "noPhoto": "Fotoğraf yok",
+    "ratedOutOf10": "Puan: 10 üzerinden {rating}",
+    "scrollLeft": "{title}: sola kaydır",
+    "scrollRight": "{title}: sağa kaydır",
+    "loading": "Yükleniyor"
+  },
+  "Home": {
+    "title": "Sırada ne izlesem?",
+    "intro": "Gündemdekilere, popüler ve en yüksek puanlı yapımlara göz at, beğendiklerini listene ekle.",
+    "trending": "Bu hafta gündemde",
+    "popularMovies": "Popüler filmler",
+    "popularSeries": "Popüler diziler",
+    "topRatedMovies": "En yüksek puanlı filmler",
+    "topRatedSeries": "En yüksek puanlı diziler"
+  },
+  "Search": {
+    "title": "Ara",
+    "intro": "Film, dizi ve kişi bul.",
+    "label": "TMDB'de ara",
+    "placeholder": "Yapım ya da kişi adı, örneğin Dune",
+    "kindLabel": "Ne aranacak",
+    "kinds": {
+      "multi": "Tümü",
+      "movie": "Filmler",
+      "tv": "Diziler",
+      "person": "Kişiler"
+    },
+    "searching": "Aranıyor…",
+    "resultCount": "“{query}” için {count, plural, other {# sonuç}}, {shown} tanesi gösteriliyor.",
+    "noResultsStatus": "“{query}” için sonuç yok.",
+    "emptyTitle": "Aramak için yazmaya başla",
+    "emptyDescription": "Sonuçlar sen yazarken gelir. Tüm sonuçlar, filmler, diziler ve kişiler arasında geçiş yapabilirsin.",
+    "noResultsTitle": "Hiçbir şey bulunamadı",
+    "noResultsDescription": "“{query}” için bir şey bulamadık. Yazımı kontrol et ya da başka bir kelime dene.",
+    "resultsLabel": "Arama sonuçları",
+    "loadMore": "Daha fazla yükle"
+  },
+  "Detail": {
+    "posterAlt": "Afiş: {title}",
+    "runtime": "{minutes, plural, other {# dk}}",
+    "episodeRuntime": "{minutes, plural, other {bölüm başına # dk}}",
+    "seasonCount": "{count, plural, other {# sezon}}",
+    "rating": "{rating} ({votes} oy)",
+    "genres": "Türler",
+    "overview": "Özet",
+    "noOverview": "Henüz özet yok.",
+    "partOf": "Seri: <link>{name}</link>",
+    "cast": "Oyuncular",
+    "noCast": "Oyuncu bilgisi yok.",
+    "videos": "Videolar",
+    "opensInNewTab": "({site} yeni sekmede açılır)",
+    "recommendations": "Bunları da sevebilirsin",
+    "seasons": "Sezonlar",
+    "episodes": "Bölümler",
+    "episodeCount": "{count, plural, other {# bölüm}}",
+    "episodeNumber": "{number}.",
+    "noEpisodes": "Henüz duyurulmuş bölüm yok."
+  },
+  "Providers": {
+    "title": "Nerede izlenir",
+    "region": "Bölge: {region}. <link>Bölgeyi değiştir</link>",
+    "none": "{title} şu anda bu bölgede yayın, kiralama ya da satın alma için mevcut değil.",
+    "flatrate": "Abonelikle izle",
+    "free": "Ücretsiz",
+    "ads": "Reklamlı",
+    "rent": "Kirala",
+    "buy": "Satın al",
+    "allOffers": "Tüm seçenekleri TMDB'de gör",
+    "newTab": "(yeni sekmede açılır)",
+    "attribution": "Platform verileri: <link>JustWatch</link>."
+  },
+  "Person": {
+    "photoAlt": "Fotoğraf: {name}",
+    "knownFor": "Bilinen alanı",
+    "born": "Doğum",
+    "died": "Ölüm",
+    "biography": "Biyografi",
+    "noBiography": "Henüz biyografi yok.",
+    "filmography": "Filmografi",
+    "creditCount": "{count, plural, other {# yapım}}",
+    "undated": "Yakında"
+  },
+  "Collection": {
+    "posterAlt": "Afiş: {name}",
+    "partCount": "{count, plural, other {# film}}",
+    "noOverview": "Henüz özet yok.",
+    "parts": "Bu serideki filmler"
+  },
+  "Watchlist": {
+    "title": "İzleme listem",
+    "intro": "Kaydettiğin her şey, yalnızca bu tarayıcıda saklanır.",
+    "add": "Listeme ekle",
+    "addNamed": "Listeme ekle: {title}",
+    "remove": "Kaldır",
+    "removeNamed": "Listemden kaldır: {title}",
+    "open": "Listemi aç",
+    "statusLabel": "Durum",
+    "ratingLabel": "Puanım",
+    "notRated": "Puan yok",
+    "ratingOption": "{rating} / 10",
+    "noteLabel": "Not",
+    "notePlaceholder": "Kim önerdi, nerede izlenir, aklına ne gelirse",
+    "addedOn": "Eklenme: {date}",
+    "notPersisted": "Tarayıcın depolamayı engelliyor, bu sekmeyi kapatınca değişiklikler kaybolacak.",
+    "emptyTitle": "Listen boş",
+    "emptyDescription": "Arama sonuçlarından ya da herhangi bir detay sayfasından film ve dizi kaydet. Daha önce dışa aktardığın bir listeyi de içe aktarabilirsin.",
+    "emptyAction": "İzleyecek bir şey bul",
+    "listHeading": "Kayıtlı yapımlar",
+    "showing": "{total, plural, other {# yapımdan}} {shown} tanesi gösteriliyor.",
+    "noMatchesTitle": "Bu filtrelere uyan yapım yok",
+    "noMatchesDescription": "Başka bir durum ya da tür dene.",
+    "removeFromWatchlist": "Listemden kaldır",
+    "statusFor": "Durum: {title}",
+    "ratingFor": "Puanım: {title}",
+    "noteFor": "Not: {title}"
+  },
+  "Status": {
+    "to-watch": "İzlenecek",
+    "watching": "İzleniyor",
+    "watched": "İzlendi"
+  },
+  "Filters": {
+    "status": "Durum",
+    "allStatuses": "Tüm durumlar",
+    "type": "Tür",
+    "types": {
+      "all": "Filmler ve diziler",
+      "movie": "Filmler",
+      "tv": "Diziler"
+    },
+    "sort": "Sırala",
+    "sorts": {
+      "added-desc": "Son eklenen",
+      "added-asc": "İlk eklenen",
+      "title": "Ada göre (A'dan Z'ye)",
+      "rating": "Puanım",
+      "release": "En yeni yapım"
+    },
+    "clear": "Filtreleri temizle"
+  },
+  "Stats": {
+    "title": "İstatistikler",
+    "total": "Yapım",
+    "split": "{movies} film, {series} dizi",
+    "toWatch": "İzlenecek",
+    "watching": "İzleniyor",
+    "watched": "İzlendi",
+    "hoursWatched": "İzlenen saat",
+    "estimate": "Süresi bilinmeyenler tahmini",
+    "averageRating": "Ortalama puan",
+    "noRating": "Henüz yok"
+  },
+  "ImportExport": {
+    "title": "Listeni yedekle ya da taşı",
+    "description": "JSON dosyası olarak dışa aktar, sonra başka bir tarayıcıda içe aktar. İçe aktarılan yapımlar aynı yapımın kayıtlı halinin yerine geçer.",
+    "export": "JSON olarak dışa aktar",
+    "import": "JSON içe aktar",
+    "fileLabel": "İzleme listesi JSON dosyası",
+    "imported": "{count, plural, other {# yapım}} içe aktarıldı{skipped, plural, =0 {.} other {, # geçersiz kayıt atlandı.}}",
+    "invalid": "Bu dosya bir izleme listesi dışa aktarımı değil.",
+    "tooLarge": "Bu dosya bir izleme listesi dışa aktarımı için fazla büyük."
+  },
+  "Share": {
+    "title": "Salt okunur bağlantı paylaş",
+    "description": "Liste bağlantının içine paketlenir, hiçbir şey yüklenmez. Bağlantı, listeyi kopyaladığın andaki haliyle gösterir.",
+    "truncated": "Bir bağlantıya yalnızca ilk {max} yapım sığar.",
+    "nameLabel": "Liste adı (isteğe bağlı)",
+    "namePlaceholder": "Hafta sonu seçkisi",
+    "includeNotes": "Notlarımı da ekle",
+    "create": "Bağlantı oluştur",
+    "linkLabel": "Paylaşım bağlantısı",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "copiedStatus": "Bağlantı panoya kopyalandı.",
+    "copyFailed": "Kopyalanamadı. Bağlantıyı seçip kendin kopyala."
+  },
+  "Shared": {
+    "defaultTitle": "Paylaşılan izleme listesi",
+    "intro": "Biri seninle salt okunur bir liste paylaştı.",
+    "invalidTitle": "Bu bağlantı çalışmıyor",
+    "invalidDescription": "Paylaşılan liste eksik ya da bozuk. Yeni bir bağlantı iste.",
+    "addAll": "{count, plural, =0 {Hepsi zaten listende} other {# yapımı listeme ekle}}",
+    "added": "{count, plural, other {# yapım}} listene eklendi.",
+    "listHeading": "{count, plural, other {# yapım}}",
+    "openMine": "Listemi aç"
+  },
+  "Settings": {
+    "title": "Ayarlar",
+    "intro": "Bu tarayıcıda saklanır.",
+    "regionHeading": "Nerede izlenir",
+    "regionLabel": "Bölge",
+    "regionHint": "Detay sayfalarındaki yayın, kiralama ve satın alma seçenekleri bu bölge için gösterilir.",
+    "regionSaved": "Bölge {region} olarak ayarlandı.",
+    "languageHeading": "Dil",
+    "languageLabel": "Dil",
+    "languageHint": "Arayüzde ve TMDB'de çevirisi varsa yapım adlarında ve özetlerde kullanılır.",
+    "themeHeading": "Tema",
+    "themes": {
+      "light": "Açık",
+      "dark": "Koyu",
+      "system": "Sistem"
+    }
+  },
+  "Errors": {
+    "pageTitle": "Bir şeyler ters gitti",
+    "pageMessage": "Bu sayfa yüklenemedi. Lütfen tekrar dene.",
+    "rowTitle": "{row} yüklenemedi",
+    "rowMessage": "Film veritabanı yanıt vermedi. Tekrar denemek için sayfayı yenile.",
+    "searchTitle": "Arama şu anda kullanılamıyor",
+    "searchMessage": "Film veritabanı yanıt vermedi. Bağlantını kontrol edip tekrar dene.",
+    "loadMoreFailed": "Daha fazla sonuç yüklenemedi.",
+    "retry": "Tekrar dene"
+  },
+  "NotFound": {
+    "title": "Sayfa bulunamadı",
+    "description": "Bu sayfa yok ya da yapım TMDB'den kaldırılmış.",
+    "home": "Ana sayfaya dön"
+  }
+}

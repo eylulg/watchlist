@@ -1,0 +1,246 @@
+{
+  "Meta": {
+    "title": "Watchlist",
+    "description": "Your personal movie and series watchlist: track what to watch, what you are watching and what you have seen, with data from TMDB."
+  },
+  "Nav": {
+    "brand": "Watchlist",
+    "label": "Main",
+    "home": "Home",
+    "search": "Search",
+    "watchlist": "Watchlist",
+    "settings": "Settings",
+    "darkMode": "Dark mode",
+    "watchlistCount": "{count, plural, one {title} other {titles}} saved",
+    "skipToContent": "Skip to content"
+  },
+  "Footer": {
+    "tmdb": "This product uses the TMDB API but is not endorsed or certified by TMDB. Data and images from <link>The Movie Database (TMDB)</link>.",
+    "justwatch": "Streaming availability data provided by <link>JustWatch</link>.",
+    "builtBy": "Built by Eylül Güneş.",
+    "source": "Source on GitHub"
+  },
+  "Common": {
+    "movie": "Movie",
+    "series": "Series",
+    "person": "Person",
+    "noPoster": "No poster",
+    "noPhoto": "No photo",
+    "ratedOutOf10": "Rated {rating} out of 10",
+    "scrollLeft": "Scroll {title} left",
+    "scrollRight": "Scroll {title} right",
+    "loading": "Loading"
+  },
+  "Home": {
+    "title": "What to watch next",
+    "intro": "Browse what is trending, popular and top rated, then save titles to your watchlist.",
+    "trending": "Trending this week",
+    "popularMovies": "Popular movies",
+    "popularSeries": "Popular series",
+    "topRatedMovies": "Top rated movies",
+    "topRatedSeries": "Top rated series"
+  },
+  "Search": {
+    "title": "Search",
+    "intro": "Find movies, series and people.",
+    "label": "Search TMDB",
+    "placeholder": "Title or name, for example Dune",
+    "kindLabel": "What to search",
+    "kinds": {
+      "multi": "All",
+      "movie": "Movies",
+      "tv": "Series",
+      "person": "People"
+    },
+    "searching": "Searching…",
+    "resultCount": "{count, plural, one {# result} other {# results}} for “{query}”, showing {shown}.",
+    "noResultsStatus": "No results for “{query}”.",
+    "emptyTitle": "Start typing to search",
+    "emptyDescription": "Results appear as you type. Switch between all results, movies, series and people.",
+    "noResultsTitle": "Nothing found",
+    "noResultsDescription": "We could not find anything for “{query}”. Check the spelling or try another word.",
+    "resultsLabel": "Search results",
+    "loadMore": "Load more"
+  },
+  "Detail": {
+    "posterAlt": "Poster for {title}",
+    "runtime": "{minutes, plural, other {# min}}",
+    "episodeRuntime": "{minutes, plural, other {# min per episode}}",
+    "seasonCount": "{count, plural, one {# season} other {# seasons}}",
+    "rating": "{rating} ({votes} votes)",
+    "genres": "Genres",
+    "overview": "Overview",
+    "noOverview": "No overview available yet.",
+    "partOf": "Part of <link>{name}</link>",
+    "cast": "Cast",
+    "noCast": "No cast information available.",
+    "videos": "Videos",
+    "opensInNewTab": "(opens {site} in a new tab)",
+    "recommendations": "You might also like",
+    "seasons": "Seasons",
+    "episodes": "Episodes",
+    "episodeCount": "{count, plural, one {# episode} other {# episodes}}",
+    "episodeNumber": "{number}.",
+    "noEpisodes": "No episodes announced yet."
+  },
+  "Providers": {
+    "title": "Where to watch",
+    "region": "Offers in {region}. <link>Change region</link>",
+    "none": "{title} is not available to stream, rent or buy in this region right now.",
+    "flatrate": "Stream",
+    "free": "Free",
+    "ads": "With ads",
+    "rent": "Rent",
+    "buy": "Buy",
+    "allOffers": "See all offers on TMDB",
+    "newTab": "(opens in a new tab)",
+    "attribution": "Availability data from <link>JustWatch</link>."
+  },
+  "Person": {
+    "photoAlt": "Photo of {name}",
+    "knownFor": "Known for",
+    "born": "Born",
+    "died": "Died",
+    "biography": "Biography",
+    "noBiography": "No biography available yet.",
+    "filmography": "Filmography",
+    "creditCount": "{count, plural, one {# title} other {# titles}}",
+    "undated": "Upcoming"
+  },
+  "Collection": {
+    "posterAlt": "Poster for {name}",
+    "partCount": "{count, plural, one {# movie} other {# movies}}",
+    "noOverview": "No overview available yet.",
+    "parts": "Movies in this collection"
+  },
+  "Watchlist": {
+    "title": "My watchlist",
+    "intro": "Everything you saved, stored only in this browser.",
+    "add": "Add to watchlist",
+    "addNamed": "Add {title} to watchlist",
+    "remove": "Remove",
+    "removeNamed": "Remove {title} from watchlist",
+    "open": "Open watchlist",
+    "statusLabel": "Status",
+    "ratingLabel": "My rating",
+    "notRated": "Not rated",
+    "ratingOption": "{rating} / 10",
+    "noteLabel": "Note",
+    "notePlaceholder": "Who recommended it, where to watch, anything",
+    "addedOn": "Added {date}",
+    "notPersisted": "Your browser is blocking storage, so changes will be lost when you close this tab.",
+    "emptyTitle": "Your watchlist is empty",
+    "emptyDescription": "Save movies and series from search or any detail page. You can also import a list you exported earlier.",
+    "emptyAction": "Find something to watch",
+    "listHeading": "Saved titles",
+    "showing": "Showing {shown} of {total, plural, one {# title} other {# titles}}.",
+    "noMatchesTitle": "No titles match these filters",
+    "noMatchesDescription": "Try another status or type.",
+    "removeFromWatchlist": "Remove from watchlist",
+    "statusFor": "Status of {title}",
+    "ratingFor": "My rating for {title}",
+    "noteFor": "Note on {title}"
+  },
+  "Status": {
+    "to-watch": "To watch",
+    "watching": "Watching",
+    "watched": "Watched"
+  },
+  "Filters": {
+    "status": "Status",
+    "allStatuses": "All statuses",
+    "type": "Type",
+    "types": {
+      "all": "Movies and series",
+      "movie": "Movies",
+      "tv": "Series"
+    },
+    "sort": "Sort by",
+    "sorts": {
+      "added-desc": "Recently added",
+      "added-asc": "Oldest added",
+      "title": "Title A to Z",
+      "rating": "My rating",
+      "release": "Newest release"
+    },
+    "clear": "Clear filters"
+  },
+  "Stats": {
+    "title": "Statistics",
+    "total": "Titles",
+    "split": "{movies} movies, {series} series",
+    "toWatch": "To watch",
+    "watching": "Watching",
+    "watched": "Watched",
+    "hoursWatched": "Hours watched",
+    "estimate": "Estimated where the length is unknown",
+    "averageRating": "Average rating",
+    "noRating": "None yet"
+  },
+  "ImportExport": {
+    "title": "Back up or move your list",
+    "description": "Export a JSON file, then import it in another browser. Imported titles replace saved ones with the same title.",
+    "export": "Export JSON",
+    "import": "Import JSON",
+    "fileLabel": "Watchlist JSON file",
+    "imported": "Imported {count, plural, one {# title} other {# titles}}{skipped, plural, =0 {.} one {, skipped # invalid entry.} other {, skipped # invalid entries.}}",
+    "invalid": "That file is not a watchlist export.",
+    "tooLarge": "That file is too large to be a watchlist export."
+  },
+  "Share": {
+    "title": "Share a read only link",
+    "description": "The list is packed into the link itself and nothing is uploaded. The link shows the list as it is when you copy it.",
+    "truncated": "Only the first {max} titles fit in a link.",
+    "nameLabel": "List name (optional)",
+    "namePlaceholder": "Weekend picks",
+    "includeNotes": "Include my notes",
+    "create": "Create link",
+    "linkLabel": "Share link",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copiedStatus": "Link copied to the clipboard.",
+    "copyFailed": "Could not copy. Select the link and copy it yourself."
+  },
+  "Shared": {
+    "defaultTitle": "Shared watchlist",
+    "intro": "A read only list someone shared with you.",
+    "invalidTitle": "This link does not work",
+    "invalidDescription": "The shared list is missing or damaged. Ask for a new link.",
+    "addAll": "{count, plural, =0 {Already in your watchlist} one {Add # title to my watchlist} other {Add # titles to my watchlist}}",
+    "added": "{count, plural, one {Added # title} other {Added # titles}} to your watchlist.",
+    "listHeading": "{count, plural, one {# title} other {# titles}}",
+    "openMine": "Open my watchlist"
+  },
+  "Settings": {
+    "title": "Settings",
+    "intro": "Saved in this browser.",
+    "regionHeading": "Where to watch",
+    "regionLabel": "Region",
+    "regionHint": "Streaming, rent and buy offers on detail pages are shown for this region.",
+    "regionSaved": "Region set to {region}.",
+    "languageHeading": "Language",
+    "languageLabel": "Language",
+    "languageHint": "Used for the interface and, where TMDB has a translation, for titles and overviews.",
+    "themeHeading": "Theme",
+    "themes": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "Errors": {
+    "pageTitle": "Something went wrong",
+    "pageMessage": "We could not load this page. Please try again.",
+    "rowTitle": "{row} could not be loaded",
+    "rowMessage": "The movie database did not respond. Reload the page to try again.",
+    "searchTitle": "Search is not available",
+    "searchMessage": "The movie database did not respond. Check your connection and try again.",
+    "loadMoreFailed": "Could not load more results.",
+    "retry": "Try again"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "This page does not exist, or the title was removed from TMDB.",
+    "home": "Go home"
+  }
+}
