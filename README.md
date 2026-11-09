@@ -1,125 +1,96 @@
-# Streaming catalogue
+# Watchlist
 
-A fast, accessible browser for movies and TV series, powered by [The Movie Database (TMDB)](https://www.themoviedb.org/).
+A personal movie and series watchlist on top of [The Movie Database (TMDB)](https://www.themoviedb.org/). Browse and search the catalogue, then keep your own list: what you want to watch, what you are watching and what you have seen, with your rating and a note for each title.
+
+> The repository is still called `movies-series-website-demo` from its 2021 origins and may be renamed to `watchlist`.
 
 <!-- Screenshot placeholder: add docs/screenshot.png (home page, 1280px wide) and replace this comment with:
-![Streaming catalogue home page showing trending movies and series](docs/screenshot.png) -->
+![Watchlist home page with trending and popular rows](docs/screenshot.png) -->
 
-> Screenshot coming soon.
+## Features
 
-**Live demo:** https://eylulg.github.io/movies-series-website-demo/ (after GitHub Pages is enabled)
+- **Home:** trending, popular and top rated rows for movies and series, each streamed in with its own skeleton and its own error state.
+- **Search:** movies, series and people in one place or one kind at a time. Results arrive 300 ms after you stop typing, the query and kind live in the URL, and more results load as you scroll, with a "Load more" button as a fallback. Result counts are announced to screen readers.
+- **Movie and series pages:** overview, cast, key crew, videos (thumbnails that link out to YouTube or Vimeo, nothing embedded), recommendations, and where to watch in your region (stream, free, with ads, rent, buy). Series list their seasons, and each season lists its episodes. Movies link to their collection.
+- **People and collections:** biography and a filmography grouped by year; every film in a collection in release order.
+- **Watchlist:** status (to watch, watching, watched), personal rating, note and date added. Filter by status and type, sort five ways, all kept in the URL. Statistics show counts, average rating and an estimate of hours watched.
+- **Your data stays yours:** the list lives in `localStorage`, validated with zod on every read, and stays in sync across open tabs. Export it as JSON, import it in another browser.
+- **Share without a server:** a read only link carries the whole list, compressed with lz-string, in the URL fragment. Fragments are never sent to a server, so nothing is uploaded or stored. The recipient can copy the titles into their own list.
+- **Three languages:** English, Turkish and German, with the locale in the URL. TMDB content is requested in the same language and falls back to English where a translation is missing.
+- **Settings:** where to watch region, language, and light, dark or system theme with no flash on load.
+- **Installable:** web app manifest, generated icons, and an offline page served by a minimal service worker. TMDB data is deliberately not cached offline.
+- **Accessible:** landmarks, a skip link, visible focus, keyboard navigable cards and carousels (arrow keys, Home, End), focus moved deliberately when an action replaces the focused control, live regions for result counts, and a layout that works from 375 px wide with no sideways scrolling. axe runs in light and dark mode on every page.
 
-## What it does
+## Architecture
 
-- **Home:** trending movies and series rows, switchable between this week and today.
-- **Movies and Series:** search with a 300 ms debounce, sort by rating, release date or title, filter by genre and release year, and paginate. Filters live in the URL, so any view can be bookmarked or shared.
-- **Title details:** poster, overview, genres, rating, runtime (or episode length and seasons), and the top 6 cast members, with fallbacks for missing posters, photos, overviews and cast.
-- **Favorites:** saved in `localStorage` on your device. Works even when storage is blocked (you get a notice that favorites will not be kept).
-- **States everywhere:** loading skeletons, error states with a retry button, empty states, and a 404 page.
-- **Light and dark mode** with a toggle (follows the system setting until you choose).
-- **Accessible:** keyboard navigable cards with visible focus, a skip link, live result counts for screen readers, alt text, and a layout that works from 375 px wide with no horizontal scrolling.
+```text
+Browser                               Next.js server (Vercel)                      TMDB
+-------                               -----------------------                      ----
+Server rendered pages  <-- HTML --   Server components  -- fetch + TMDB_API_KEY -->  api.themoviedb.org
+Search page (client)   -- /api/search?q= -->  Route handler  -- fetch + TMDB_API_KEY -->
+Watchlist (client)     localStorage only, never sent anywhere
+Share link             /shared#<lz-string data>, the fragment never reaches the server
+```
 
-## Stack
-
-| Area      | Choice                                                                                                                       |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Build     | Vite 7, TypeScript (strict)                                                                                                  |
-| UI        | React 19, [Untitled UI React](https://www.untitledui.com/react) (free MIT components), Tailwind CSS 4, React Aria Components |
-| Routing   | React Router 7 data router with lazy, code split routes                                                                      |
-| Data      | TanStack Query 5, native `fetch`, zod validation of every TMDB response                                                      |
-| Testing   | Vitest, Testing Library, Mock Service Worker, vitest-axe                                                                     |
-| Tooling   | ESLint 9 flat config (typescript-eslint strict, jsx-a11y, react-hooks), Prettier                                             |
-| CI and CD | GitHub Actions: checks on every push and PR, deploy to GitHub Pages from `master`                                            |
+- **The TMDB key never reaches the browser.** `TMDB_API_KEY` is read with `process.env` in `src/lib/tmdb/client.ts`, which imports `server-only`, so importing it from a client component fails the build. ESLint also blocks client code from importing it and blocks `NEXT_PUBLIC_` TMDB variables. After every build, `npm run check:bundle` scans `.next/static` for the key value, the variable name, `api_key=` and direct TMDB URLs, and CI fails if any appear.
+- **Validated at the boundary.** Every TMDB response goes through zod schemas (`src/lib/tmdb/schemas.ts`) and is mapped to small app types (`src/lib/tmdb/types.ts`). A single malformed item in a list is dropped instead of failing the page. Storage, imported files, share links and URL parameters are validated the same way.
+- **Caching.** TMDB calls use Next's fetch cache with revalidate times per kind of data: 1 hour for trending, 6 hours for popular and top rated lists, 10 minutes for search, 12 hours for details. Pages render per request, so builds never call TMDB, while the responses themselves are cached.
+- **Search route.** `/api/search` validates its parameters with zod, rate limits per client, refuses cross site browser requests, sends no CORS headers, and never forwards TMDB's error text.
+- **i18n.** next-intl with the locale as the root segment (`src/app/[locale]`), read through `next/root-params`. Messages live in `src/messages/{en,tr,de}.json`; a test checks that all three have the same keys, ICU arguments and tags.
+- **UI.** Untitled UI React (free, MIT) components on Tailwind CSS 4 and React Aria, copied into `src/components/{base,application,foundations,shared-assets}` and kept close to upstream. App components live in `src/components/app`, `detail`, `search`, `watchlist`, `shared` and `settings`.
 
 ## Run it locally
 
-You need Node 22 or newer (Node 24 recommended, see `.nvmrc`) and a free TMDB API key.
+You need Node 22 or newer (Node 24 recommended, see `.nvmrc`) and a free TMDB API key from <https://www.themoviedb.org/settings/api>.
 
-1. Create a TMDB account and request an API key at <https://www.themoviedb.org/settings/api>.
-2. Install and configure:
-
-   ```bash
-   npm install
-   cp .env.example .env
-   # then edit .env and set VITE_TMDB_API_KEY=<your key>
-   ```
-
-3. Start the dev server:
-
-   ```bash
-   npm run dev
-   ```
-
-   Open the URL Vite prints (it ends in `/movies-series-website-demo/`).
-
-### API key or read access token
-
-`VITE_TMDB_API_KEY` accepts either credential from your TMDB settings page:
-
-- **API key (v3), preferred:** 32 characters. Sent as the `api_key` query parameter.
-- **API Read Access Token (v4):** a long token starting with `eyJ`. Detected automatically and sent as an `Authorization: Bearer <token>` header instead.
-
-`.env` is gitignored. Never commit a real key.
-
-### A note on client side keys
-
-This is a static site, so Vite inlines the key into the JavaScript bundle at build time. **Anyone visiting the deployed site can read it.** Only use a free TMDB key that has read only access to public data, never one tied to anything sensitive, and rotate it if it is abused.
-
-### Scripts
-
-| Command              | What it does                                         |
-| -------------------- | ---------------------------------------------------- |
-| `npm run dev`        | Start the dev server                                 |
-| `npm run build`      | Typecheck and build to `dist/` (includes `404.html`) |
-| `npm run preview`    | Serve the production build locally                   |
-| `npm run typecheck`  | Run the TypeScript compiler                          |
-| `npm run lint`       | Run ESLint                                           |
-| `npm run format`     | Format with Prettier                                 |
-| `npm test`           | Run the test suite once                              |
-| `npm run test:watch` | Run tests in watch mode                              |
-
-## What is tested
-
-Tests run against the real route table and providers, with [MSW](https://mswjs.io/) standing in for TMDB, so no network or key is needed.
-
-- **API layer** (`src/api/tmdb.test.ts`): parsing and normalising movies and series, defaults for missing fields and null posters, the 500 page cap, schema mismatches, TMDB error messages with status codes, network failures, a missing key, v3 key as query parameter versus v4 token as Bearer header, cast sorted by billing order and capped at 6, and client side sorting.
-- **Search debounce:** a hook test with fake timers, plus a page test proving that typing "dune" sends exactly one search request, after typing stops.
-- **Sort, genre, year and pagination:** the right TMDB parameters are sent and the choice is kept in the URL; search results are sorted on the client because TMDB search cannot sort.
-- **Favorites persistence:** saving from a card or the detail page, restoring after a fresh app mount, removing, corrupt storage, and storage that throws.
-- **Error and empty states:** error messages, retry that recovers, empty results with "Clear filters", unknown title ids, and the 404 page.
-- **Accessibility:** an axe scan of every page (Home, Movies, Series, Title detail, Favorites, 404) in both normal and error or empty states. Color contrast cannot be computed in jsdom, so it was checked in a real browser instead.
-
-## Deployment
-
-`.github/workflows/deploy.yml` builds and deploys to GitHub Pages on every push to `master`:
-
-- Vite uses `base: '/movies-series-website-demo/'` and the router uses the same base path.
-- The build copies `index.html` to `404.html`, so deep links such as `/movie/27205` work on Pages.
-- The key comes from the repository secret `TMDB_API_KEY`, exposed to the build as `VITE_TMDB_API_KEY`.
-
-To set it up: add the `TMDB_API_KEY` secret under **Settings > Secrets and variables > Actions**, then set **Settings > Pages > Source** to **GitHub Actions**.
-
-## Project structure
-
-```text
-src/
-  api/          TMDB client (fetch + zod) and TanStack Query options
-  app/          router, layout, providers
-  components/
-    catalogue/  app components (cards, grids, states, theme toggle)
-    base/, application/, foundations/, shared-assets/   Untitled UI React components (MIT)
-  features/     the shared Movies and Series browse page
-  hooks/        debounce, document title
-  lib/          favorites, image URLs, paths
-  pages/        route components and their tests
-  test/         test setup, MSW handlers, fixtures
+```bash
+npm install
+cp .env.example .env
+# set TMDB_API_KEY in .env (a v3 key, or a v4 read access token starting with "eyJ")
+npm run dev
 ```
+
+Open <http://localhost:3000>. `.env` is gitignored; never commit a real key.
+
+## Scripts
+
+| Command                | What it does                                                           |
+| ---------------------- | ---------------------------------------------------------------------- |
+| `npm run dev`          | Start the dev server                                                   |
+| `npm run build`        | Production build                                                       |
+| `npm start`            | Serve the production build                                             |
+| `npm run typecheck`    | Generate route types and run TypeScript                                |
+| `npm run lint`         | ESLint, zero warnings allowed                                          |
+| `npm run format:check` | Prettier                                                               |
+| `npm run knip`         | Unused files, exports and dependencies                                 |
+| `npm test`             | Vitest unit and component tests                                        |
+| `npm run check:bundle` | Fail if anything that could reveal the TMDB key is in the client build |
+| `npm run e2e`          | Playwright end to end tests against a mock TMDB                        |
+
+Husky runs lint-staged on every commit and commitlint checks commit messages against Conventional Commits.
+
+## Tests
+
+- **Unit and component tests (Vitest, Testing Library, vitest-axe, MSW).** MSW stands in for TMDB, so the API layer and the search route run their real code. Covered: request building and credentials, error handling, normalisation and English fallback (`src/lib/tmdb`), the search route's validation and its refusal to leak TMDB errors, the rate limiter, the watchlist store (persistence, corrupt and blocked storage, cross tab sync), share link encoding, statistics, filters, import and export, and i18n parity. Feature tests render the search, watchlist, detail, shared and settings views with real children and assert on what a user sees, including where focus lands after actions that remove the focused control. jsdom cannot compute colours, so contrast is left to Playwright.
+- **End to end (Playwright).** `e2e/mock-tmdb/server.ts` is a small TMDB stand-in, and the production build is started with `TMDB_API_BASE_URL` pointing at it. The suite searches for a title, adds it, changes its status, opens a shared link in a fresh browser, runs axe on every page in light and dark mode, and checks that no page scrolls sideways at 375 px.
+
+## Deploy
+
+The app targets [Vercel](https://vercel.com/):
+
+1. Import the repository in Vercel. The Next.js preset needs no changes.
+2. Add `TMDB_API_KEY` under **Settings > Environment Variables** for Production and Preview. Do not prefix it with `NEXT_PUBLIC_`.
+3. Deploy. Every pull request gets a preview deployment.
+
+CI (`.github/workflows/ci.yml`) runs typecheck, lint, format, knip, tests, build, the client bundle check, Playwright and a gitleaks secret scan on every push to `master` and every pull request.
 
 ## Credits
 
-<a href="https://www.themoviedb.org/"><img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="TMDB logo" width="120" /></a>
+<a href="https://www.themoviedb.org/"><img src="public/tmdb-logo.svg" alt="TMDB logo" width="120" /></a>
 
-This product uses the TMDB API but is not endorsed or certified by TMDB. Movie and series data and images are provided by [The Movie Database](https://www.themoviedb.org/).
+This product uses the TMDB API but is not endorsed or certified by TMDB. Movie, series and people data and images are provided by [The Movie Database](https://www.themoviedb.org/).
+
+Where to watch data is provided by [JustWatch](https://www.justwatch.com/) through TMDB, and is credited wherever it is shown.
 
 UI components from [Untitled UI React](https://github.com/untitleduico/react), used under the MIT license.
 
