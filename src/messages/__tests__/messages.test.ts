@@ -28,6 +28,9 @@ const argumentsOf = (message: string) => {
     return [...names].sort();
 };
 
+/** En dash and em dash, written as code points so this file contains neither. */
+const LONG_DASHES = [String.fromCodePoint(0x2013), String.fromCodePoint(0x2014)];
+
 const english = flatten(en);
 
 describe.each([
@@ -48,6 +51,6 @@ describe.each([
     });
 
     it("contain no long dashes", () => {
-        expect(Object.values(translated).filter((message) => /[–—]/.test(message))).toEqual([]);
+        expect(Object.values(translated).filter((message) => LONG_DASHES.some((dash) => message.includes(dash)))).toEqual([]);
     });
 });
