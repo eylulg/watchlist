@@ -38,7 +38,7 @@ const TitleRow = async ({ title, load, priority = false }: RowProps) => {
         <Carousel title={title}>
             {data.results.slice(0, 20).map((item, index) => (
                 <li key={`${item.mediaType}-${String(item.id)}`}>
-                    <TitleCard title={item} sizes={ROW_POSTER_SIZES} priority={priority && index < 3} />
+                    <TitleCard title={item} sizes={ROW_POSTER_SIZES} priority={priority && index === 0} />
                 </li>
             ))}
         </Carousel>
