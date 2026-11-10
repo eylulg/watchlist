@@ -1,8 +1,8 @@
 "use client";
 
-import { BookmarkAdd, BookmarkCheck } from "@untitledui/icons";
+import { IconButton } from "@eylulg/ui/icon-button";
+import { BookmarkCheck, BookmarkPlus } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { ButtonUtility } from "@/components/base/buttons/button-utility";
 import { type WatchlistTitle, itemKey } from "@/lib/watchlist/schema";
 import { useWatchlist, watchlistActions } from "@/lib/watchlist/store";
 
@@ -19,13 +19,13 @@ export const WatchlistToggle = ({ title }: { title: WatchlistTitle }) => {
     }
 
     return (
-        <ButtonUtility
+        <IconButton
             aria-label={isSaved ? t("removeNamed", { title: title.title }) : t("addNamed", { title: title.title })}
             aria-pressed={isSaved}
-            color="secondary"
+            variant="secondary"
             size="sm"
-            className="absolute top-2 right-2 bg-primary/90 backdrop-blur"
-            icon={isSaved ? <BookmarkCheck data-icon aria-hidden="true" className="text-fg-brand-primary" /> : BookmarkAdd}
+            className="absolute top-2 right-2 z-10"
+            icon={isSaved ? BookmarkCheck : BookmarkPlus}
             onPress={handlePress}
         />
     );

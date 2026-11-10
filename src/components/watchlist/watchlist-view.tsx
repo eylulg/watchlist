@@ -1,15 +1,21 @@
 "use client";
 
-import { type ChangeEvent, useRef } from "react";
+import { useRef } from "react";
 import { flushSync } from "react-dom";
-import { BookmarkAdd } from "@untitledui/icons";
+import { Button } from "@eylulg/ui/button";
+import { cx } from "@eylulg/ui/cx";
+import { Select, SelectItem } from "@eylulg/ui/select";
+import { Skeleton } from "@eylulg/ui/skeleton";
+import { Tag, TagGroup } from "@eylulg/ui/tag";
+import { BookmarkPlus } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
+import type { Selection } from "react-aria-components";
+import { LinkButton } from "@/components/app/link-button";
 import { EmptyResults } from "@/components/app/states";
-import { pageIntroClass, pageTitleClass, skeletonClass, statusTextClass } from "@/components/app/styles";
-import { Button } from "@/components/base/buttons/button";
-import { NativeSelect } from "@/components/base/select/select-native";
-import { getPathname, useRouter } from "@/i18n/navigation";
+import { pageIntroClass, pageTitleClass, statusTextClass } from "@/components/app/styles";
+import { useRouter } from "@/i18n/navigation";
+import { focusFirstControl } from "@/lib/focus";
 import {
     SORT_OPTIONS,
     STATUS_FILTERS,
@@ -21,7 +27,6 @@ import {
 import { type WatchlistItem, itemKey } from "@/lib/watchlist/schema";
 import { computeStats } from "@/lib/watchlist/stats";
 import { useWatchlist, watchlistActions } from "@/lib/watchlist/store";
-import { cx } from "@/utils/cx";
 import { ImportExport } from "./import-export";
 import { SharePanel } from "./share-panel";
 import { WatchlistRow } from "./watchlist-row";
@@ -39,7 +44,7 @@ export const WatchlistView = () => {
     const { items, isPersisted } = useWatchlist();
     const headingRef = useRef<HTMLHeadingElement>(null);
     const listRef = useRef<HTMLUListElement>(null);
-    const statusFilterRef = useRef<HTMLSelectElement>(null);
+    const filtersRef = useRef<HTMLDivElement>(null);
 
     const query = parseWatchlistQuery(new URLSearchParams(searchParams.toString()));
     const visible = items ? filterAndSort(items, query, locale) : [];
@@ -54,21 +59,22 @@ export const WatchlistView = () => {
         router.replace({ pathname: "/watchlist", query: params }, { scroll: false });
     }
 
-    function handleStatusFilter(event: ChangeEvent<HTMLSelectElement>) {
-        setQuery({ status: parseWatchlistQuery(new URLSearchParams({ status: event.target.value })).status });
+    function handleStatusFilter(key: unknown) {
+        setQuery({ status: parseWatchlistQuery(new URLSearchParams({ status: String(key) })).status });
     }
 
-    function handleTypeFilter(event: ChangeEvent<HTMLSelectElement>) {
-        setQuery({ type: parseWatchlistQuery(new URLSearchParams({ type: event.target.value })).type });
+    function handleTypeFilter(keys: Selection) {
+        const [key] = keys === "all" ? [] : [...keys];
+        setQuery({ type: parseWatchlistQuery(new URLSearchParams({ type: String(key) })).type });
     }
 
-    function handleSort(event: ChangeEvent<HTMLSelectElement>) {
-        setQuery({ sort: parseWatchlistQuery(new URLSearchParams({ sort: event.target.value })).sort });
+    function handleSort(key: unknown) {
+        setQuery({ sort: parseWatchlistQuery(new URLSearchParams({ sort: String(key) })).sort });
     }
 
     function handleClearFilters() {
         setQuery({ status: "all", type: "all" });
-        statusFilterRef.current?.focus();
+        focusFirstControl(filtersRef.current);
     }
 
     // The removed row held focus, so move it to the row that takes its place, or to the heading.
@@ -85,7 +91,7 @@ export const WatchlistView = () => {
 
     const heading = (
         <div className="flex flex-col gap-2">
-            <h1 ref={headingRef} tabIndex={-1} className={cx(pageTitleClass, "rounded-md outline-focus-ring focus-visible:outline-2")}>
+            <h1 ref={headingRef} tabIndex={-1} className={cx(pageTitleClass, "rounded-md outline-focus focus-visible:outline-2")}>
                 {t("title")}
             </h1>
             <p className={pageIntroClass}>{t("intro")}</p>
@@ -96,7 +102,7 @@ export const WatchlistView = () => {
         return (
             <div className="flex flex-col gap-6" aria-busy="true">
                 {heading}
-                <div aria-hidden="true" className={cx(skeletonClass, "h-24 rounded-xl")} />
+                <Skeleton shape="rect" className="h-24 rounded-xl" />
             </div>
         );
     }
@@ -106,7 +112,7 @@ export const WatchlistView = () => {
             {heading}
 
             {!isPersisted && (
-                <p role="alert" className="rounded-lg bg-warning-primary p-3 text-sm text-warning-primary">
+                <p role="alert" className="rounded-lg bg-warning-subtle p-3 text-sm text-warning">
                     {t("notPersisted")}
                 </p>
             )}
@@ -115,12 +121,8 @@ export const WatchlistView = () => {
                 <EmptyResults
                     title={t("emptyTitle")}
                     description={t("emptyDescription")}
-                    icon={BookmarkAdd}
-                    actions={
-                        <Button href={getPathname({ href: "/search", locale })} size="md">
-                            {t("emptyAction")}
-                        </Button>
-                    }
+                    icon={BookmarkPlus}
+                    actions={<LinkButton href="/search">{t("emptyAction")}</LinkButton>}
                 />
             ) : (
                 <>
@@ -130,29 +132,39 @@ export const WatchlistView = () => {
                         <h2 id="list-heading" className="sr-only">
                             {t("listHeading")}
                         </h2>
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:max-w-3xl">
-                            <NativeSelect
-                                ref={statusFilterRef}
+                        <div ref={filtersRef} className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:max-w-3xl">
+                            <Select
                                 label={tf("status")}
-                                size="sm"
                                 value={query.status}
                                 onChange={handleStatusFilter}
-                                options={STATUS_FILTERS.map((value) => ({ value, label: value === "all" ? tf("allStatuses") : ts(value) }))}
-                            />
-                            <NativeSelect
+                                items={STATUS_FILTERS.map((value) => ({
+                                    id: value,
+                                    name: value === "all" ? tf("allStatuses") : ts(value),
+                                }))}
+                            >
+                                {(option) => <SelectItem id={option.id}>{option.name}</SelectItem>}
+                            </Select>
+                            <TagGroup
                                 label={tf("type")}
-                                size="sm"
-                                value={query.type}
-                                onChange={handleTypeFilter}
-                                options={TYPE_FILTERS.map((value) => ({ value, label: tf(`types.${value}`) }))}
-                            />
-                            <NativeSelect
+                                selectionMode="single"
+                                selectedKeys={[query.type]}
+                                disallowEmptySelection
+                                onSelectionChange={handleTypeFilter}
+                            >
+                                {TYPE_FILTERS.map((value) => (
+                                    <Tag key={value} id={value}>
+                                        {tf(`types.${value}`)}
+                                    </Tag>
+                                ))}
+                            </TagGroup>
+                            <Select
                                 label={tf("sort")}
-                                size="sm"
                                 value={query.sort}
                                 onChange={handleSort}
-                                options={SORT_OPTIONS.map((value) => ({ value, label: tf(`sorts.${value}`) }))}
-                            />
+                                items={SORT_OPTIONS.map((value) => ({ id: value, name: tf(`sorts.${value}`) }))}
+                            >
+                                {(option) => <SelectItem id={option.id}>{option.name}</SelectItem>}
+                            </Select>
                         </div>
                         <p role="status" aria-live="polite" className={statusTextClass}>
                             {t("showing", { shown: visible.length, total: items.length })}
@@ -164,7 +176,7 @@ export const WatchlistView = () => {
                                 description={t("noMatchesDescription")}
                                 actions={
                                     isFiltered && (
-                                        <Button color="secondary" onClick={handleClearFilters}>
+                                        <Button variant="secondary" onPress={handleClearFilters}>
                                             {tf("clear")}
                                         </Button>
                                     )

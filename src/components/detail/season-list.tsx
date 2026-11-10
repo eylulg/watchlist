@@ -18,7 +18,7 @@ export const SeasonList = ({ seriesId, seasons }: { seriesId: number; seasons: S
                     <li key={season.seasonNumber}>
                         <Link
                             href={seasonHref(seriesId, season.seasonNumber)}
-                            className="group flex items-center gap-3 rounded-xl p-2 ring-1 ring-secondary outline-focus-ring hover:bg-primary_hover focus-visible:outline-2 focus-visible:outline-offset-2"
+                            className="group hover:bg-primary_hover flex items-center gap-3 rounded-xl p-2 ring-1 ring-default outline-focus focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                             <div className="relative aspect-2/3 w-12 shrink-0 overflow-hidden rounded-md bg-tertiary">
                                 {season.posterPath && (

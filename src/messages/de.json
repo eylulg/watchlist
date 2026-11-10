@@ -10,15 +10,12 @@
     "search": "Suche",
     "watchlist": "Watchlist",
     "settings": "Einstellungen",
-    "darkMode": "Dunkler Modus",
-    "watchlistCount": "{count, plural, one {Titel} other {Titel}} gespeichert",
-    "skipToContent": "Zum Inhalt springen"
+    "skipToContent": "Zum Inhalt springen",
+    "watchlistWithCount": "Watchlist ({count})"
   },
   "Footer": {
     "tmdb": "Dieses Produkt nutzt die TMDB-API, wird aber nicht von TMDB unterstützt oder zertifiziert. Daten und Bilder von <link>The Movie Database (TMDB)</link>.",
-    "justwatch": "Streaming-Verfügbarkeit bereitgestellt von <link>JustWatch</link>.",
-    "builtBy": "Entwickelt von Eylül Güneş.",
-    "source": "Quellcode auf GitHub"
+    "justwatch": "Streaming-Verfügbarkeit bereitgestellt von <link>JustWatch</link>."
   },
   "Common": {
     "movie": "Film",
@@ -220,13 +217,7 @@
     "regionSaved": "Region auf {region} gesetzt.",
     "languageHeading": "Sprache",
     "languageLabel": "Sprache",
-    "languageHint": "Gilt für die Oberfläche und, wenn TMDB eine Übersetzung hat, für Titel und Beschreibungen.",
-    "themeHeading": "Design",
-    "themes": {
-      "light": "Hell",
-      "dark": "Dunkel",
-      "system": "System"
-    }
+    "languageHint": "Gilt für die Oberfläche und, wenn TMDB eine Übersetzung hat, für Titel und Beschreibungen."
   },
   "Errors": {
     "pageTitle": "Etwas ist schiefgelaufen",

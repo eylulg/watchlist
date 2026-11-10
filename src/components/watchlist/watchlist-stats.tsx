@@ -28,9 +28,9 @@ export const WatchlistStats = ({ stats, headingId = "stats" }: { stats: Stats; h
             </h2>
             <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
                 {tiles.map((tile) => (
-                    <div key={tile.label} className="flex flex-col gap-1 rounded-xl p-4 ring-1 ring-secondary">
+                    <div key={tile.label} className="flex flex-col gap-1 rounded-xl p-4 ring-1 ring-default">
                         <dt className="text-sm text-tertiary">{tile.label}</dt>
-                        <dd className="text-display-xs font-semibold text-primary tabular-nums">{tile.value}</dd>
+                        <dd className="text-2xl font-semibold text-primary tabular-nums">{tile.value}</dd>
                         {tile.detail && <dd className="text-xs text-tertiary">{tile.detail}</dd>}
                     </div>
                 ))}

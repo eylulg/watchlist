@@ -58,7 +58,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     return (
         <div className="flex flex-col gap-10 md:gap-12">
             <div className="flex flex-col gap-2">
-                <h1 className="text-display-xs font-semibold text-primary md:text-display-sm">{t("title")}</h1>
+                <h1 className="text-2xl font-semibold text-primary md:text-3xl">{t("title")}</h1>
                 <p className="max-w-prose text-md text-tertiary md:text-lg">{t("intro")}</p>
             </div>
             {rows.map((row) => (

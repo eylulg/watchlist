@@ -1,19 +1,15 @@
 import type { ReactNode } from "react";
+import { AppShell, SiteFooter, themeInitScript } from "@eylulg/ui/chrome";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
-import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
+import { Attribution } from "@/components/app/attribution";
+import { Nav } from "@/components/app/nav";
 import { Providers } from "@/components/app/providers";
 import { ServiceWorkerRegistration } from "@/components/app/service-worker-registration";
-import { SiteFooter } from "@/components/app/site-footer";
-import { SiteHeader } from "@/components/app/site-header";
-import { themeScript } from "@/components/app/theme-provider";
 import { routing } from "@/i18n/routing";
 import "@/styles/globals.css";
-import { cx } from "@/utils/cx";
-
-const inter = Inter({ subsets: ["latin", "latin-ext"], display: "swap", variable: "--font-inter" });
 
 interface LayoutProps {
     children: ReactNode;
@@ -60,28 +56,23 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
         <html lang={locale} suppressHydrationWarning>
             <head>
                 {/* Applies the saved theme before first paint, so there is no flash of the wrong theme. */}
-                <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+                <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
             </head>
-            <body className={cx(inter.variable, "bg-primary text-primary antialiased")}>
+            <body>
                 <NextIntlClientProvider>
                     <Providers>
-                        <div className="flex min-h-dvh flex-col">
-                            <a
-                                href="#main"
-                                className="sr-only z-50 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:outline-2 focus:outline-focus-ring"
-                            >
-                                {t("skipToContent")}
-                            </a>
-                            <SiteHeader />
-                            <main
-                                id="main"
-                                tabIndex={-1}
-                                className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 outline-none md:px-8 md:py-10"
-                            >
-                                {children}
-                            </main>
-                            <SiteFooter />
-                        </div>
+                        <AppShell
+                            skipLinkLabel={t("skipToContent")}
+                            header={<Nav />}
+                            footer={
+                                <>
+                                    <Attribution />
+                                    <SiteFooter currentId="watchlist" />
+                                </>
+                            }
+                        >
+                            <div className="mx-auto w-full max-w-7xl">{children}</div>
+                        </AppShell>
                         <ServiceWorkerRegistration />
                     </Providers>
                 </NextIntlClientProvider>

@@ -2,15 +2,17 @@
 
 import { useEffect, useRef } from "react";
 import { flushSync } from "react-dom";
-import { BookmarkAdd, Trash01 } from "@untitledui/icons";
+import { Button } from "@eylulg/ui/button";
+import { cx } from "@eylulg/ui/cx";
+import { Skeleton } from "@eylulg/ui/skeleton";
+import { BookmarkPlus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Button } from "@/components/base/buttons/button";
 import { Link } from "@/i18n/navigation";
+import { focusFirstControl } from "@/lib/focus";
 import { type WatchStatus, type WatchlistTitle, itemKey } from "@/lib/watchlist/schema";
 import { useWatchlist, watchlistActions } from "@/lib/watchlist/store";
-import { cx } from "@/utils/cx";
 import { StatusSelect } from "./status-select";
-import { inlineLinkClass, skeletonClass } from "./styles";
+import { inlineLinkClass } from "./styles";
 
 interface WatchlistControlProps {
     title: WatchlistTitle;
@@ -22,8 +24,8 @@ interface WatchlistControlProps {
 export const WatchlistControl = ({ title, runtime }: WatchlistControlProps) => {
     const t = useTranslations("Watchlist");
     const { items } = useWatchlist();
-    const statusRef = useRef<HTMLSelectElement>(null);
-    const addRef = useRef<HTMLButtonElement>(null);
+    const statusRef = useRef<HTMLDivElement>(null);
+    const addRef = useRef<HTMLDivElement>(null);
     const key = itemKey(title);
     const item = items?.find((entry) => itemKey(entry) === key);
     const needsRuntime = item !== undefined && item.runtime === null && runtime !== null;
@@ -38,14 +40,14 @@ export const WatchlistControl = ({ title, runtime }: WatchlistControlProps) => {
         flushSync(() => {
             watchlistActions.add({ ...title, runtime });
         });
-        statusRef.current?.focus();
+        focusFirstControl(statusRef.current);
     }
 
     function handleRemove() {
         flushSync(() => {
             watchlistActions.remove(key);
         });
-        addRef.current?.focus();
+        focusFirstControl(addRef.current);
     }
 
     function handleStatusChange(status: WatchStatus) {
@@ -53,21 +55,23 @@ export const WatchlistControl = ({ title, runtime }: WatchlistControlProps) => {
     }
 
     if (items === null) {
-        return <div aria-hidden="true" className={cx(skeletonClass, "h-10 w-48 rounded-lg")} />;
+        return <Skeleton shape="rect" className="h-control-md w-48" />;
     }
 
     if (!item) {
         return (
-            <Button ref={addRef} size="md" iconLeading={BookmarkAdd} onClick={handleAdd}>
-                {t("add")}
-            </Button>
+            <div ref={addRef}>
+                <Button size="md" iconLeading={BookmarkPlus} onPress={handleAdd}>
+                    {t("add")}
+                </Button>
+            </div>
         );
     }
 
     return (
         <div className="flex flex-wrap items-end gap-3">
             <StatusSelect ref={statusRef} label={t("statusLabel")} value={item.status} onChange={handleStatusChange} />
-            <Button size="md" color="secondary" iconLeading={Trash01} onClick={handleRemove}>
+            <Button size="md" variant="secondary" iconLeading={Trash2} onPress={handleRemove}>
                 {t("removeFromWatchlist")}
             </Button>
             <Link href="/watchlist" className={cx(inlineLinkClass, "pb-2 text-sm")}>

@@ -1,30 +1,35 @@
 "use client";
 
-import { type ChangeEvent, useState } from "react";
-import { Trash01 } from "@untitledui/icons";
+import { useState } from "react";
+import { Badge } from "@eylulg/ui/badge";
+import { Button } from "@eylulg/ui/button";
+import { cx } from "@eylulg/ui/cx";
+import { Select, SelectItem } from "@eylulg/ui/select";
+import { Textarea } from "@eylulg/ui/textarea";
+import { Trash2 } from "lucide-react";
 import { useFormatter, useTranslations } from "next-intl";
 import Image from "next/image";
 import { StatusSelect } from "@/components/app/status-select";
-import { Badge } from "@/components/base/badges/badges";
-import { Button } from "@/components/base/buttons/button";
-import { NativeSelect } from "@/components/base/select/select-native";
-import { TextArea } from "@/components/base/textarea/textarea";
 import { Link } from "@/i18n/navigation";
 import { tmdbImage } from "@/lib/tmdb/images";
 import { releaseYear, titleHref } from "@/lib/tmdb/types";
 import { type WatchStatus, type WatchlistItem, itemKey } from "@/lib/watchlist/schema";
 import type { SharedItem } from "@/lib/watchlist/share";
 import { watchlistActions } from "@/lib/watchlist/store";
-import { cx } from "@/utils/cx";
 
 interface WatchlistRowProps {
     item: WatchlistItem;
     onRemove: (item: WatchlistItem) => void;
 }
 
-const STATUS_BADGE_COLOR = { "to-watch": "gray", watching: "blue", watched: "success" } as const;
+const STATUS_BADGE_COLOR = { "to-watch": "gray", watching: "brand", watched: "success" } as const;
 
-const rowClass = "flex gap-4 rounded-xl p-4 ring-1 ring-secondary";
+const rowClass = "flex gap-4 rounded-xl p-4 ring-1 ring-default";
+
+const ratingOptions = (t: ReturnType<typeof useTranslations<"Watchlist">>) => [
+    { id: "none", name: t("notRated") },
+    ...Array.from({ length: 10 }, (_, i) => ({ id: String(10 - i), name: t("ratingOption", { rating: 10 - i }) })),
+];
 
 /** One editable watchlist entry: status, personal rating, note and remove. */
 export const WatchlistRow = ({ item, onRemove }: WatchlistRowProps) => {
@@ -36,8 +41,8 @@ export const WatchlistRow = ({ item, onRemove }: WatchlistRowProps) => {
         watchlistActions.setStatus(key, status);
     }
 
-    function handleRatingChange(event: ChangeEvent<HTMLSelectElement>) {
-        const rating = Number(event.target.value);
+    function handleRatingChange(value: unknown) {
+        const rating = Number(value);
         watchlistActions.update(key, { rating: Number.isInteger(rating) && rating >= 1 && rating <= 10 ? rating : null });
     }
 
@@ -57,27 +62,32 @@ export const WatchlistRow = ({ item, onRemove }: WatchlistRowProps) => {
                         </p>
                     </div>
                     <div className="flex flex-wrap items-end gap-3">
-                        <StatusSelect
-                            label={t("statusLabel")}
-                            ariaLabel={t("statusFor", { title: item.title })}
-                            value={item.status}
-                            onChange={handleStatusChange}
-                        />
-                        <NativeSelect
-                            label={t("ratingLabel")}
-                            aria-label={t("ratingFor", { title: item.title })}
-                            size="sm"
-                            className="w-32"
-                            value={item.rating === null ? "" : String(item.rating)}
-                            onChange={handleRatingChange}
-                            options={[
-                                { value: "", label: t("notRated") },
-                                ...Array.from({ length: 10 }, (_, i) => ({
-                                    value: String(10 - i),
-                                    label: t("ratingOption", { rating: 10 - i }),
-                                })),
-                            ]}
-                        />
+                        {/* The captions are shared by every row, so each control is named with the title instead. */}
+                        <div className="flex flex-col gap-1.5">
+                            <span aria-hidden="true" className="text-sm font-medium text-secondary">
+                                {t("statusLabel")}
+                            </span>
+                            <StatusSelect
+                                ariaLabel={t("statusFor", { title: item.title })}
+                                value={item.status}
+                                onChange={handleStatusChange}
+                            />
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                            <span aria-hidden="true" className="text-sm font-medium text-secondary">
+                                {t("ratingLabel")}
+                            </span>
+                            <div className="w-36">
+                                <Select
+                                    aria-label={t("ratingFor", { title: item.title })}
+                                    value={item.rating === null ? "none" : String(item.rating)}
+                                    onChange={handleRatingChange}
+                                    items={ratingOptions(t)}
+                                >
+                                    {(option) => <SelectItem id={option.id}>{option.name}</SelectItem>}
+                                </Select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -85,11 +95,11 @@ export const WatchlistRow = ({ item, onRemove }: WatchlistRowProps) => {
                 {/* Keyed by the saved note, so an edit from another tab replaces the field's draft. */}
                 <NoteField key={item.note} item={item} />
                 <Button
-                    color="secondary-destructive"
-                    size="sm"
-                    iconLeading={Trash01}
+                    variant="secondary"
+                    size="md"
+                    iconLeading={Trash2}
                     aria-label={t("removeNamed", { title: item.title })}
-                    onClick={handleRemove}
+                    onPress={handleRemove}
                 >
                     {t("remove")}
                 </Button>
@@ -108,7 +118,7 @@ export const SharedRow = ({ item }: { item: SharedItem }) => {
             <div className="flex min-w-0 flex-1 flex-col gap-2">
                 <Heading item={item} />
                 <div className="flex flex-wrap items-center gap-2">
-                    <Badge type="pill-color" color={STATUS_BADGE_COLOR[item.status]} size="sm">
+                    <Badge color={STATUS_BADGE_COLOR[item.status]} size="sm">
                         {ts(item.status)}
                     </Badge>
                     {item.rating !== null && <span className="text-sm text-secondary">{t("ratingOption", { rating: item.rating })}</span>}
@@ -133,7 +143,7 @@ const NoteField = ({ item }: { item: WatchlistItem }) => {
             <span aria-hidden="true" className="text-sm font-medium text-secondary">
                 {t("noteLabel")}
             </span>
-            <TextArea
+            <Textarea
                 aria-label={t("noteFor", { title: item.title })}
                 placeholder={t("notePlaceholder")}
                 rows={2}
@@ -147,7 +157,7 @@ const NoteField = ({ item }: { item: WatchlistItem }) => {
 };
 
 const Thumb = ({ posterPath }: Pick<WatchlistItem, "posterPath">) => (
-    <div className="relative aspect-2/3 w-16 shrink-0 overflow-hidden rounded-lg bg-tertiary ring-1 ring-secondary sm:w-20">
+    <div className="relative aspect-2/3 w-16 shrink-0 overflow-hidden rounded-lg bg-tertiary ring-1 ring-default sm:w-20">
         {posterPath && <Image src={tmdbImage(posterPath, "w185")} alt="" fill sizes="80px" className="object-cover" />}
     </div>
 );
@@ -158,7 +168,7 @@ const Heading = ({ item }: { item: SharedItem }) => {
     return (
         <div className="flex min-w-0 flex-col gap-0.5">
             <h3 className="text-md font-semibold text-primary">
-                <Link href={titleHref(item)} data-row-title className="outline-focus-ring hover:underline focus-visible:outline-2">
+                <Link href={titleHref(item)} data-row-title className="outline-focus hover:underline focus-visible:outline-2">
                     {item.title}
                 </Link>
             </h3>

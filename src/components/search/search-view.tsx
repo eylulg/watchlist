@@ -1,8 +1,11 @@
 "use client";
 
 import { type SubmitEvent, useEffect, useRef, useState } from "react";
+import { Button } from "@eylulg/ui/button";
+import { Input } from "@eylulg/ui/input";
+import { Tag, TagGroup } from "@eylulg/ui/tag";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { SearchLg } from "@untitledui/icons";
+import { Search } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import type { Key, Selection } from "react-aria-components";
@@ -10,9 +13,6 @@ import { PersonCard } from "@/components/app/person-card";
 import { CardGrid, EmptyResults, ErrorState } from "@/components/app/states";
 import { posterGridClass, statusTextClass } from "@/components/app/styles";
 import { TitleCard, TitleCardSkeleton } from "@/components/app/title-card";
-import { ButtonGroup, ButtonGroupItem } from "@/components/base/button-group/button-group";
-import { Button } from "@/components/base/buttons/button";
-import { Input } from "@/components/base/input/input";
 import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
 import { useRouter } from "@/i18n/navigation";
 import { GRID_POSTER_SIZES } from "@/lib/tmdb/images";
@@ -144,28 +144,26 @@ export const SearchView = () => {
                 <Input
                     label={t("label")}
                     type="search"
-                    icon={SearchLg}
+                    iconLeading={Search}
                     size="md"
                     placeholder={t("placeholder")}
                     value={input}
                     onChange={handleInputChange}
                     className="max-w-xl"
                 />
-                <div className="overflow-x-auto pb-1">
-                    <ButtonGroup
-                        aria-label={t("kindLabel")}
-                        size="sm"
-                        selectedKeys={[kind]}
-                        disallowEmptySelection
-                        onSelectionChange={handleKindChange}
-                    >
-                        {SEARCH_KINDS.map((option) => (
-                            <ButtonGroupItem key={option} id={option}>
-                                {t(`kinds.${option}`)}
-                            </ButtonGroupItem>
-                        ))}
-                    </ButtonGroup>
-                </div>
+                <TagGroup
+                    aria-label={t("kindLabel")}
+                    selectionMode="single"
+                    selectedKeys={[kind]}
+                    disallowEmptySelection
+                    onSelectionChange={handleKindChange}
+                >
+                    {SEARCH_KINDS.map((option) => (
+                        <Tag key={option} id={option}>
+                            {t(`kinds.${option}`)}
+                        </Tag>
+                    ))}
+                </TagGroup>
             </form>
 
             <p role="status" aria-live="polite" className={statusTextClass}>
@@ -182,9 +180,15 @@ export const SearchView = () => {
 
             {results.length > 0 && (
                 <div ref={sentinelRef} className="flex flex-col items-center gap-3">
-                    {isFetchNextPageError && <p className="text-sm text-error-primary">{tErrors("loadMoreFailed")}</p>}
+                    {isFetchNextPageError && <p className="text-sm text-error">{tErrors("loadMoreFailed")}</p>}
                     {hasNextPage && (
-                        <Button color="secondary" size="md" isLoading={isFetchingNextPage} showTextWhileLoading onClick={handleLoadMore}>
+                        <Button
+                            variant="secondary"
+                            size="md"
+                            isLoading={isFetchingNextPage}
+                            loadingLabel={t("loadMore")}
+                            onPress={handleLoadMore}
+                        >
                             {t("loadMore")}
                         </Button>
                     )}
@@ -213,7 +217,7 @@ const SearchResults = ({ query, results, isPending, isError, onRetry }: SearchRe
             <ErrorState
                 title={tErrors("searchTitle")}
                 message={tErrors("searchMessage")}
-                actions={<Button onClick={onRetry}>{tErrors("retry")}</Button>}
+                actions={<Button onPress={onRetry}>{tErrors("retry")}</Button>}
             />
         );
     }

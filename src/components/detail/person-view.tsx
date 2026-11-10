@@ -17,7 +17,7 @@ export const PersonView = ({ person }: { person: PersonDetail }) => {
     return (
         <article className="flex flex-col gap-10">
             <div className="flex flex-col gap-6 md:flex-row md:gap-10">
-                <div className="w-48 shrink-0 self-center overflow-hidden rounded-2xl ring-1 ring-secondary md:w-64 md:self-start">
+                <div className="w-48 shrink-0 self-center overflow-hidden rounded-2xl ring-1 ring-default md:w-64 md:self-start">
                     <Poster
                         path={person.profilePath}
                         alt={t("photoAlt", { name: person.name })}
@@ -92,7 +92,7 @@ export const PersonView = ({ person }: { person: PersonDetail }) => {
                                 <li key={`${credit.mediaType}-${String(credit.id)}`}>
                                     <Link
                                         href={titleHref(credit)}
-                                        className="group flex items-center gap-3 rounded-lg p-1 outline-focus-ring hover:bg-primary_hover focus-visible:outline-2"
+                                        className="group hover:bg-primary_hover flex items-center gap-3 rounded-lg p-1 outline-focus focus-visible:outline-2"
                                     >
                                         <div className="relative aspect-2/3 w-10 shrink-0 overflow-hidden rounded bg-tertiary">
                                             {credit.posterPath && (

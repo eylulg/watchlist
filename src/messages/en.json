@@ -10,15 +10,12 @@
     "search": "Search",
     "watchlist": "Watchlist",
     "settings": "Settings",
-    "darkMode": "Dark mode",
-    "watchlistCount": "{count, plural, one {title} other {titles}} saved",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "watchlistWithCount": "Watchlist ({count})"
   },
   "Footer": {
     "tmdb": "This product uses the TMDB API but is not endorsed or certified by TMDB. Data and images from <link>The Movie Database (TMDB)</link>.",
-    "justwatch": "Streaming availability data provided by <link>JustWatch</link>.",
-    "builtBy": "Built by Eylül Güneş.",
-    "source": "Source on GitHub"
+    "justwatch": "Streaming availability data provided by <link>JustWatch</link>."
   },
   "Common": {
     "movie": "Movie",
@@ -220,13 +217,7 @@
     "regionSaved": "Region set to {region}.",
     "languageHeading": "Language",
     "languageLabel": "Language",
-    "languageHint": "Used for the interface and, where TMDB has a translation, for titles and overviews.",
-    "themeHeading": "Theme",
-    "themes": {
-      "light": "Light",
-      "dark": "Dark",
-      "system": "System"
-    }
+    "languageHint": "Used for the interface and, where TMDB has a translation, for titles and overviews."
   },
   "Errors": {
     "pageTitle": "Something went wrong",

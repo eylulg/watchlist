@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { RouterProvider } from "react-aria-components";
 import { SearchRequestError } from "@/components/search/search-api";
-import { ThemeProvider } from "./theme-provider";
 
 declare module "react-aria-components" {
     interface RouterConfig {
@@ -35,10 +34,8 @@ export const Providers = ({ children }: { children: ReactNode }) => {
     }
 
     return (
-        <ThemeProvider>
-            <QueryClientProvider client={queryClient}>
-                <RouterProvider navigate={handleNavigate}>{children}</RouterProvider>
-            </QueryClientProvider>
-        </ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider navigate={handleNavigate}>{children}</RouterProvider>
+        </QueryClientProvider>
     );
 };

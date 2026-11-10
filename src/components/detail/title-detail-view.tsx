@@ -1,16 +1,16 @@
-import { Star01 } from "@untitledui/icons";
+import { Badge } from "@eylulg/ui/badge";
+import { Skeleton } from "@eylulg/ui/skeleton";
 import { useFormatter, useTranslations } from "next-intl";
 import { Carousel } from "@/components/app/carousel";
+import { Star } from "@/components/app/icons";
 import { PersonCard } from "@/components/app/person-card";
 import { Poster } from "@/components/app/poster";
-import { inlineLinkClass, pageTitleClass, sectionTitleClass, skeletonClass } from "@/components/app/styles";
+import { inlineLinkClass, pageTitleClass, sectionTitleClass } from "@/components/app/styles";
 import { TitleCard } from "@/components/app/title-card";
 import { WatchlistControl } from "@/components/app/watchlist-control";
-import { Badge } from "@/components/base/badges/badges";
 import { Link } from "@/i18n/navigation";
 import { DETAIL_POSTER_SIZES, ROW_POSTER_SIZES } from "@/lib/tmdb/images";
 import { type TitleDetail, collectionHref, personHref, releaseYear } from "@/lib/tmdb/types";
-import { cx } from "@/utils/cx";
 import { ProvidersPanel } from "./providers-panel";
 import { SeasonList } from "./season-list";
 import { VideoList } from "./video-list";
@@ -43,7 +43,7 @@ export const TitleDetailView = ({ detail, region }: TitleDetailViewProps) => {
     return (
         <article className="flex flex-col gap-10 md:gap-12">
             <div className="flex flex-col gap-6 md:flex-row md:gap-10">
-                <div className="w-48 shrink-0 self-center overflow-hidden rounded-2xl shadow-lg ring-1 ring-secondary md:w-72 md:self-start">
+                <div className="w-48 shrink-0 self-center overflow-hidden rounded-2xl shadow-lg ring-1 ring-default md:w-72 md:self-start">
                     <Poster path={detail.posterPath} alt={t("posterAlt", { title: detail.title })} sizes={DETAIL_POSTER_SIZES} priority />
                 </div>
                 <div className="flex min-w-0 flex-col gap-5">
@@ -60,7 +60,7 @@ export const TitleDetailView = ({ detail, region }: TitleDetailViewProps) => {
                             {detail.voteCount > 0 && (
                                 <span className="flex items-center gap-1">
                                     <span aria-hidden="true">·</span>
-                                    <Star01 aria-hidden="true" className="text-warning-400 size-4 fill-current" />
+                                    <Star aria-hidden="true" className="size-4 fill-current text-warning-400" />
                                     {t("rating", { rating: detail.rating.toFixed(1), votes: format.number(detail.voteCount) })}
                                 </span>
                             )}
@@ -71,7 +71,7 @@ export const TitleDetailView = ({ detail, region }: TitleDetailViewProps) => {
                         <ul aria-label={t("genres")} className="flex flex-wrap gap-2">
                             {detail.genres.map((genre) => (
                                 <li key={genre.id}>
-                                    <Badge type="pill-color" color="gray" size="md">
+                                    <Badge color="gray" size="md">
                                         {genre.name}
                                     </Badge>
                                 </li>
@@ -103,7 +103,7 @@ export const TitleDetailView = ({ detail, region }: TitleDetailViewProps) => {
                                     <dd>
                                         <Link
                                             href={personHref(person.id)}
-                                            className="text-sm font-semibold text-primary underline-offset-2 outline-focus-ring hover:underline focus-visible:outline-2"
+                                            className="text-sm font-semibold text-primary underline-offset-2 outline-focus hover:underline focus-visible:outline-2"
                                         >
                                             {person.name}
                                         </Link>
@@ -171,13 +171,13 @@ export const TitleDetailView = ({ detail, region }: TitleDetailViewProps) => {
 };
 
 export const DetailSkeleton = () => (
-    <div aria-hidden="true" className="flex flex-col gap-6 md:flex-row md:gap-10">
-        <div className={cx(skeletonClass, "aspect-2/3 w-48 shrink-0 self-center rounded-2xl md:w-72 md:self-start")} />
+    <div className="flex flex-col gap-6 md:flex-row md:gap-10">
+        <Skeleton shape="rect" className="aspect-2/3 h-auto w-48 shrink-0 self-center rounded-2xl md:w-72 md:self-start" />
         <div className="flex flex-1 flex-col gap-4">
-            <div className={cx(skeletonClass, "h-9 w-2/3 rounded")} />
-            <div className={cx(skeletonClass, "h-5 w-1/3 rounded")} />
-            <div className={cx(skeletonClass, "h-10 w-48 rounded-lg")} />
-            <div className={cx(skeletonClass, "h-24 w-full max-w-prose rounded")} />
+            <Skeleton className="h-9 w-2/3" />
+            <Skeleton className="h-5 w-1/3" />
+            <Skeleton shape="rect" className="h-control-md w-48" />
+            <Skeleton shape="rect" className="h-24 max-w-prose" />
         </div>
     </div>
 );

@@ -2,11 +2,13 @@
 
 import { useRef, useState, useSyncExternalStore } from "react";
 import { flushSync } from "react-dom";
-import { BookmarkAdd, LinkBroken01 } from "@untitledui/icons";
+import { Button } from "@eylulg/ui/button";
+import { cx } from "@eylulg/ui/cx";
+import { Skeleton } from "@eylulg/ui/skeleton";
+import { BookmarkPlus, Link2Off } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { EmptyResults } from "@/components/app/states";
-import { inlineLinkClass, pageIntroClass, pageTitleClass, panelTitleClass, skeletonClass } from "@/components/app/styles";
-import { Button } from "@/components/base/buttons/button";
+import { inlineLinkClass, pageIntroClass, pageTitleClass, panelTitleClass } from "@/components/app/styles";
 import { SharedRow } from "@/components/watchlist/watchlist-row";
 import { WatchlistStats } from "@/components/watchlist/watchlist-stats";
 import { Link } from "@/i18n/navigation";
@@ -14,7 +16,6 @@ import { itemKey } from "@/lib/watchlist/schema";
 import { decodeSharedList } from "@/lib/watchlist/share";
 import { computeStats } from "@/lib/watchlist/stats";
 import { useWatchlist, watchlistActions } from "@/lib/watchlist/store";
-import { cx } from "@/utils/cx";
 
 const subscribeToHash = (onChange: () => void) => {
     window.addEventListener("hashchange", onChange);
@@ -60,11 +61,11 @@ export const SharedView = () => {
     }
 
     if (hash === null) {
-        return <div aria-busy="true" className={cx(skeletonClass, "h-40 rounded-xl")} />;
+        return <Skeleton shape="rect" aria-busy="true" className="h-40 rounded-xl" />;
     }
 
     if (!list) {
-        return <EmptyResults title={t("invalidTitle")} headingAs="h1" description={t("invalidDescription")} icon={LinkBroken01} />;
+        return <EmptyResults title={t("invalidTitle")} headingAs="h1" description={t("invalidDescription")} icon={Link2Off} />;
     }
 
     return (
@@ -75,7 +76,7 @@ export const SharedView = () => {
             </div>
             <WatchlistStats stats={computeStats(list.items.map((item) => ({ ...item, runtime: null })))} headingId="shared-stats" />
             <div className="flex flex-wrap items-center gap-4">
-                <Button size="md" iconLeading={BookmarkAdd} isDisabled={missing.length === 0 || myItems === null} onClick={handleAddAll}>
+                <Button size="md" iconLeading={BookmarkPlus} isDisabled={missing.length === 0 || myItems === null} onPress={handleAddAll}>
                     {t("addAll", { count: missing.length })}
                 </Button>
                 {addedCount !== null && (
@@ -84,7 +85,7 @@ export const SharedView = () => {
                     </Link>
                 )}
             </div>
-            <p role="status" aria-live="polite" className="text-sm text-success-primary">
+            <p role="status" aria-live="polite" className="text-sm text-success">
                 {addedCount !== null ? t("added", { count: addedCount }) : ""}
             </p>
             <section aria-labelledby="shared-list" className="flex flex-col gap-4">

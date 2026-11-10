@@ -10,15 +10,12 @@
     "search": "Ara",
     "watchlist": "Listem",
     "settings": "Ayarlar",
-    "darkMode": "Karanlık mod",
-    "watchlistCount": "{count, plural, other {kayıtlı yapım}}",
-    "skipToContent": "İçeriğe geç"
+    "skipToContent": "İçeriğe geç",
+    "watchlistWithCount": "Listem ({count})"
   },
   "Footer": {
     "tmdb": "Bu ürün TMDB API'sini kullanır ancak TMDB tarafından onaylanmamış veya sertifikalandırılmamıştır. Veriler ve görseller <link>The Movie Database (TMDB)</link> kaynaklıdır.",
-    "justwatch": "Yayın platformu verileri <link>JustWatch</link> tarafından sağlanır.",
-    "builtBy": "Eylül Güneş tarafından geliştirildi.",
-    "source": "GitHub'da kaynak kod"
+    "justwatch": "Yayın platformu verileri <link>JustWatch</link> tarafından sağlanır."
   },
   "Common": {
     "movie": "Film",
@@ -220,13 +217,7 @@
     "regionSaved": "Bölge {region} olarak ayarlandı.",
     "languageHeading": "Dil",
     "languageLabel": "Dil",
-    "languageHint": "Arayüzde ve TMDB'de çevirisi varsa yapım adlarında ve özetlerde kullanılır.",
-    "themeHeading": "Tema",
-    "themes": {
-      "light": "Açık",
-      "dark": "Koyu",
-      "system": "Sistem"
-    }
+    "languageHint": "Arayüzde ve TMDB'de çevirisi varsa yapım adlarında ve özetlerde kullanılır."
   },
   "Errors": {
     "pageTitle": "Bir şeyler ters gitti",

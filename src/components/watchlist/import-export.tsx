@@ -1,10 +1,10 @@
 "use client";
 
 import { type ChangeEvent, useId, useRef, useState } from "react";
-import { Download01, Upload01 } from "@untitledui/icons";
+import { Button } from "@eylulg/ui/button";
+import { Download, Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { panelClass, panelTitleClass } from "@/components/app/styles";
-import { Button } from "@/components/base/buttons/button";
 import type { WatchlistItem } from "@/lib/watchlist/schema";
 import { watchlistActions } from "@/lib/watchlist/store";
 import { buildExportFile, parseImportFile } from "@/lib/watchlist/transfer";
@@ -72,10 +72,10 @@ export const ImportExport = ({ items }: { items: WatchlistItem[] }) => {
             </h2>
             <p className="text-sm text-tertiary">{t("description")}</p>
             <div className="flex flex-wrap gap-3">
-                <Button color="secondary" size="md" iconLeading={Download01} isDisabled={items.length === 0} onClick={handleExport}>
+                <Button variant="secondary" size="md" iconLeading={Download} isDisabled={items.length === 0} onPress={handleExport}>
                     {t("export")}
                 </Button>
-                <Button color="secondary" size="md" iconLeading={Upload01} onClick={handleChooseFile}>
+                <Button variant="secondary" size="md" iconLeading={Upload} onPress={handleChooseFile}>
                     {t("import")}
                 </Button>
                 <label htmlFor={inputId} className="sr-only">
@@ -91,11 +91,7 @@ export const ImportExport = ({ items }: { items: WatchlistItem[] }) => {
                     onChange={handleFileChange}
                 />
             </div>
-            <p
-                role="status"
-                aria-live="polite"
-                className={message?.tone === "error" ? "text-sm text-error-primary" : "text-sm text-success-primary"}
-            >
+            <p role="status" aria-live="polite" className={message?.tone === "error" ? "text-sm text-error" : "text-sm text-success"}>
                 {message?.text}
             </p>
         </section>

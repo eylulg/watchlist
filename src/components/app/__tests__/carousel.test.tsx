@@ -8,7 +8,7 @@ const renderRow = () =>
         <Carousel title="Trending">
             {["One", "Two", "Three"].map((name) => (
                 <li key={name}>
-                    <a href={`/${name}`} data-card-link>
+                    <a href={`/${name}`} data-card-action>
                         {name}
                     </a>
                 </li>

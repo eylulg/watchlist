@@ -1,10 +1,10 @@
 import { Suspense } from "react";
+import { Skeleton } from "@eylulg/ui/skeleton";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { pageIntroClass, pageTitleClass, skeletonClass } from "@/components/app/styles";
+import { pageIntroClass, pageTitleClass } from "@/components/app/styles";
 import { SearchView } from "@/components/search/search-view";
 import { resolveLocale } from "@/lib/route-params";
-import { cx } from "@/utils/cx";
 
 interface PageProps {
     params: Promise<{ locale: string }>;
@@ -24,7 +24,7 @@ export default async function SearchPage({ params }: PageProps) {
                 <p className={pageIntroClass}>{t("intro")}</p>
             </div>
             {/* The view reads the query from the URL, which only exists per request, so it renders in the browser. */}
-            <Suspense fallback={<div aria-hidden="true" className={cx(skeletonClass, "h-28 max-w-xl rounded-lg")} />}>
+            <Suspense fallback={<Skeleton shape="rect" className="h-28 max-w-xl" />}>
                 <SearchView />
             </Suspense>
         </div>

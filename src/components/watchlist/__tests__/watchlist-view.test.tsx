@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { buildExportFile } from "@/lib/watchlist/transfer";
 import { router } from "@/test-utils/navigation";
 import { axe, renderWithProviders } from "@/test-utils/render";
+import { chooseOption } from "@/test-utils/select";
 import { storeWatchlist, watchlistItem } from "@/test-utils/watchlist";
 import { WatchlistView } from "../watchlist-view";
 
@@ -41,7 +42,7 @@ describe("WatchlistView", () => {
     it("changes a status and keeps it in storage", async () => {
         const { user } = renderWatchlist();
 
-        await user.selectOptions(await screen.findByRole("combobox", { name: "Status of Dune" }), "Watched");
+        await chooseOption(user, await screen.findByRole("button", { name: /Status of Dune/ }), "Watched");
 
         expect(stored().find((item) => item.id === 3)?.status).toBe("watched");
     });
@@ -49,7 +50,7 @@ describe("WatchlistView", () => {
     it("saves a rating and a note", async () => {
         const { user } = renderWatchlist();
 
-        await user.selectOptions(await screen.findByRole("combobox", { name: "My rating for Dune" }), "8 / 10");
+        await chooseOption(user, await screen.findByRole("button", { name: /My rating for Dune/ }), "8 / 10");
         await user.type(screen.getByRole("textbox", { name: "Note on Dune" }), "Cinema, not TV");
         await user.tab();
 
@@ -59,7 +60,7 @@ describe("WatchlistView", () => {
     it("filters by status through the URL", async () => {
         const { user } = renderWatchlist();
 
-        await user.selectOptions(await screen.findByRole("combobox", { name: "Status" }), "Watching");
+        await chooseOption(user, await screen.findByRole("button", { name: /Status$/ }), "Watching");
 
         expect(router.replace).toHaveBeenLastCalledWith("/en/watchlist?status=watching", { scroll: false });
         expect(rowTitles()).toEqual(["Severance"]);
@@ -71,7 +72,7 @@ describe("WatchlistView", () => {
         await user.click(await screen.findByRole("button", { name: "Clear filters" }));
 
         expect(rowTitles()).toHaveLength(3);
-        expect(screen.getByRole("combobox", { name: "Status" })).toHaveFocus();
+        expect(screen.getByRole("button", { name: /Status$/ })).toHaveFocus();
     });
 
     it("moves focus to the next title after removing one", async () => {

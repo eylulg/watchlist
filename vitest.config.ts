@@ -5,7 +5,13 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
     plugins: [react()],
     resolve: {
+        // The linked library has its own node_modules; a second React or React Aria copy breaks hooks and contexts.
+        dedupe: ["react", "react-dom", "react-aria-components"],
         alias: {
+            react: path.resolve(import.meta.dirname, "node_modules/react"),
+            "react-dom": path.resolve(import.meta.dirname, "node_modules/react-dom"),
+            "lucide-react": path.resolve(import.meta.dirname, "node_modules/lucide-react"),
+            "react-aria-components": path.resolve(import.meta.dirname, "node_modules/react-aria-components"),
             "@": path.resolve(import.meta.dirname, "./src"),
             // `server-only` throws outside a React Server Components bundle. Unit tests run the server code directly.
             "server-only": path.resolve(import.meta.dirname, "./src/test-utils/server-only-stub.ts"),
@@ -24,8 +30,8 @@ export default defineConfig({
         },
         server: {
             deps: {
-                // next-intl ships ESM that imports `next/navigation` without an extension.
-                inline: ["next-intl"],
+                // next-intl ships ESM that imports `next/navigation` without an extension. The library must resolve React from here.
+                inline: ["next-intl", "@eylulg/ui"],
             },
         },
     },

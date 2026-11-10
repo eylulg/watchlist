@@ -19,7 +19,7 @@ export default async function SettingsPage({ params }: PageProps) {
     return (
         <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-2">
-                <h1 className="text-display-xs font-semibold text-primary md:text-display-sm">{t("title")}</h1>
+                <h1 className="text-2xl font-semibold text-primary md:text-3xl">{t("title")}</h1>
                 <p className="text-md text-tertiary">{t("intro")}</p>
             </div>
             <SettingsForm region={await getRegion(locale)} />

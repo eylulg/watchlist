@@ -1,11 +1,10 @@
-import { ArrowLeft } from "@untitledui/icons";
 import { useFormatter, useTranslations } from "next-intl";
 import Image from "next/image";
-import { inlineLinkClass, pageTitleClass, sectionTitleClass } from "@/components/app/styles";
+import { ArrowLeft } from "@/components/app/icons";
+import { backLinkClass, pageTitleClass, sectionTitleClass } from "@/components/app/styles";
 import { Link } from "@/i18n/navigation";
 import { tmdbImage } from "@/lib/tmdb/images";
 import { type SeasonDetail, titleHref } from "@/lib/tmdb/types";
-import { cx } from "@/utils/cx";
 
 export const SeasonView = ({ season, seriesTitle }: { season: SeasonDetail; seriesTitle: string }) => {
     const t = useTranslations("Detail");
@@ -14,10 +13,7 @@ export const SeasonView = ({ season, seriesTitle }: { season: SeasonDetail; seri
     return (
         <article className="flex flex-col gap-8">
             <div className="flex flex-col gap-2">
-                <Link
-                    href={titleHref({ mediaType: "tv", id: season.seriesId })}
-                    className={cx(inlineLinkClass, "flex items-center gap-1 self-start text-sm")}
-                >
+                <Link href={titleHref({ mediaType: "tv", id: season.seriesId })} className={backLinkClass}>
                     <ArrowLeft aria-hidden="true" className="size-4" />
                     {seriesTitle}
                 </Link>
@@ -35,7 +31,7 @@ export const SeasonView = ({ season, seriesTitle }: { season: SeasonDetail; seri
                 ) : (
                     <ol className="flex flex-col gap-4">
                         {season.episodes.map((episode) => (
-                            <li key={episode.id} className="flex flex-col gap-3 rounded-xl p-3 ring-1 ring-secondary sm:flex-row sm:gap-4">
+                            <li key={episode.id} className="flex flex-col gap-3 rounded-xl p-3 ring-1 ring-default sm:flex-row sm:gap-4">
                                 <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-lg bg-tertiary sm:w-56">
                                     {episode.stillPath && (
                                         <Image

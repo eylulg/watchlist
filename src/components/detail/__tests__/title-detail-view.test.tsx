@@ -14,7 +14,7 @@ describe("TitleDetailView", () => {
 
         await user.click(screen.getByRole("button", { name: "Add to watchlist" }));
 
-        expect(screen.getByRole("combobox", { name: "Status" })).toHaveFocus();
+        expect(screen.getByRole("button", { name: /Status$/ })).toHaveFocus();
         expect(stored()).toEqual([expect.objectContaining({ status: "to-watch", runtime: 155 })]);
     });
 

@@ -1,11 +1,10 @@
 import { useLocale, useTranslations } from "next-intl";
 import Image from "next/image";
-import { inlineLinkClass, panelClass, panelTitleClass } from "@/components/app/styles";
+import { inlineLinkClass, panelClass, panelTitleClass, sideLinkClass } from "@/components/app/styles";
 import { Link } from "@/i18n/navigation";
 import { regionName } from "@/lib/regions";
 import { tmdbImage } from "@/lib/tmdb/images";
 import type { ProviderKind, RegionProviders } from "@/lib/tmdb/types";
-import { cx } from "@/utils/cx";
 
 const KINDS: ProviderKind[] = ["flatrate", "free", "ads", "rent", "buy"];
 
@@ -71,12 +70,7 @@ export const ProvidersPanel = ({ providers, region, title }: ProvidersPanelProps
                         </div>
                     ))}
                     {offers.link && (
-                        <a
-                            href={offers.link}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                            className={cx(inlineLinkClass, "self-start text-sm")}
-                        >
+                        <a href={offers.link} rel="noopener noreferrer" target="_blank" className={sideLinkClass}>
                             {t("allOffers")}
                             <span className="sr-only"> {t("newTab")}</span>
                         </a>
@@ -90,7 +84,7 @@ export const ProvidersPanel = ({ providers, region, title }: ProvidersPanelProps
                         <a
                             href="https://www.justwatch.com/"
                             rel="noopener noreferrer"
-                            className="font-semibold text-secondary underline underline-offset-2 outline-focus-ring focus-visible:outline-2"
+                            className="font-semibold text-secondary underline underline-offset-2 outline-focus focus-visible:outline-2"
                         >
                             {chunks}
                         </a>

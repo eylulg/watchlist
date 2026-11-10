@@ -30,7 +30,7 @@ describe("SearchView", () => {
 
         const results = await screen.findByRole("region", { name: "Search results" });
 
-        expect(within(results).getAllByRole("article")).toHaveLength(3);
+        expect(within(results).getAllByRole("listitem")).toHaveLength(3);
         expect(within(results).getByRole("link", { name: /Person 52/ })).toHaveAttribute("href", "/en/person/52");
     });
 
@@ -38,7 +38,7 @@ describe("SearchView", () => {
         const { user } = renderSearch("/en/search?q=dune");
         await screen.findByRole("heading", { name: "dune part one" });
 
-        await user.click(screen.getByRole("radio", { name: "People" }));
+        await user.click(screen.getByRole("row", { name: "People" }));
 
         expect(await screen.findByRole("heading", { name: "Person 52" })).toBeInTheDocument();
         expect(screen.queryByRole("heading", { name: "dune part one" })).not.toBeInTheDocument();

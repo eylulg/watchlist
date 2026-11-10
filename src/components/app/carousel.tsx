@@ -1,15 +1,15 @@
 "use client";
 
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "@untitledui/icons";
+import { IconButton } from "@eylulg/ui/icon-button";
+import { Skeleton } from "@eylulg/ui/skeleton";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { ButtonUtility } from "@/components/base/buttons/button-utility";
-import { cx } from "@/utils/cx";
-import { sectionTitleClass, skeletonClass } from "./styles";
+import { sectionTitleClass } from "./styles";
 
 interface CarouselProps {
     title: string;
-    /** `<li>` elements, each holding one card with a `data-card-link` link. */
+    /** `<li>` elements, each holding one card whose title is a link (`data-card-action`). */
     children: ReactNode;
 }
 
@@ -57,7 +57,7 @@ export const Carousel = ({ title, children }: CarouselProps) => {
         if (!list) return;
         function handleKeyDown(event: KeyboardEvent) {
             if (!list || !NAVIGATION_KEYS.has(event.key)) return;
-            const cards = Array.from(list.querySelectorAll<HTMLElement>("[data-card-link]"));
+            const cards = Array.from(list.querySelectorAll<HTMLElement>("[data-card-action]"));
             const index = cards.findIndex((card) => card === document.activeElement);
             const target = cards[nextIndex(event.key, index, cards.length)];
             if (index === -1 || !target) return;
@@ -97,20 +97,20 @@ export const Carousel = ({ title, children }: CarouselProps) => {
                     {title}
                 </h2>
                 <div className="flex items-center gap-2">
-                    <ButtonUtility
+                    <IconButton
                         aria-label={t("scrollLeft", { title })}
                         aria-controls={listId}
-                        color="secondary"
-                        size="xs"
+                        variant="secondary"
+                        size="sm"
                         icon={ChevronLeft}
                         isDisabled={edges.atStart}
                         onPress={handleScrollLeft}
                     />
-                    <ButtonUtility
+                    <IconButton
                         aria-label={t("scrollRight", { title })}
                         aria-controls={listId}
-                        color="secondary"
-                        size="xs"
+                        variant="secondary"
+                        size="sm"
                         icon={ChevronRight}
                         isDisabled={edges.atEnd}
                         onPress={handleScrollRight}
@@ -138,8 +138,8 @@ export const CarouselSkeleton = ({ title }: { title: string }) => {
             <div aria-hidden="true" className="flex gap-4 overflow-hidden pb-3">
                 {Array.from({ length: 7 }, (_, i) => (
                     <div key={i} className="flex w-36 shrink-0 flex-col gap-2 sm:w-44">
-                        <div className={cx(skeletonClass, "aspect-2/3 w-full rounded-xl")} />
-                        <div className={cx(skeletonClass, "h-4 w-4/5 rounded")} />
+                        <Skeleton shape="rect" className="aspect-2/3 h-auto rounded-xl" />
+                        <Skeleton className="w-4/5" />
                     </div>
                 ))}
             </div>

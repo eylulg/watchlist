@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Copy01, Link01 } from "@untitledui/icons";
+import { Button } from "@eylulg/ui/button";
+import { Checkbox } from "@eylulg/ui/checkbox";
+import { Input } from "@eylulg/ui/input";
+import { Copy, Link } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { panelClass, panelTitleClass } from "@/components/app/styles";
-import { Button } from "@/components/base/buttons/button";
-import { Checkbox } from "@/components/base/checkbox/checkbox";
-import { Input } from "@/components/base/input/input";
 import { useClipboard } from "@/hooks/use-clipboard";
 import type { WatchlistItem } from "@/lib/watchlist/schema";
 import { MAX_SHARED_ITEMS, buildShareUrl, encodeSharedList } from "@/lib/watchlist/share";
@@ -43,9 +43,7 @@ export const SharePanel = ({ items }: { items: WatchlistItem[] }) => {
                     {t("title")}
                 </h2>
                 <p className="text-sm text-tertiary">{t("description")}</p>
-                {items.length > MAX_SHARED_ITEMS && (
-                    <p className="text-sm text-warning-primary">{t("truncated", { max: MAX_SHARED_ITEMS })}</p>
-                )}
+                {items.length > MAX_SHARED_ITEMS && <p className="text-sm text-warning">{t("truncated", { max: MAX_SHARED_ITEMS })}</p>}
             </div>
             <Input
                 label={t("nameLabel")}
@@ -55,16 +53,18 @@ export const SharePanel = ({ items }: { items: WatchlistItem[] }) => {
                 onChange={setName}
                 className="max-w-md"
             />
-            <Checkbox label={t("includeNotes")} isSelected={includeNotes} onChange={setIncludeNotes} />
+            <Checkbox isSelected={includeNotes} onChange={setIncludeNotes}>
+                {t("includeNotes")}
+            </Checkbox>
             <div>
-                <Button color="primary" size="md" iconLeading={Link01} onClick={handleCreate}>
+                <Button variant="primary" size="md" iconLeading={Link} onPress={handleCreate}>
                     {t("create")}
                 </Button>
             </div>
             {url && (
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-end">
                     <Input label={t("linkLabel")} value={url} isReadOnly className="min-w-0 flex-1" inputClassName="truncate" />
-                    <Button color="secondary" size="md" iconLeading={Copy01} onClick={handleCopy}>
+                    <Button variant="secondary" size="md" iconLeading={Copy} onPress={handleCopy}>
                         {copied ? t("copied") : t("copy")}
                     </Button>
                 </div>

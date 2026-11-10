@@ -4,7 +4,6 @@ import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NextIntlClientProvider } from "next-intl";
 import { configureAxe } from "vitest-axe";
-import { ThemeProvider } from "@/components/app/theme-provider";
 import type { AppLocale } from "@/i18n/config";
 import de from "@/messages/de.json";
 import en from "@/messages/en.json";
@@ -20,9 +19,7 @@ export const renderWithProviders = (ui: ReactElement, { locale = "en", url }: { 
     const user = userEvent.setup();
     const utils = render(
         <NextIntlClientProvider locale={locale} messages={messages[locale]} timeZone="UTC">
-            <ThemeProvider>
-                <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
-            </ThemeProvider>
+            <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
         </NextIntlClientProvider>,
     );
     return { ...utils, user };

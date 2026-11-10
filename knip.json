@@ -7,6 +7,5 @@
     "src/test-utils/server-only-stub.ts"
   ],
   "project": ["src/**/*.{ts,tsx}", "e2e/**/*.ts", "scripts/**/*.mjs"],
-  "ignore": ["src/components/base/**", "src/components/shared-assets/**", "src/utils/is-react-component.ts"],
-  "ignoreDependencies": ["tailwindcss", "tailwindcss-animate", "tailwindcss-react-aria-components"]
+  "ignoreDependencies": ["tailwindcss"]
 }

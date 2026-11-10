@@ -12,7 +12,7 @@ export const CollectionView = ({ collection }: { collection: CollectionDetail })
     return (
         <article className="flex flex-col gap-10">
             <div className="flex flex-col gap-6 md:flex-row md:gap-10">
-                <div className="w-40 shrink-0 self-center overflow-hidden rounded-2xl ring-1 ring-secondary md:w-56 md:self-start">
+                <div className="w-40 shrink-0 self-center overflow-hidden rounded-2xl ring-1 ring-default md:w-56 md:self-start">
                     <Poster
                         path={collection.posterPath}
                         alt={t("posterAlt", { name: collection.name })}
