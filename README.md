@@ -50,7 +50,7 @@ Portfolio/
 ```
 
 ```bash
-npm install
+npm install && npm install ../ui --install-links
 cp .env.example .env
 # set TMDB_API_KEY in .env (a v3 key, or a v4 read access token starting with "eyJ")
 npm run dev
@@ -82,7 +82,7 @@ Husky runs lint-staged on every commit and commitlint checks commit messages aga
 
 ## Deploy
 
-The app targets [Vercel](https://vercel.com/). **Vercel cannot resolve `file:../ui`**, because only this repository is cloned there. Until `@eylulg/ui` is published to npm, a Vercel deploy fails at install. Once it is published, change the dependency to the npm version (`^1.0.0`) and nothing else changes; the `turbopack` block in `next.config.ts` can then lose its `root` and `resolveAlias` entries.
+The app targets [Vercel](https://vercel.com/). **Vercel cannot resolve `file:../ui`**, because only this repository is cloned there. Until `@eylulg/ui` is published to npm, a Vercel deploy fails at install. Once it is published, change the dependency to the npm version (`^1.0.0`) and nothing else changes.
 
 1. Publish `@eylulg/ui` and switch the dependency to `^1.0.0`.
 2. Import the repository in Vercel. The Next.js preset needs no changes.
