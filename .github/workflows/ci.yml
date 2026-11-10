@@ -32,7 +32,7 @@ jobs:
           node-version: 24
           cache: npm
 
-      - run: npm ci
+      - uses: ./.github/actions/setup-ui
 
       - name: Commit messages
         if: github.event_name == 'pull_request'
@@ -71,7 +71,7 @@ jobs:
           node-version: 24
           cache: npm
 
-      - run: npm ci
+      - uses: ./.github/actions/setup-ui
 
       - run: npx playwright install --with-deps chromium
 

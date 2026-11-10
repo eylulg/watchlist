@@ -8,7 +8,7 @@ import globals from "globals";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
-    globalIgnores([".next", "coverage", "playwright-report", "test-results", "next-env.d.ts", "public/sw.js"]),
+    globalIgnores(["ui-src", ".next", "coverage", "playwright-report", "test-results", "next-env.d.ts", "public/sw.js"]),
     {
         files: ["**/*.{ts,tsx}"],
         extends: [

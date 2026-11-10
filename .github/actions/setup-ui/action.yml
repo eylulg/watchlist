@@ -1,0 +1,25 @@
+name: Install dependencies with the design system
+description: >
+  Builds @eylulg/ui from source and links it, because the app depends on file:../ui and
+  actions/checkout cannot write outside the workspace.
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v5
+      with:
+        repository: eylulg/ui
+        path: ui-src
+
+    - name: Build the design system
+      shell: bash
+      working-directory: ui-src
+      run: |
+        npm ci
+        npm run build
+
+    - name: Point the dependency at the checkout
+      shell: bash
+      run: |
+        npm pkg set "dependencies.@eylulg/ui=file:./ui-src"
+        npm install --no-audit --no-fund

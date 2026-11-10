@@ -5,8 +5,4 @@ package-lock.json
 playwright-report
 test-results
 next-env.d.ts
-src/components/base
-src/components/application
-src/components/foundations
-src/components/shared-assets
-src/styles/theme.css
+ui-src
