@@ -17,7 +17,7 @@ export const PersonCard = ({ id, name, profilePath, detail, sizes }: PersonCardP
     return (
         <Card href={getPathname({ href: personHref(id), locale })} className={cardClass}>
             <Poster path={profilePath} alt="" sizes={sizes} variant="profile" />
-            <CardHeader title={name} description={<span className="line-clamp-2 text-xs">{detail || t("person")}</span>} className="p-3" />
+            <CardHeader title={name} description={<span className="line-clamp-2 text-xs">{detail || t("person")}</span>} />
         </Card>
     );
 };

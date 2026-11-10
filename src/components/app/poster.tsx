@@ -19,7 +19,7 @@ export const Poster = ({ path, alt, sizes, priority = false, variant = "poster" 
     const Icon = variant === "profile" ? User : Film;
 
     return (
-        <div className="relative aspect-2/3 w-full overflow-hidden bg-tertiary">
+        <div className="relative aspect-2/3 w-full overflow-hidden rounded-lg bg-tertiary">
             {path ? (
                 <Image
                     src={tmdbImage(path, variant === "profile" ? "h632" : "w780")}
