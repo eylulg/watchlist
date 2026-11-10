@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CollectionView } from "@/components/detail/collection-view";
+import { localeAlternates, metadataOrError } from "@/lib/metadata";
 import { parseId, resolveLocale } from "@/lib/route-params";
 import { getCollection, isNotFound } from "@/lib/tmdb/client";
 
@@ -19,8 +20,15 @@ const load = async ({ params }: PageProps) => {
 };
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
-    const collection = await load(props);
-    return { title: collection.name, description: collection.overview.slice(0, 160) };
+    const { locale, id } = await props.params;
+    return metadataOrError(locale, async () => {
+        const collection = await load(props);
+        return {
+            title: collection.name,
+            description: collection.overview.slice(0, 160),
+            alternates: localeAlternates(locale, `/collection/${id}`),
+        };
+    });
 }
 
 export default async function CollectionPage(props: PageProps) {

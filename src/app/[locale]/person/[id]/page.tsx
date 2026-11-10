@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PersonView } from "@/components/detail/person-view";
+import { localeAlternates, metadataOrError } from "@/lib/metadata";
 import { parseId, resolveLocale } from "@/lib/route-params";
 import { getPerson, isNotFound } from "@/lib/tmdb/client";
 
@@ -19,8 +20,15 @@ const load = async ({ params }: PageProps) => {
 };
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
-    const person = await load(props);
-    return { title: person.name, description: person.biography.slice(0, 160) };
+    const { locale, id } = await props.params;
+    return metadataOrError(locale, async () => {
+        const person = await load(props);
+        return {
+            title: person.name,
+            description: person.biography.slice(0, 160),
+            alternates: localeAlternates(locale, `/person/${id}`),
+        };
+    });
 }
 
 export default async function PersonPage(props: PageProps) {

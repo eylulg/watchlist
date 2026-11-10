@@ -13,6 +13,11 @@ import "@/styles/globals.css";
 
 const creditLinkClass = "font-semibold text-secondary underline underline-offset-2 hover:text-primary";
 
+/** The public origin, for absolute canonical and hreflang URLs. Set SITE_URL in production. */
+const siteUrl = () =>
+    process.env.SITE_URL?.trim() ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000");
+
 interface LayoutProps {
     children: ReactNode;
     params: Promise<{ locale: string }>;
@@ -22,6 +27,7 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
     const { locale } = await params;
     const t = await getTranslations({ locale: hasLocale(routing.locales, locale) ? locale : routing.defaultLocale, namespace: "Meta" });
     return {
+        metadataBase: new URL(siteUrl()),
         title: { default: t("title"), template: `%s · ${t("title")}` },
         description: t("description"),
         applicationName: t("title"),
@@ -30,9 +36,6 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
         icons: {
             icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
             apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
-        },
-        alternates: {
-            languages: Object.fromEntries(routing.locales.map((l) => [l, `/${l}`])),
         },
     };
 }

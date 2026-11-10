@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { TitleDetailView } from "@/components/detail/title-detail-view";
+import { localeAlternates, metadataOrError } from "@/lib/metadata";
 import { getRegion } from "@/lib/preferences";
 import { parseId, resolveLocale } from "@/lib/route-params";
 import { getSeries, isNotFound } from "@/lib/tmdb/client";
@@ -22,12 +23,15 @@ const load = async ({ params }: PageProps) => {
 };
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
-    const { detail } = await load(props);
-    return {
-        title: detail.title,
-        description: detail.overview.slice(0, 160),
-        openGraph: detail.posterPath ? { images: [tmdbImage(detail.posterPath, "w500")] } : null,
-    };
+    return metadataOrError((await props.params).locale, async () => {
+        const { locale, detail } = await load(props);
+        return {
+            title: detail.title,
+            description: detail.overview.slice(0, 160),
+            alternates: localeAlternates(locale, `/tv/${String(detail.id)}`),
+            openGraph: detail.posterPath ? { images: [tmdbImage(detail.posterPath, "w500")] } : null,
+        };
+    });
 }
 
 export default async function SeriesPage(props: PageProps) {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SeasonView } from "@/components/detail/season-view";
+import { localeAlternates, metadataOrError } from "@/lib/metadata";
 import { parseId, resolveLocale } from "@/lib/route-params";
 import { getSeason, getSeries, isNotFound } from "@/lib/tmdb/client";
 
@@ -24,8 +25,11 @@ const load = async ({ params }: PageProps) => {
 };
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
-    const { series, detail } = await load(props);
-    return { title: `${series.title}: ${detail.name}` };
+    const { locale, id, season } = await props.params;
+    return metadataOrError(locale, async () => {
+        const { series, detail } = await load(props);
+        return { title: `${series.title}: ${detail.name}`, alternates: localeAlternates(locale, `/tv/${id}/season/${season}`) };
+    });
 }
 
 export default async function SeasonPage(props: PageProps) {

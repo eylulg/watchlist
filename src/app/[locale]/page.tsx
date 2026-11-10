@@ -1,10 +1,12 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { connection } from "next/server";
 import { Carousel, CarouselSkeleton } from "@/components/app/carousel";
 import { ErrorState } from "@/components/app/states";
 import { TitleCard } from "@/components/app/title-card";
 import type { AppLocale } from "@/i18n/config";
+import { localeAlternates } from "@/lib/metadata";
 import { resolveLocale } from "@/lib/route-params";
 import { getList, getTrending } from "@/lib/tmdb/client";
 import { ROW_POSTER_SIZES } from "@/lib/tmdb/images";
@@ -42,6 +44,10 @@ const TitleRow = async ({ title, load, priority = false }: RowProps) => {
         </Carousel>
     );
 };
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+    return { alternates: localeAlternates(resolveLocale((await params).locale), "") };
+}
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
     const locale: AppLocale = resolveLocale((await params).locale);

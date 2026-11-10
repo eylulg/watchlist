@@ -1,6 +1,9 @@
 import { themeInitScript } from "@eylulg/ui/chrome";
+import type { Metadata } from "next";
 import Link from "next/link";
 import "@/styles/globals.css";
+
+export const metadata: Metadata = { title: "Page not found · Watchlist" };
 
 /** Shown for URLs that match no route at all. Localised 404s live in `[locale]/not-found.tsx`. */
 export default function GlobalNotFound() {
