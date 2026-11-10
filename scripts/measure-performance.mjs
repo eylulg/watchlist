@@ -20,6 +20,7 @@ const movieId = process.env.MOVIE_ID ?? "1";
 if (!label) throw new Error("Pass a label, for example: node scripts/measure-performance.mjs before");
 
 const RUNS = 3;
+const SEARCH_LATENCY_MS = 400;
 const DEBUG_PORT = 9335;
 const outDir = path.resolve(import.meta.dirname, "..", "docs", "perf", label);
 mkdirSync(outDir, { recursive: true });
@@ -122,6 +123,11 @@ async function measureInfiniteScroll(browser, mode) {
         hasTouch: true,
     });
     const page = await context.newPage();
+    // The mock answers in a few milliseconds; the real API takes a few hundred, which is when a thumb outruns the next page.
+    await page.route("**/api/search*", async (route) => {
+        await new Promise((resolve) => setTimeout(resolve, SEARCH_LATENCY_MS));
+        await route.continue();
+    });
     await page.addInitScript(() => {
         window.__shifts = [];
         new PerformanceObserver((list) => {
