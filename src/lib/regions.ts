@@ -65,9 +65,9 @@ export const WATCH_REGIONS = [
     "ZA",
 ] as const;
 
-/** Display name from the Regions messages, or the bare code for a region the app has no name for. */
-export const regionName = (t: { has: (key: string) => boolean; (key: string): string }, code: string): string =>
-    t.has(code) ? t(code) : code;
+type WatchRegion = (typeof WATCH_REGIONS)[number];
+
+export const isWatchRegion = (code: string): code is WatchRegion => WATCH_REGIONS.some((region) => region === code);
 
 export const writeRegionCookie = (code: string) => {
     document.cookie = `${REGION_COOKIE}=${encodeURIComponent(code)}; path=/; max-age=${String(60 * 60 * 24 * 365)}; samesite=lax`;

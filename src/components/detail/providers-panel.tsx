@@ -1,8 +1,8 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { inlineLinkClass, panelClass, panelTitleClass, sideLinkClass } from "@/components/app/styles";
+import { useRegionName } from "@/components/app/use-region-name";
 import { Link } from "@/i18n/navigation";
-import { regionName } from "@/lib/regions";
 import { tmdbImage } from "@/lib/tmdb/images";
 import type { ProviderKind, RegionProviders } from "@/lib/tmdb/types";
 
@@ -17,7 +17,7 @@ interface ProvidersPanelProps {
 /** "Where to watch" for one region. TMDB requires crediting JustWatch, which supplies this data. */
 export const ProvidersPanel = ({ providers, region, title }: ProvidersPanelProps) => {
     const t = useTranslations("Providers");
-    const tr = useTranslations("Regions");
+    const regionName = useRegionName();
     const offers = providers[region];
     const kinds = KINDS.filter((kind) => (offers?.[kind].length ?? 0) > 0);
 
@@ -29,7 +29,7 @@ export const ProvidersPanel = ({ providers, region, title }: ProvidersPanelProps
                 </h2>
                 <p className="text-sm text-tertiary">
                     {t.rich("region", {
-                        region: regionName(tr, region),
+                        region: regionName(region),
                         link: (chunks) => (
                             <Link href="/settings" className={inlineLinkClass}>
                                 {chunks}

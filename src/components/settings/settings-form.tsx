@@ -4,13 +4,14 @@ import { useState } from "react";
 import { Select, SelectItem } from "@eylulg/ui/select";
 import { useLocale, useTranslations } from "next-intl";
 import { panelTitleClass } from "@/components/app/styles";
+import { useRegionName } from "@/components/app/use-region-name";
 import { isLocale, localeNames, locales } from "@/i18n/config";
 import { usePathname, useRouter } from "@/i18n/navigation";
-import { WATCH_REGIONS, isRegionCode, regionName, writeRegionCookie } from "@/lib/regions";
+import { WATCH_REGIONS, isRegionCode, writeRegionCookie } from "@/lib/regions";
 
 export const SettingsForm = ({ region: initialRegion }: { region: string }) => {
     const t = useTranslations("Settings");
-    const tr = useTranslations("Regions");
+    const regionName = useRegionName();
     const locale = useLocale();
     const router = useRouter();
     const pathname = usePathname();
@@ -18,7 +19,7 @@ export const SettingsForm = ({ region: initialRegion }: { region: string }) => {
     const [saved, setSaved] = useState("");
 
     const regions = [...new Set<string>([...WATCH_REGIONS, initialRegion])]
-        .map((code) => ({ id: code, name: regionName(tr, code) }))
+        .map((code) => ({ id: code, name: regionName(code) }))
         .sort((a, b) => a.name.localeCompare(b.name, locale));
     const languages = locales.map((code) => ({ id: code, name: localeNames[code] }));
 
@@ -26,7 +27,7 @@ export const SettingsForm = ({ region: initialRegion }: { region: string }) => {
         if (typeof key !== "string" || !isRegionCode(key)) return;
         setRegion(key);
         writeRegionCookie(key);
-        setSaved(t("regionSaved", { region: regionName(tr, key) }));
+        setSaved(t("regionSaved", { region: regionName(key) }));
         // Server components read the cookie; refresh so detail pages pick it up.
         router.refresh();
     }

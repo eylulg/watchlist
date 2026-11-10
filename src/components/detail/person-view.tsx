@@ -1,9 +1,9 @@
 import { useFormatter, useTranslations } from "next-intl";
-import Image from "next/image";
 import { Poster } from "@/components/app/poster";
 import { pageTitleClass, sectionTitleClass } from "@/components/app/styles";
+import { Thumb } from "@/components/app/thumb";
 import { Link } from "@/i18n/navigation";
-import { DETAIL_POSTER_SIZES, tmdbImage } from "@/lib/tmdb/images";
+import { DETAIL_POSTER_SIZES } from "@/lib/tmdb/images";
 import { type PersonDetail, titleHref } from "@/lib/tmdb/types";
 
 export const PersonView = ({ person }: { person: PersonDetail }) => {
@@ -94,17 +94,7 @@ export const PersonView = ({ person }: { person: PersonDetail }) => {
                                         href={titleHref(credit)}
                                         className="group hover:bg-primary_hover flex items-center gap-3 rounded-lg p-1 outline-focus focus-visible:outline-2"
                                     >
-                                        <div className="relative aspect-2/3 w-10 shrink-0 overflow-hidden rounded bg-tertiary">
-                                            {credit.posterPath && (
-                                                <Image
-                                                    src={tmdbImage(credit.posterPath, "w92")}
-                                                    alt=""
-                                                    fill
-                                                    sizes="40px"
-                                                    className="object-cover"
-                                                />
-                                            )}
-                                        </div>
+                                        <Thumb path={credit.posterPath} className="w-10 rounded" sizes="40px" imageSize="w92" />
                                         <div className="flex min-w-0 flex-col">
                                             <span className="truncate text-sm font-semibold text-primary group-hover:underline">
                                                 {credit.title}

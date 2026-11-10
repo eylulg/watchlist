@@ -1,9 +1,8 @@
 import { useFormatter, useTranslations } from "next-intl";
-import Image from "next/image";
 import { ArrowLeft } from "@/components/app/icons";
 import { backLinkClass, pageTitleClass, sectionTitleClass } from "@/components/app/styles";
+import { Thumb } from "@/components/app/thumb";
 import { Link } from "@/i18n/navigation";
-import { tmdbImage } from "@/lib/tmdb/images";
 import { type SeasonDetail, titleHref } from "@/lib/tmdb/types";
 
 export const SeasonView = ({ season, seriesTitle }: { season: SeasonDetail; seriesTitle: string }) => {
@@ -32,17 +31,13 @@ export const SeasonView = ({ season, seriesTitle }: { season: SeasonDetail; seri
                     <ol className="flex flex-col gap-4">
                         {season.episodes.map((episode) => (
                             <li key={episode.id} className="flex flex-col gap-3 rounded-xl p-3 ring-1 ring-default sm:flex-row sm:gap-4">
-                                <div className="relative aspect-video w-full shrink-0 overflow-hidden rounded-lg bg-tertiary sm:w-56">
-                                    {episode.stillPath && (
-                                        <Image
-                                            src={tmdbImage(episode.stillPath, "w780")}
-                                            alt=""
-                                            fill
-                                            sizes="(min-width: 640px) 224px, 100vw"
-                                            className="object-cover"
-                                        />
-                                    )}
-                                </div>
+                                <Thumb
+                                    path={episode.stillPath}
+                                    isWide
+                                    className="w-full rounded-lg sm:w-56"
+                                    sizes="(min-width: 640px) 224px, 100vw"
+                                    imageSize="w780"
+                                />
                                 <div className="flex min-w-0 flex-col gap-1">
                                     <h3 className="text-md font-semibold text-primary">
                                         <span className="text-tertiary">{t("episodeNumber", { number: episode.episodeNumber })}</span>{" "}

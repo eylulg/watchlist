@@ -1,8 +1,7 @@
 import { useTranslations } from "next-intl";
-import Image from "next/image";
 import { sectionTitleClass } from "@/components/app/styles";
+import { Thumb } from "@/components/app/thumb";
 import { Link } from "@/i18n/navigation";
-import { tmdbImage } from "@/lib/tmdb/images";
 import { type SeasonSummary, releaseYear, seasonHref } from "@/lib/tmdb/types";
 
 export const SeasonList = ({ seriesId, seasons }: { seriesId: number; seasons: SeasonSummary[] }) => {
@@ -20,11 +19,7 @@ export const SeasonList = ({ seriesId, seasons }: { seriesId: number; seasons: S
                             href={seasonHref(seriesId, season.seasonNumber)}
                             className="group hover:bg-primary_hover flex items-center gap-3 rounded-xl p-2 ring-1 ring-default outline-focus focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
-                            <div className="relative aspect-2/3 w-12 shrink-0 overflow-hidden rounded-md bg-tertiary">
-                                {season.posterPath && (
-                                    <Image src={tmdbImage(season.posterPath, "w185")} alt="" fill sizes="48px" className="object-cover" />
-                                )}
-                            </div>
+                            <Thumb path={season.posterPath} className="w-12 rounded-md" sizes="48px" />
                             <div className="flex min-w-0 flex-col">
                                 <span className="truncate text-sm font-semibold text-primary group-hover:underline">{season.name}</span>
                                 <span className="text-xs text-tertiary">
