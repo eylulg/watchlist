@@ -1,4 +1,4 @@
-/* global window, document */
+/* global window */
 /**
  * Measures the production build the way the performance budget is written: Lighthouse mobile defaults, three runs
  * per route, the median kept. Start the app first (`next start -p 4805`) with TMDB pointing at the mock
@@ -24,7 +24,8 @@ const DEBUG_PORT = 9335;
 const outDir = path.resolve(import.meta.dirname, "..", "docs", "perf", label);
 mkdirSync(outDir, { recursive: true });
 
-const routes = [
+const only = process.env.ONLY?.split(",");
+const allRoutes = [
     { name: "home", path: "/en" },
     { name: "search", path: "/en/search?q=dune" },
     { name: "movie", path: `/en/movie/${movieId}` },
@@ -110,9 +111,10 @@ async function measureRoute(route) {
 }
 
 const RESULT_ITEMS = "section[aria-labelledby=search-results] li";
+const CARDS = `${RESULT_ITEMS}:not([aria-hidden])`;
 
 /** Scrolls the search page to the end on a phone and totals the layout shifts, which Lighthouse never triggers. */
-async function measureInfiniteScroll(browser) {
+async function measureInfiniteScroll(browser, mode) {
     const context = await browser.newContext({
         viewport: { width: 375, height: 667 },
         deviceScaleFactor: 2,
@@ -134,22 +136,35 @@ async function measureInfiniteScroll(browser) {
     const sum = () => page.evaluate(() => window.__shifts.reduce((a, b) => a + b, 0));
     const before = await sum();
     let appended = 0;
-    for (let step = 0; step < 4; step += 1) {
-        const count = await page.locator(RESULT_ITEMS).count();
-        await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-        const grew = await page
-            .waitForFunction(([previous, selector]) => document.querySelectorAll(selector).length > previous, [count, RESULT_ITEMS], {
-                timeout: 10_000,
-            })
-            .then(
-                () => true,
-                () => false,
-            );
-        if (grew) appended += 1;
-        await page.waitForTimeout(800);
+    let known = await page.locator(CARDS).count();
+    if (mode === "jump") {
+        // End key or a dragged scrollbar: straight to the bottom, then wait for the next page.
+        for (let step = 0; step < 4; step += 1) {
+            await page.evaluate(() => {
+                window.scrollTo(0, window.document.documentElement.scrollHeight);
+            });
+            await page.waitForTimeout(1500);
+            const count = await page.locator(CARDS).count();
+            if (count > known) appended += 1;
+            known = count;
+        }
+    } else {
+        // Scroll the way a thumb does, in small steps, so the next page is requested as its placeholders near the screen.
+        for (let step = 0; step < 600 && appended < 4; step += 1) {
+            await page.evaluate(() => {
+                window.scrollBy(0, 250);
+            });
+            await page.waitForTimeout(40);
+            const count = await page.locator(CARDS).count();
+            if (count > known) {
+                appended += 1;
+                known = count;
+                await page.waitForTimeout(500);
+            }
+        }
     }
     const total = await sum();
-    const cards = await page.locator(RESULT_ITEMS).count();
+    const cards = await page.locator(CARDS).count();
     await context.close();
     return {
         initialCls: round(before, 3),
@@ -187,14 +202,18 @@ async function measureHomePosters(browser) {
 const browser = await chromium.launch();
 try {
     const summary = { label, baseUrl, runs: RUNS, routes: {} };
-    for (const route of process.env.SKIP_LIGHTHOUSE ? [] : routes) {
+    for (const route of allRoutes.filter((candidate) => !only || only.includes(candidate.name))) {
         summary.routes[route.name] = await measureRoute(route);
         console.log(route.name, JSON.stringify(summary.routes[route.name]));
     }
-    summary.infiniteScroll = await measureInfiniteScroll(browser);
-    summary.homePosters = await measureHomePosters(browser);
-    console.log("scroll", JSON.stringify(summary.infiniteScroll));
-    console.log("posters", JSON.stringify(summary.homePosters));
+    if (!only || only.includes("scroll"))
+        summary.infiniteScroll = {
+            steps: await measureInfiniteScroll(browser, "steps"),
+            jump: await measureInfiniteScroll(browser, "jump"),
+        };
+    if (!only || only.includes("posters")) summary.homePosters = await measureHomePosters(browser);
+    if (summary.infiniteScroll) console.log("scroll", JSON.stringify(summary.infiniteScroll));
+    if (summary.homePosters) console.log("posters", JSON.stringify(summary.homePosters));
     writeFileSync(path.join(outDir, "summary.json"), `${JSON.stringify(summary, null, 2)}\n`);
 } finally {
     await browser.close();
