@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 import { type WatchlistKey, type WatchlistTitle, itemKey, watchlistItemSchema } from "@/lib/watchlist/schema";
 import type { SharedEntry } from "@/lib/watchlist/share";
 
@@ -13,7 +13,7 @@ class TitlesRequestError extends Error {
 }
 
 const responseSchema = z.object({
-    titles: z.array(watchlistItemSchema.pick({ id: true, mediaType: true, title: true, posterPath: true, releaseDate: true })),
+    titles: z.array(z.pick(watchlistItemSchema, { id: true, mediaType: true, title: true, posterPath: true, releaseDate: true })),
 });
 
 const fetchChunk = async (entries: SharedEntry[], locale: string, signal?: AbortSignal): Promise<WatchlistTitle[]> => {

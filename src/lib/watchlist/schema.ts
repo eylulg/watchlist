@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod/mini";
 
 export const WATCH_STATUSES = ["to-watch", "watching", "watched"] as const;
 export type WatchStatus = (typeof WATCH_STATUSES)[number];
@@ -6,22 +6,22 @@ export type WatchStatus = (typeof WATCH_STATUSES)[number];
 export const watchStatusSchema = z.enum(WATCH_STATUSES);
 
 export const watchlistItemSchema = z.object({
-    id: z.number().int().positive(),
+    id: z.int().check(z.positive()),
     mediaType: z.enum(["movie", "tv"]),
-    title: z.string().min(1).max(500),
-    posterPath: z.string().max(200).nullable(),
-    releaseDate: z.string().max(20),
+    title: z.string().check(z.minLength(1), z.maxLength(500)),
+    posterPath: z.nullable(z.string().check(z.maxLength(200))),
+    releaseDate: z.string().check(z.maxLength(20)),
     status: watchStatusSchema,
     /** Personal rating from 1 to 10, or null when not rated yet. */
-    rating: z.number().int().min(1).max(10).nullable(),
-    note: z.string().max(1000),
+    rating: z.nullable(z.int().check(z.minimum(1), z.maximum(10))),
+    note: z.string().check(z.maxLength(1000)),
     addedAt: z.iso.datetime(),
     updatedAt: z.iso.datetime(),
     /**
      * Estimated minutes to watch the whole title: the film length, or episode length times episode count
      * for a series. Null until known (items added from a card do not carry it).
      */
-    runtime: z.number().int().nonnegative().nullable(),
+    runtime: z.nullable(z.int().check(z.nonnegative())),
 });
 
 export type WatchlistItem = z.infer<typeof watchlistItemSchema>;
@@ -39,7 +39,7 @@ export const watchlistDocumentSchema = z.object({
 
 /** The file written by "Export". Import also accepts a bare array of items. */
 export const exportFileSchema = z.union([
-    z.object({ app: z.literal("watchlist"), version: z.literal(1), exportedAt: z.string().optional(), items: z.array(z.unknown()) }),
+    z.object({ app: z.literal("watchlist"), version: z.literal(1), exportedAt: z.optional(z.string()), items: z.array(z.unknown()) }),
     z.array(z.unknown()),
 ]);
 

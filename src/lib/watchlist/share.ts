@@ -1,5 +1,5 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from "lz-string";
-import { z } from "zod";
+import * as z from "zod/mini";
 import { WATCH_STATUSES, type WatchlistItem, type WatchlistTitle, watchStatusSchema } from "./schema";
 
 /**
@@ -30,8 +30,8 @@ const ENTRY_PATTERN = /^([mt])(\d{1,9})\.([0-9])([0-9a])$/;
 
 const payloadSchema = z.object({
     v: z.literal(SHARE_VERSION),
-    n: z.string().max(80).optional(),
-    i: z.string().max(MAX_SHARED_ITEMS * 16),
+    n: z.optional(z.string().check(z.maxLength(80))),
+    i: z.string().check(z.maxLength(MAX_SHARED_ITEMS * 16)),
 });
 
 export const encodeSharedList = (items: SharedEntry[], { name = "" }: { name?: string } = {}): string => {
