@@ -51,6 +51,7 @@
     "intro": "Finde Filme, Serien und Personen.",
     "label": "TMDB durchsuchen",
     "placeholder": "Titel oder Name, zum Beispiel Dune",
+    "lengthHint": "Bis zu {max} Zeichen.",
     "kindLabel": "Was suchen",
     "kinds": {
       "multi": "Alle",
@@ -290,6 +291,8 @@
     "rowMessage": "Die Filmdatenbank hat nicht geantwortet. Lade die Seite neu, um es erneut zu versuchen.",
     "searchTitle": "Die Suche ist nicht verfügbar",
     "searchMessage": "Die Filmdatenbank hat nicht geantwortet. Prüfe deine Verbindung und versuche es erneut.",
+    "searchInvalidTitle": "Diese Suche ist ungültig",
+    "searchInvalidMessage": "Suchbegriffe dürfen bis zu {max} Zeichen lang sein. Kürze ihn und versuche es erneut.",
     "loadMoreFailed": "Weitere Ergebnisse konnten nicht geladen werden.",
     "retry": "Erneut versuchen"
   },

@@ -17,9 +17,12 @@ import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
 import { useRouter } from "@/i18n/navigation";
 import { GRID_POSTER_SIZES } from "@/lib/tmdb/images";
 import { SEARCH_KINDS, type SearchKind, type SearchResult } from "@/lib/tmdb/types";
-import { fetchSearchPage } from "./search-api";
+import { SearchRequestError, fetchSearchPage } from "./search-api";
 
 const DEBOUNCE_MS = 300;
+
+/** The same limit the search route validates, so a longer query is cut in the field instead of refused later. */
+const MAX_QUERY_LENGTH = 200;
 
 const isSearchKind = (value: Key | null | undefined): value is SearchKind => SEARCH_KINDS.some((kind) => kind === value);
 
@@ -147,6 +150,8 @@ export const SearchView = () => {
                     iconLeading={Search}
                     size="md"
                     placeholder={t("placeholder")}
+                    hint={t("lengthHint", { max: MAX_QUERY_LENGTH })}
+                    maxLength={MAX_QUERY_LENGTH}
                     value={input}
                     onChange={handleInputChange}
                     className="max-w-xl"
@@ -175,6 +180,7 @@ export const SearchView = () => {
                 results={results}
                 isPending={search.isPending}
                 isError={search.isError && results.length === 0}
+                isInvalid={search.error instanceof SearchRequestError && search.error.status === 400}
                 onRetry={handleRetry}
             />
 
@@ -203,14 +209,20 @@ interface SearchResultsProps {
     results: SearchResult[];
     isPending: boolean;
     isError: boolean;
+    /** The app's own route refused the query, which is a validation problem and not an outage. */
+    isInvalid: boolean;
     onRetry: () => void;
 }
 
-const SearchResults = ({ query, results, isPending, isError, onRetry }: SearchResultsProps) => {
+const SearchResults = ({ query, results, isPending, isError, isInvalid, onRetry }: SearchResultsProps) => {
     const t = useTranslations("Search");
     const tErrors = useTranslations("Errors");
 
     if (!query) return <EmptyResults title={t("emptyTitle")} description={t("emptyDescription")} />;
+
+    if (isError && isInvalid) {
+        return <ErrorState title={tErrors("searchInvalidTitle")} message={tErrors("searchInvalidMessage", { max: MAX_QUERY_LENGTH })} />;
+    }
 
     if (isError) {
         return (

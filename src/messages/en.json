@@ -51,6 +51,7 @@
     "intro": "Find movies, series and people.",
     "label": "Search TMDB",
     "placeholder": "Title or name, for example Dune",
+    "lengthHint": "Up to {max} characters.",
     "kindLabel": "What to search",
     "kinds": {
       "multi": "All",
@@ -290,6 +291,8 @@
     "rowMessage": "The movie database did not respond. Reload the page to try again.",
     "searchTitle": "Search is not available",
     "searchMessage": "The movie database did not respond. Check your connection and try again.",
+    "searchInvalidTitle": "That search is not valid",
+    "searchInvalidMessage": "Searches can be up to {max} characters. Shorten it and try again.",
     "loadMoreFailed": "Could not load more results.",
     "retry": "Try again"
   },

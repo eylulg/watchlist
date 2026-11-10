@@ -84,6 +84,13 @@ describe("SearchView", () => {
         expect(await screen.findByRole("heading", { name: heading })).toBeInTheDocument();
     });
 
+    it("tells the user a too long query is invalid instead of reporting an outage", async () => {
+        renderSearch(`/en/search?q=${"a".repeat(250)}`);
+
+        expect(await screen.findByRole("heading", { name: "That search is not valid" })).toBeInTheDocument();
+        expect(screen.queryByRole("heading", { name: "Search is not available" })).not.toBeInTheDocument();
+    });
+
     it("has no axe violations with results", async () => {
         const { container } = renderSearch("/en/search?q=dune");
         await screen.findByRole("heading", { name: "dune part one" });

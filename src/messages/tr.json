@@ -51,6 +51,7 @@
     "intro": "Film, dizi ve kişi bul.",
     "label": "TMDB'de ara",
     "placeholder": "Yapım ya da kişi adı, örneğin Dune",
+    "lengthHint": "En fazla {max} karakter.",
     "kindLabel": "Ne aranacak",
     "kinds": {
       "multi": "Tümü",
@@ -290,6 +291,8 @@
     "rowMessage": "Film veritabanı yanıt vermedi. Tekrar denemek için sayfayı yenile.",
     "searchTitle": "Arama şu anda kullanılamıyor",
     "searchMessage": "Film veritabanı yanıt vermedi. Bağlantını kontrol edip tekrar dene.",
+    "searchInvalidTitle": "Bu arama geçerli değil",
+    "searchInvalidMessage": "Aramalar en fazla {max} karakter olabilir. Kısaltıp yeniden dene.",
     "loadMoreFailed": "Daha fazla sonuç yüklenemedi.",
     "retry": "Tekrar dene"
   },
