@@ -1,6 +1,6 @@
 "use client";
 
-import { type SubmitEvent, useEffect, useRef, useState } from "react";
+import { type RefObject, type SubmitEvent, useEffect, useRef, useState } from "react";
 import { Button } from "@eylulg/ui/button";
 import { Input } from "@eylulg/ui/input";
 import { Tag, TagGroup } from "@eylulg/ui/tag";
@@ -64,7 +64,8 @@ export const SearchView = () => {
     const { hasNextPage, isFetchingNextPage, isFetchNextPageError, fetchNextPage } = search;
 
     const [input, setInput] = useState(urlQuery);
-    const sentinelRef = useRef<HTMLDivElement>(null);
+    const sentinelRef = useRef<HTMLLIElement>(null);
+    const endRef = useRef<HTMLDivElement>(null);
 
     const results = uniqueResults(search.data?.pages ?? []);
     const total = search.data?.pages[0]?.totalResults ?? 0;
@@ -101,15 +102,23 @@ export const SearchView = () => {
     }, [debouncedReplaceUrl]);
 
     useEffect(() => {
-        const sentinel = sentinelRef.current;
-        if (!sentinel || !hasNextPage || isFetchingNextPage || isFetchNextPageError || typeof IntersectionObserver === "undefined") return;
+        // The first placeholder starts the next page while scrolling; the end of the list covers a jump straight to the bottom.
+        const sentinels = [sentinelRef.current, endRef.current].filter((element) => element !== null);
+        if (
+            sentinels.length === 0 ||
+            !hasNextPage ||
+            isFetchingNextPage ||
+            isFetchNextPageError ||
+            typeof IntersectionObserver === "undefined"
+        )
+            return;
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries.some((entry) => entry.isIntersecting)) fetchNextPage().catch(keepErrorInQueryState);
             },
             { rootMargin: "600px 0px" },
         );
-        observer.observe(sentinel);
+        for (const sentinel of sentinels) observer.observe(sentinel);
         return () => {
             observer.disconnect();
         };
@@ -178,6 +187,9 @@ export const SearchView = () => {
             <SearchResults
                 query={urlQuery}
                 results={results}
+                pageCount={search.data?.pages.length ?? 0}
+                hasNextPage={hasNextPage}
+                sentinelRef={sentinelRef}
                 isPending={search.isPending}
                 isError={search.isError && results.length === 0}
                 isInvalid={search.error instanceof SearchRequestError && search.error.status === 400}
@@ -185,7 +197,7 @@ export const SearchView = () => {
             />
 
             {results.length > 0 && (
-                <div ref={sentinelRef} className="flex flex-col items-center gap-3">
+                <div ref={endRef} className="flex flex-col items-center gap-3">
                     {isFetchNextPageError && <p className="text-sm text-error">{tErrors("loadMoreFailed")}</p>}
                     {hasNextPage && (
                         <Button
@@ -204,9 +216,17 @@ export const SearchView = () => {
     );
 };
 
+/** TMDB pages hold 20 results. Reserving that much room is what keeps the footer from jumping when a page arrives. */
+const RESULTS_PER_PAGE = 20;
+
 interface SearchResultsProps {
     query: string;
     results: SearchResult[];
+    /** Pages loaded so far. */
+    pageCount: number;
+    hasNextPage: boolean;
+    /** Attached to the first placeholder, so the next page loads when it nears the viewport. */
+    sentinelRef: RefObject<HTMLLIElement | null>;
     isPending: boolean;
     isError: boolean;
     /** The app's own route refused the query, which is a validation problem and not an outage. */
@@ -214,7 +234,17 @@ interface SearchResultsProps {
     onRetry: () => void;
 }
 
-const SearchResults = ({ query, results, isPending, isError, isInvalid, onRetry }: SearchResultsProps) => {
+const SearchResults = ({
+    query,
+    results,
+    pageCount,
+    hasNextPage,
+    sentinelRef,
+    isPending,
+    isError,
+    isInvalid,
+    onRetry,
+}: SearchResultsProps) => {
     const t = useTranslations("Search");
     const tErrors = useTranslations("Errors");
 
@@ -267,6 +297,14 @@ const SearchResults = ({ query, results, isPending, isError, isInvalid, onRetry 
                         )}
                     </li>
                 ))}
+                {hasNextPage &&
+                    Array.from({ length: RESULTS_PER_PAGE }, (_, i) => (
+                        // A new key for every page, so the placeholders are replaced by the cards that arrive rather than
+                        // pushed down the page, which would count as layout shift.
+                        <li key={`next-${String(pageCount)}-${String(i)}`} ref={i === 0 ? sentinelRef : undefined} aria-hidden="true">
+                            <TitleCardSkeleton />
+                        </li>
+                    ))}
             </CardGrid>
         </section>
     );

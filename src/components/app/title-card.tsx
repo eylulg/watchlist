@@ -51,10 +51,13 @@ export const TitleCard = ({ title, sizes, priority }: TitleCardProps) => {
     );
 };
 
+/** Same footprint as a TitleCard whose title wraps to two lines, so a page of skeletons and a page of cards are as tall. */
 export const TitleCardSkeleton = () => (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col rounded-xl border border-transparent">
         <Skeleton shape="rect" className="aspect-2/3 h-auto rounded-xl" />
-        <Skeleton className="w-4/5" />
-        <Skeleton className="h-3 w-1/3" />
+        <div className="flex h-29 flex-col gap-2 p-card">
+            <Skeleton className="w-4/5" />
+            <Skeleton className="h-3 w-1/3" />
+        </div>
     </div>
 );
