@@ -427,6 +427,14 @@ const englishFallback = async <T>(locale: AppLocale, needsFallback: boolean, fet
     }
 };
 
+/** One title as a card shows it, without credits, videos or recommendations. For resolving ids from a shared link. */
+export const getTitleSummary = async (mediaType: MediaType, id: number, locale: AppLocale): Promise<TitleSummary> => {
+    const options = { params: { language: language(locale) }, revalidate: REVALIDATE.detail, tags: [`tmdb:${mediaType}:${String(id)}`] };
+    return mediaType === "movie"
+        ? toMovieSummary(await tmdbFetch(`/movie/${String(id)}`, movieListItemSchema, options))
+        : toTvSummary(await tmdbFetch(`/tv/${String(id)}`, tvListItemSchema, options));
+};
+
 export const getMovie = async (id: number, locale: AppLocale): Promise<MovieDetail> => {
     const tag = `tmdb:movie:${String(id)}`;
     const m = await tmdbFetch(`/movie/${String(id)}`, movieDetailSchema, detailOptions(locale, tag, { append_to_response: DETAIL_APPEND }));

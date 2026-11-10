@@ -129,7 +129,6 @@
     "removeNamed": "{title} aus der Watchlist entfernen",
     "open": "Watchlist öffnen",
     "statusLabel": "Status",
-    "ratingLabel": "Meine Bewertung",
     "notRated": "Nicht bewertet",
     "ratingOption": "{rating} / 10",
     "noteLabel": "Notiz",
@@ -146,7 +145,9 @@
     "removeFromWatchlist": "Aus der Watchlist entfernen",
     "statusFor": "Status von {title}",
     "ratingFor": "Meine Bewertung für {title}",
-    "noteFor": "Notiz zu {title}"
+    "noteFor": "Notiz zu {title}",
+    "showDetails": "Details zu {title} anzeigen",
+    "hideDetails": "Details zu {title} ausblenden"
   },
   "Status": {
     "to-watch": "Noch sehen",
@@ -196,17 +197,17 @@
   },
   "Share": {
     "title": "Link zum Ansehen teilen",
-    "description": "Die Liste steckt im Link selbst, es wird nichts hochgeladen. Der Link zeigt die Liste so, wie sie beim Kopieren ist.",
+    "description": "Die Liste steckt im Link selbst, es wird nichts hochgeladen. Der Link enthält jeden Titel mit Status und Bewertung, aber keine Notizen, und zeigt die Liste so, wie sie beim Erstellen oder Kopieren ist.",
     "truncated": "Nur die ersten {max} Titel passen in einen Link.",
     "nameLabel": "Name der Liste (optional)",
     "namePlaceholder": "Fürs Wochenende",
-    "includeNotes": "Meine Notizen einschließen",
     "create": "Link erstellen",
     "linkLabel": "Link zum Teilen",
     "copy": "Kopieren",
     "copied": "Kopiert",
     "copiedStatus": "Link in die Zwischenablage kopiert.",
-    "copyFailed": "Kopieren hat nicht geklappt. Markiere den Link und kopiere ihn selbst."
+    "copyFailed": "Kopieren hat nicht geklappt. Markiere den Link und kopiere ihn selbst.",
+    "created": "Link erstellt, {length, number} Zeichen."
   },
   "Shared": {
     "defaultTitle": "Geteilte Watchlist",
@@ -216,7 +217,10 @@
     "addAll": "{count, plural, =0 {Schon in deiner Watchlist} one {# Titel zu meiner Watchlist hinzufügen} other {# Titel zu meiner Watchlist hinzufügen}}",
     "added": "{count, plural, one {# Titel} other {# Titel}} zu deiner Watchlist hinzugefügt.",
     "listHeading": "{count, plural, one {# Titel} other {# Titel}}",
-    "openMine": "Meine Watchlist öffnen"
+    "openMine": "Meine Watchlist öffnen",
+    "unavailable": "{count, plural, one {# Titel konnte nicht geladen werden und wird nicht angezeigt.} other {# Titel konnten nicht geladen werden und werden nicht angezeigt.}}",
+    "loadFailedTitle": "Die Titel konnten nicht geladen werden",
+    "loadFailedMessage": "Die Filmdatenbank hat nicht geantwortet. Lade die Seite neu, um es erneut zu versuchen."
   },
   "Settings": {
     "title": "Einstellungen",

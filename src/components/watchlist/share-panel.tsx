@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Button } from "@eylulg/ui/button";
-import { Checkbox } from "@eylulg/ui/checkbox";
 import { Input } from "@eylulg/ui/input";
 import { Copy, Link } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
@@ -17,12 +16,11 @@ export const SharePanel = ({ items }: { items: WatchlistItem[] }) => {
     const locale = useLocale();
     const { copy, copied } = useClipboard();
     const [name, setName] = useState("");
-    const [includeNotes, setIncludeNotes] = useState(false);
     /** Set when the user asks for a link; the link itself is derived, so it follows later edits. */
     const [origin, setOrigin] = useState<string | null>(null);
     const [copyFailed, setCopyFailed] = useState(false);
 
-    const url = origin === null ? "" : buildShareUrl(origin, locale, encodeSharedList(items, { name, includeNotes }));
+    const url = origin === null ? "" : buildShareUrl(origin, locale, encodeSharedList(items, { name }));
 
     function handleCreate() {
         setOrigin(window.location.origin);
@@ -53,9 +51,6 @@ export const SharePanel = ({ items }: { items: WatchlistItem[] }) => {
                 onChange={setName}
                 className="max-w-md"
             />
-            <Checkbox isSelected={includeNotes} onChange={setIncludeNotes}>
-                {t("includeNotes")}
-            </Checkbox>
             <div>
                 <Button variant="primary" size="md" iconLeading={Link} onPress={handleCreate}>
                     {t("create")}
@@ -70,7 +65,7 @@ export const SharePanel = ({ items }: { items: WatchlistItem[] }) => {
                 </div>
             )}
             <p role="status" aria-live="polite" className="text-sm text-tertiary">
-                {copied ? t("copiedStatus") : copyFailed ? t("copyFailed") : ""}
+                {copied ? t("copiedStatus") : copyFailed ? t("copyFailed") : url ? t("created", { length: url.length }) : ""}
             </p>
         </section>
     );

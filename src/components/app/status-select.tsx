@@ -11,11 +11,13 @@ interface StatusSelectProps {
     /** Visible label. Omit it when several selects share one, and name each with `ariaLabel`. */
     label?: string;
     ariaLabel?: string;
+    /** Width of the select, for example `w-36`. Defaults to a width that fits the longest status. */
+    className?: string;
     /** The select button, so a caller can move focus to it after it appears. */
     ref?: Ref<HTMLButtonElement>;
 }
 
-export const StatusSelect = ({ value, onChange, label, ariaLabel, ref }: StatusSelectProps) => {
+export const StatusSelect = ({ value, onChange, label, ariaLabel, className = "w-44", ref }: StatusSelectProps) => {
     const t = useTranslations("Status");
 
     function handleChange(key: unknown) {
@@ -24,7 +26,7 @@ export const StatusSelect = ({ value, onChange, label, ariaLabel, ref }: StatusS
     }
 
     return (
-        <div className="w-44">
+        <div className={className}>
             <Select
                 ref={ref}
                 label={label}

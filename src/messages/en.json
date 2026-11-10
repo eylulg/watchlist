@@ -129,7 +129,6 @@
     "removeNamed": "Remove {title} from watchlist",
     "open": "Open watchlist",
     "statusLabel": "Status",
-    "ratingLabel": "My rating",
     "notRated": "Not rated",
     "ratingOption": "{rating} / 10",
     "noteLabel": "Note",
@@ -146,7 +145,9 @@
     "removeFromWatchlist": "Remove from watchlist",
     "statusFor": "Status of {title}",
     "ratingFor": "My rating for {title}",
-    "noteFor": "Note on {title}"
+    "noteFor": "Note on {title}",
+    "showDetails": "Show details of {title}",
+    "hideDetails": "Hide details of {title}"
   },
   "Status": {
     "to-watch": "To watch",
@@ -196,17 +197,17 @@
   },
   "Share": {
     "title": "Share a read only link",
-    "description": "The list is packed into the link itself and nothing is uploaded. The link shows the list as it is when you copy it.",
+    "description": "The list is packed into the link itself and nothing is uploaded. The link carries each title and its status and rating, not your notes, and shows the list as it is when you create or copy it.",
     "truncated": "Only the first {max} titles fit in a link.",
     "nameLabel": "List name (optional)",
     "namePlaceholder": "Weekend picks",
-    "includeNotes": "Include my notes",
     "create": "Create link",
     "linkLabel": "Share link",
     "copy": "Copy",
     "copied": "Copied",
     "copiedStatus": "Link copied to the clipboard.",
-    "copyFailed": "Could not copy. Select the link and copy it yourself."
+    "copyFailed": "Could not copy. Select the link and copy it yourself.",
+    "created": "Link created, {length, number} characters."
   },
   "Shared": {
     "defaultTitle": "Shared watchlist",
@@ -216,7 +217,10 @@
     "addAll": "{count, plural, =0 {Already in your watchlist} one {Add # title to my watchlist} other {Add # titles to my watchlist}}",
     "added": "{count, plural, one {Added # title} other {Added # titles}} to your watchlist.",
     "listHeading": "{count, plural, one {# title} other {# titles}}",
-    "openMine": "Open my watchlist"
+    "openMine": "Open my watchlist",
+    "unavailable": "{count, plural, one {# title could not be loaded and is not shown.} other {# titles could not be loaded and are not shown.}}",
+    "loadFailedTitle": "The titles could not be loaded",
+    "loadFailedMessage": "The movie database did not respond. Reload the page to try again."
   },
   "Settings": {
     "title": "Settings",

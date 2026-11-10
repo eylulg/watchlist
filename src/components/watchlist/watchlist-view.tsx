@@ -26,6 +26,7 @@ import { type WatchlistItem, itemKey } from "@/lib/watchlist/schema";
 import { computeStats } from "@/lib/watchlist/stats";
 import { useWatchlist, watchlistActions } from "@/lib/watchlist/store";
 import { ImportExport } from "./import-export";
+import { RowList } from "./row-list";
 import { SharePanel } from "./share-panel";
 import { WatchlistRow } from "./watchlist-row";
 import { WatchlistStats } from "./watchlist-stats";
@@ -41,7 +42,7 @@ export const WatchlistView = () => {
     const searchParams = useSearchParams();
     const { items, isPersisted } = useWatchlist();
     const headingRef = useRef<HTMLHeadingElement>(null);
-    const listRef = useRef<HTMLUListElement>(null);
+    const listRef = useRef<HTMLDivElement>(null);
     const statusFilterRef = useRef<HTMLButtonElement>(null);
 
     const query = parseWatchlistQuery(new URLSearchParams(searchParams.toString()));
@@ -85,6 +86,10 @@ export const WatchlistView = () => {
         const next = titles[Math.min(index, titles.length - 1)];
         if (next) next.focus();
         else headingRef.current?.focus();
+    }
+
+    function renderRow(item: WatchlistItem) {
+        return <WatchlistRow item={item} onRemove={handleRemove} />;
     }
 
     const heading = (
@@ -182,11 +187,9 @@ export const WatchlistView = () => {
                                 }
                             />
                         ) : (
-                            <ul ref={listRef} className="flex flex-col gap-4">
-                                {visible.map((item) => (
-                                    <WatchlistRow key={itemKey(item)} item={item} onRemove={handleRemove} />
-                                ))}
-                            </ul>
+                            <div ref={listRef}>
+                                <RowList items={visible} getKey={itemKey} renderRow={renderRow} />
+                            </div>
                         )}
                     </section>
 

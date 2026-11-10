@@ -54,10 +54,24 @@ describe("WatchlistView", () => {
         expect(stored().find((item) => item.id === 3)?.status).toBe("watched");
     });
 
+    it("keeps the note and Remove behind the expand button, with status and rating on the row", async () => {
+        const { user } = renderWatchlist();
+        await screen.findByRole("button", { name: /Status of Dune/ });
+
+        expect(screen.queryByRole("textbox", { name: "Note on Dune" })).not.toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: "Remove Dune from watchlist" })).not.toBeInTheDocument();
+
+        await user.click(screen.getByRole("button", { name: "Show details of Dune" }));
+
+        expect(screen.getByRole("button", { name: "Hide details of Dune" })).toHaveAttribute("aria-expanded", "true");
+        expect(screen.getByRole("textbox", { name: "Note on Dune" })).toBeInTheDocument();
+    });
+
     it("saves a rating and a note", async () => {
         const { user } = renderWatchlist();
 
         await chooseOption(user, await screen.findByRole("button", { name: /My rating for Dune/ }), "8 / 10");
+        await user.click(screen.getByRole("button", { name: "Show details of Dune" }));
         await user.type(screen.getByRole("textbox", { name: "Note on Dune" }), "Cinema, not TV");
         await user.tab();
 
@@ -85,7 +99,8 @@ describe("WatchlistView", () => {
     it("moves focus to the next title after removing one", async () => {
         const { user } = renderWatchlist();
 
-        await user.click(await screen.findByRole("button", { name: "Remove Severance from watchlist" }));
+        await user.click(await screen.findByRole("button", { name: "Show details of Severance" }));
+        await user.click(screen.getByRole("button", { name: "Remove Severance from watchlist" }));
 
         expect(rowTitles()).toEqual(["Arrival", "Dune"]);
         expect(screen.getByRole("link", { name: "Dune" })).toHaveFocus();
@@ -95,7 +110,8 @@ describe("WatchlistView", () => {
         storeWatchlist([ITEMS[0]]);
         const { user } = renderWithProviders(<WatchlistView />, { url: "/en/watchlist" });
 
-        await user.click(await screen.findByRole("button", { name: "Remove Arrival from watchlist" }));
+        await user.click(await screen.findByRole("button", { name: "Show details of Arrival" }));
+        await user.click(screen.getByRole("button", { name: "Remove Arrival from watchlist" }));
 
         expect(screen.getByRole("heading", { level: 1, name: "My watchlist" })).toHaveFocus();
         expect(screen.getByRole("heading", { name: "Your watchlist is empty" })).toBeInTheDocument();

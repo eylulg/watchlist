@@ -5,7 +5,8 @@ import { axe, renderWithProviders } from "@/test-utils/render";
 import { storeWatchlist, watchlistItem } from "@/test-utils/watchlist";
 import { SharedView } from "../shared-view";
 
-const shared = [watchlistItem({ id: 1, title: "Arrival", status: "watched", rating: 9 }), watchlistItem({ id: 2, title: "Dune" })];
+// The link carries ids only; the test TMDB names movie n "Movie n".
+const shared = [watchlistItem({ id: 1, status: "watched", rating: 9 }), watchlistItem({ id: 2 })];
 
 const renderShared = (fragment = encodeSharedList(shared, { name: "Weekend picks" })) =>
     renderWithProviders(<SharedView />, { url: `/en/shared#${fragment}` });
@@ -15,9 +16,16 @@ describe("SharedView", () => {
         renderShared();
 
         expect(await screen.findByRole("heading", { level: 1, name: "Weekend picks" })).toBeInTheDocument();
-        expect(screen.getByRole("heading", { name: "Arrival" })).toBeInTheDocument();
+        expect(await screen.findByRole("heading", { name: "Movie 1" })).toBeInTheDocument();
         expect(screen.getByText("9 / 10")).toBeInTheDocument();
         expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
+    });
+
+    it("shows what a title is called in the viewer's own language by looking the ids up, not from the link", async () => {
+        const { container } = renderShared();
+
+        expect(await screen.findByRole("heading", { name: "Movie 2" })).toBeInTheDocument();
+        expect(container.querySelectorAll("img").length).toBeGreaterThan(0);
     });
 
     it("explains a damaged link", async () => {
@@ -27,7 +35,7 @@ describe("SharedView", () => {
     });
 
     it("adds only missing titles, fresh, and moves focus to the watchlist link", async () => {
-        storeWatchlist([watchlistItem({ id: 1, title: "Arrival", status: "to-watch" })]);
+        storeWatchlist([watchlistItem({ id: 1, status: "to-watch" })]);
         const { user } = renderShared();
 
         await user.click(await screen.findByRole("button", { name: "Add 1 title to my watchlist" }));

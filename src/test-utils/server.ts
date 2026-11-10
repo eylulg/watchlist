@@ -2,6 +2,7 @@ import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 import { NextRequest } from "next/server";
 import { GET as searchRoute } from "@/app/api/search/route";
+import { GET as titlesRoute } from "@/app/api/titles/route";
 import { DEFAULT_TMDB_API_BASE } from "@/lib/tmdb/client";
 import { collectionDetail, movie, movieDetail, paged, person, personDetail, seasonDetail, series, tvDetail } from "./fixtures";
 
@@ -54,6 +55,8 @@ const handlers = [
 
     // The browser side of search calls the app's own route handler, which then calls TMDB above.
     http.get("*/api/search", async ({ request }) => searchRoute(new NextRequest(request.url, { headers: request.headers }))),
+    // A shared link carries only ids; the shared page resolves them through this route.
+    http.get("*/api/titles", async ({ request }) => titlesRoute(new NextRequest(request.url, { headers: request.headers }))),
 ];
 
 export const server = setupServer(...handlers);
