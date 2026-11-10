@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { QueryProvider } from "@/components/app/query-provider";
 import { SharedView } from "@/components/shared/shared-view";
 import { resolveLocale } from "@/lib/route-params";
 
@@ -15,5 +16,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function SharedPage({ params }: PageProps) {
     resolveLocale((await params).locale);
-    return <SharedView />;
+    return (
+        <QueryProvider>
+            <SharedView />
+        </QueryProvider>
+    );
 }

@@ -3,6 +3,7 @@ import { cx } from "@eylulg/ui/cx";
 import { Skeleton } from "@eylulg/ui/skeleton";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { QueryProvider } from "@/components/app/query-provider";
 import { pageIntroClass, pageTitleClass, stableHeightClass } from "@/components/app/styles";
 import { SearchView } from "@/components/search/search-view";
 import { resolveLocale } from "@/lib/route-params";
@@ -33,7 +34,9 @@ export default async function SearchPage({ params }: PageProps) {
                     </div>
                 }
             >
-                <SearchView />
+                <QueryProvider>
+                    <SearchView />
+                </QueryProvider>
             </Suspense>
         </div>
     );
