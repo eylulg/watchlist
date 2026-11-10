@@ -5,7 +5,9 @@ export const isRegionCode = (value: unknown): value is string => typeof value ==
 
 /**
  * Regions TMDB has watch provider data for. A static list keeps Settings instant and avoids an extra
- * TMDB call; regions missing here simply show the "no offers" message.
+ * TMDB call; regions missing here simply show the "no offers" message. Their names live in the Regions
+ * messages rather than in `Intl.DisplayNames`, whose output differs between Node and each browser and
+ * made the server HTML disagree with the client.
  */
 export const WATCH_REGIONS = [
     "AR",
@@ -63,13 +65,9 @@ export const WATCH_REGIONS = [
     "ZA",
 ] as const;
 
-export const regionName = (code: string, locale: string): string => {
-    try {
-        return new Intl.DisplayNames([locale], { type: "region" }).of(code) ?? code;
-    } catch {
-        return code;
-    }
-};
+/** Display name from the Regions messages, or the bare code for a region the app has no name for. */
+export const regionName = (t: { has: (key: string) => boolean; (key: string): string }, code: string): string =>
+    t.has(code) ? t(code) : code;
 
 export const writeRegionCookie = (code: string) => {
     document.cookie = `${REGION_COOKIE}=${encodeURIComponent(code)}; path=/; max-age=${String(60 * 60 * 24 * 365)}; samesite=lax`;

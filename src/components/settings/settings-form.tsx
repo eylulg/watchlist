@@ -10,6 +10,7 @@ import { WATCH_REGIONS, isRegionCode, regionName, writeRegionCookie } from "@/li
 
 export const SettingsForm = ({ region: initialRegion }: { region: string }) => {
     const t = useTranslations("Settings");
+    const tr = useTranslations("Regions");
     const locale = useLocale();
     const router = useRouter();
     const pathname = usePathname();
@@ -17,7 +18,7 @@ export const SettingsForm = ({ region: initialRegion }: { region: string }) => {
     const [saved, setSaved] = useState("");
 
     const regions = [...new Set<string>([...WATCH_REGIONS, initialRegion])]
-        .map((code) => ({ id: code, name: regionName(code, locale) }))
+        .map((code) => ({ id: code, name: regionName(tr, code) }))
         .sort((a, b) => a.name.localeCompare(b.name, locale));
     const languages = locales.map((code) => ({ id: code, name: localeNames[code] }));
 
@@ -25,7 +26,7 @@ export const SettingsForm = ({ region: initialRegion }: { region: string }) => {
         if (typeof key !== "string" || !isRegionCode(key)) return;
         setRegion(key);
         writeRegionCookie(key);
-        setSaved(t("regionSaved", { region: regionName(key, locale) }));
+        setSaved(t("regionSaved", { region: regionName(tr, key) }));
         // Server components read the cookie; refresh so detail pages pick it up.
         router.refresh();
     }
