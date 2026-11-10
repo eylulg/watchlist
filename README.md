@@ -17,7 +17,7 @@ A personal movie and series watchlist on top of [The Movie Database (TMDB)](http
 - **Your data stays yours:** the list lives in `localStorage`, validated with zod on every read, and stays in sync across open tabs. Export it as JSON, import it in another browser.
 - **Share without a server:** a read only link carries the whole list, compressed with lz-string, in the URL fragment. Fragments are never sent to a server, so nothing is uploaded or stored. The recipient can copy the titles into their own list.
 - **Three languages:** English, Turkish and German, with the locale in the URL. TMDB content is requested in the same language and falls back to English where a translation is missing.
-- **Settings:** where to watch region, language, and light, dark or system theme with no flash on load.
+- **Settings:** where to watch region and language. The light, dark or system theme is the shared toggle in the top bar, applied with no flash on load.
 - **Installable:** web app manifest, generated icons, and an offline page served by a minimal service worker. TMDB data is deliberately not cached offline.
 - **Accessible:** landmarks, a skip link, visible focus, keyboard navigable cards and carousels (arrow keys, Home, End), focus moved deliberately when an action replaces the focused control, live regions for result counts, and a layout that works from 375 px wide with no sideways scrolling. axe runs in light and dark mode on every page.
 
@@ -37,11 +37,18 @@ Share link             /shared#<lz-string data>, the fragment never reaches the 
 - **Caching.** TMDB calls use Next's fetch cache with revalidate times per kind of data: 1 hour for trending, 6 hours for popular and top rated lists, 10 minutes for search, 12 hours for details. Pages render per request, so builds never call TMDB, while the responses themselves are cached.
 - **Search route.** `/api/search` validates its parameters with zod, rate limits per client, refuses cross site browser requests, sends no CORS headers, and never forwards TMDB's error text.
 - **i18n.** next-intl with the locale as the root segment (`src/app/[locale]`), read through `next/root-params`. Messages live in `src/messages/{en,tr,de}.json`; a test checks that all three have the same keys, ICU arguments and tags.
-- **UI.** Untitled UI React (free, MIT) components on Tailwind CSS 4 and React Aria, copied into `src/components/{base,application,foundations,shared-assets}` and kept close to upstream. App components live in `src/components/app`, `detail`, `search`, `watchlist`, `shared` and `settings`.
+- **UI.** The shared design system [`@eylulg/ui`](https://github.com/eylulg/ui) on Tailwind CSS 4 and React Aria Components, with its `watchlist` theme variant (rose, warm stone grays, large radius). The app chrome (top bar, project switcher, theme toggle, footer) comes from `@eylulg/ui/chrome`; `src/components/app/nav.tsx` is a small client component because the locale aware `Link` is a function that a server component cannot pass down. Title cards use `Card`, statuses and settings use `Select`, filters use `Tag`, and empty views use `EmptyState`. App components live in `src/components/app`, `detail`, `search`, `watchlist`, `shared` and `settings`.
+- **Library labels stay in English.** The theme toggle, the project switcher and the menu button come from the library with English labels, so they are not translated. The app's own strings all stay in the message files. The TMDB and JustWatch credits sit above the shared footer, which has no slot for them.
 
 ## Run it locally
 
-You need Node 22 or newer (Node 24 recommended, see `.nvmrc`) and a free TMDB API key from <https://www.themoviedb.org/settings/api>.
+You need Node 22 or newer (Node 24 recommended, see `.nvmrc`), a free TMDB API key from <https://www.themoviedb.org/settings/api> and a built checkout of the design system next to this repository, because the app depends on `file:../ui`:
+
+```text
+Portfolio/
+  ui/                              # github.com/eylulg/ui, run npm install && npm run build once
+  movies-series-website-demo/      # this app
+```
 
 ```bash
 npm install
@@ -76,13 +83,14 @@ Husky runs lint-staged on every commit and commitlint checks commit messages aga
 
 ## Deploy
 
-The app targets [Vercel](https://vercel.com/):
+The app targets [Vercel](https://vercel.com/). **Vercel cannot resolve `file:../ui`**, because only this repository is cloned there. Until `@eylulg/ui` is published to npm, a Vercel deploy fails at install. Once it is published, change the dependency to the npm version (`^1.0.0`) and nothing else changes; the `turbopack` block in `next.config.ts` can then lose its `root` and `resolveAlias` entries.
 
-1. Import the repository in Vercel. The Next.js preset needs no changes.
-2. Add `TMDB_API_KEY` under **Settings > Environment Variables** for Production and Preview. Do not prefix it with `NEXT_PUBLIC_`.
-3. Deploy. Every pull request gets a preview deployment.
+1. Publish `@eylulg/ui` and switch the dependency to `^1.0.0`.
+2. Import the repository in Vercel. The Next.js preset needs no changes.
+3. Add `TMDB_API_KEY` under **Settings > Environment Variables** for Production and Preview. Do not prefix it with `NEXT_PUBLIC_`.
+4. Deploy. Every pull request gets a preview deployment.
 
-CI (`.github/workflows/ci.yml`) runs typecheck, lint, format, knip, tests, build, the client bundle check, Playwright and a gitleaks secret scan on every push to `master` and every pull request.
+CI (`.github/workflows/ci.yml`) first checks out `eylulg/ui` into `ui-src`, builds it and points the dependency at it with `npm pkg set` (the composite action in `.github/actions/setup-ui`; the lockfile change is not committed), then runs typecheck, lint, format, knip, tests, build, the client bundle check, Playwright and a gitleaks secret scan on every push to `master` and every pull request.
 
 ## Credits
 
@@ -92,7 +100,7 @@ This product uses the TMDB API but is not endorsed or certified by TMDB. Movie, 
 
 Where to watch data is provided by [JustWatch](https://www.justwatch.com/) through TMDB, and is credited wherever it is shown.
 
-UI components from [Untitled UI React](https://github.com/untitleduico/react), used under the MIT license.
+UI components from [`@eylulg/ui`](https://github.com/eylulg/ui).
 
 ## License
 
