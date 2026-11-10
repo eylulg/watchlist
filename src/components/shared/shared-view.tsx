@@ -65,7 +65,7 @@ export const SharedView = () => {
     }
 
     if (!list) {
-        return <EmptyResults title={t("invalidTitle")} headingAs="h1" description={t("invalidDescription")} icon={Link2Off} />;
+        return <EmptyResults title={t("invalidTitle")} headingLevel={1} description={t("invalidDescription")} icon={Link2Off} />;
     }
 
     return (

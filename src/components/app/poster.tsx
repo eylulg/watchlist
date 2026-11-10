@@ -1,3 +1,4 @@
+import { cx } from "@eylulg/ui/cx";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Film, User } from "@/components/app/icons";
@@ -11,15 +12,17 @@ interface PosterProps {
     /** Use for the first, above the fold image on a page. */
     priority?: boolean;
     variant?: "poster" | "profile";
+    /** Runs to the edges of a Card with `padding="none"`, which supplies the rounded corners. */
+    isFlush?: boolean;
 }
 
 /** A 2:3 TMDB poster or profile photo through next/image, with a labelled fallback when TMDB has none. */
-export const Poster = ({ path, alt, sizes, priority = false, variant = "poster" }: PosterProps) => {
+export const Poster = ({ path, alt, sizes, priority = false, variant = "poster", isFlush = false }: PosterProps) => {
     const t = useTranslations("Common");
     const Icon = variant === "profile" ? User : Film;
 
     return (
-        <div className="relative aspect-2/3 w-full overflow-hidden rounded-lg bg-tertiary">
+        <div className={cx("relative aspect-2/3 w-full overflow-hidden bg-tertiary", !isFlush && "rounded-lg")}>
             {path ? (
                 <Image
                     src={tmdbImage(path, variant === "profile" ? "h632" : "w780")}

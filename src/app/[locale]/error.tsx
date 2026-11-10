@@ -9,17 +9,15 @@ export default function ErrorPage({ reset }: { reset: () => void }) {
     const t = useTranslations("Errors");
 
     return (
-        <div className="flex flex-col gap-4">
-            <h1 className="sr-only">{t("pageTitle")}</h1>
-            <ErrorState
-                title={t("pageTitle")}
-                message={t("pageMessage")}
-                actions={
-                    <Button size="md" onPress={reset}>
-                        {t("retry")}
-                    </Button>
-                }
-            />
-        </div>
+        <ErrorState
+            title={t("pageTitle")}
+            headingLevel={1}
+            message={t("pageMessage")}
+            actions={
+                <Button size="md" onPress={reset}>
+                    {t("retry")}
+                </Button>
+            }
+        />
     );
 }

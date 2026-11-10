@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@eylulg/ui/fonts.css";
 @import "@eylulg/ui/theme.css";
 @import "@eylulg/ui/themes/watchlist.css";
 @source "../../node_modules/@eylulg/ui/dist";

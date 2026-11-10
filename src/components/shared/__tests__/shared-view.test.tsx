@@ -23,7 +23,7 @@ describe("SharedView", () => {
     it("explains a damaged link", async () => {
         renderShared("garbage");
 
-        expect(await screen.findByRole("heading", { level: 2, name: "This link does not work" })).toBeInTheDocument();
+        expect(await screen.findByRole("heading", { level: 1, name: "This link does not work" })).toBeInTheDocument();
     });
 
     it("adds only missing titles, fresh, and moves focus to the watchlist link", async () => {

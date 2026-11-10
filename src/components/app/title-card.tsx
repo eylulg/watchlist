@@ -34,10 +34,10 @@ export const TitleCard = ({ title, sizes, priority }: TitleCardProps) => {
     );
 
     return (
-        <Card href={getPathname({ href: titleHref(title), locale })} className={cardClass}>
+        <Card href={getPathname({ href: titleHref(title), locale })} padding="none" className={cardClass}>
             {/* The title link names the card, so the poster is decorative here. */}
-            <Poster path={title.posterPath} alt="" sizes={sizes} priority={priority} />
-            <CardHeader title={title.title} description={description} />
+            <Poster path={title.posterPath} alt="" sizes={sizes} priority={priority} isFlush />
+            <CardHeader title={title.title} description={description} className="p-card" />
             <WatchlistToggle
                 title={{
                     id: title.id,

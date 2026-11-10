@@ -11,11 +11,20 @@
     "watchlist": "Listem",
     "settings": "Ayarlar",
     "skipToContent": "İçeriğe geç",
-    "watchlistWithCount": "Listem ({count})"
+    "watchlistWithCount": "Listem ({count})",
+    "openMenu": "Menüyü aç",
+    "closeMenu": "Menüyü kapat"
   },
   "Footer": {
     "tmdb": "Bu ürün TMDB API'sini kullanır ancak TMDB tarafından onaylanmamış veya sertifikalandırılmamıştır. Veriler ve görseller <link>The Movie Database (TMDB)</link> kaynaklıdır.",
-    "justwatch": "Yayın platformu verileri <link>JustWatch</link> tarafından sağlanır."
+    "justwatch": "Yayın platformu verileri <link>JustWatch</link> tarafından sağlanır.",
+    "intro": "Eylül Güneş’in projelerinden biri",
+    "projectsNav": "Projeler",
+    "source": "(kaynak)",
+    "profilesNav": "Profiller",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "builtWith": "@eylulg/ui ile geliştirildi"
   },
   "Common": {
     "movie": "Film",
@@ -233,5 +242,17 @@
     "title": "Sayfa bulunamadı",
     "description": "Bu sayfa yok ya da yapım TMDB'den kaldırılmış.",
     "home": "Ana sayfaya dön"
+  },
+  "Theme": {
+    "ariaLabel": "Renk teması",
+    "light": "Açık tema",
+    "dark": "Koyu tema",
+    "system": "Sistem teması"
+  },
+  "Projects": {
+    "label": "Projeler",
+    "heading": "Eylül Güneş’in projeleri",
+    "youAreHere": "Buradasınız",
+    "sourceCode": "(kaynak kod)"
   }
 }

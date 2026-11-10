@@ -38,7 +38,6 @@ Share link             /shared#<lz-string data>, the fragment never reaches the 
 - **Search route.** `/api/search` validates its parameters with zod, rate limits per client, refuses cross site browser requests, sends no CORS headers, and never forwards TMDB's error text.
 - **i18n.** next-intl with the locale as the root segment (`src/app/[locale]`), read through `next/root-params`. Messages live in `src/messages/{en,tr,de}.json`; a test checks that all three have the same keys, ICU arguments and tags.
 - **UI.** The shared design system [`@eylulg/ui`](https://github.com/eylulg/ui) on Tailwind CSS 4 and React Aria Components, with its `watchlist` theme variant (rose, warm stone grays, large radius). The app chrome (top bar, project switcher, theme toggle, footer) comes from `@eylulg/ui/chrome`; `src/components/app/nav.tsx` is a small client component because the locale aware `Link` is a function that a server component cannot pass down. Title cards use `Card`, statuses and settings use `Select`, filters use `Tag`, and empty views use `EmptyState`. App components live in `src/components/app`, `detail`, `search`, `watchlist`, `shared` and `settings`.
-- **Library labels stay in English.** The theme toggle, the project switcher and the menu button come from the library with English labels, so they are not translated. The app's own strings all stay in the message files. The TMDB and JustWatch credits sit above the shared footer, which has no slot for them.
 
 ## Run it locally
 

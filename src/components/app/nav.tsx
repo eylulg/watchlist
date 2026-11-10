@@ -15,9 +15,19 @@ const NAV_ITEMS = [
 /** A client component because the locale aware Link is a function, which a server component cannot pass down. */
 export const Nav = () => {
     const t = useTranslations("Nav");
+    const tt = useTranslations("Theme");
+    const tp = useTranslations("Projects");
     const pathname = usePathname();
     const { items } = useWatchlist();
     const saved = items?.length ?? 0;
+
+    const themeLabels = { ariaLabel: tt("ariaLabel"), light: tt("light"), dark: tt("dark"), system: tt("system") };
+    const projectLabels = {
+        label: tp("label"),
+        heading: tp("heading"),
+        youAreHere: tp("youAreHere"),
+        sourceCode: tp("sourceCode"),
+    };
 
     const links = NAV_ITEMS.map((item) => ({
         href: item.href,
@@ -32,12 +42,14 @@ export const Nav = () => {
             homeHref="/"
             LinkComponent={Link}
             links={links}
+            labels={{ openMenu: t("openMenu"), closeMenu: t("closeMenu") }}
             actions={
                 <>
-                    <ProjectSwitcher currentId="watchlist" />
-                    <ThemeToggle />
+                    <ProjectSwitcher currentId="watchlist" labels={projectLabels} />
+                    <ThemeToggle labels={themeLabels} />
                 </>
             }
+            compactActions={<ThemeToggle compact labels={themeLabels} />}
         />
     );
 };

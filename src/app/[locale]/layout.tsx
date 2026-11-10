@@ -3,13 +3,15 @@ import { AppShell, SiteFooter, themeInitScript } from "@eylulg/ui/chrome";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
+import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Attribution } from "@/components/app/attribution";
 import { Nav } from "@/components/app/nav";
 import { Providers } from "@/components/app/providers";
 import { ServiceWorkerRegistration } from "@/components/app/service-worker-registration";
 import { routing } from "@/i18n/routing";
 import "@/styles/globals.css";
+
+const creditLinkClass = "font-semibold text-secondary underline underline-offset-2 hover:text-primary";
 
 interface LayoutProps {
     children: ReactNode;
@@ -51,6 +53,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
     const { locale } = await params;
     if (!hasLocale(routing.locales, locale)) notFound();
     const t = await getTranslations("Nav");
+    const tf = await getTranslations("Footer");
 
     return (
         <html lang={locale} suppressHydrationWarning>
@@ -62,16 +65,48 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
                 <NextIntlClientProvider>
                     <Providers>
                         <AppShell
+                            maxWidth="6xl"
                             skipLinkLabel={t("skipToContent")}
                             header={<Nav />}
                             footer={
-                                <>
-                                    <Attribution />
-                                    <SiteFooter currentId="watchlist" />
-                                </>
+                                <SiteFooter
+                                    currentId="watchlist"
+                                    labels={{
+                                        intro: tf("intro"),
+                                        projectsNav: tf("projectsNav"),
+                                        source: tf("source"),
+                                        profilesNav: tf("profilesNav"),
+                                        github: tf("github"),
+                                        linkedin: tf("linkedin"),
+                                        builtWith: tf("builtWith"),
+                                    }}
+                                >
+                                    {/* TMDB asks for its logo next to the attribution notice. An SVG needs no optimising. */}
+                                    <p className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                                        <Image src="/tmdb-logo.svg" alt="TMDB" width={92} height={12} unoptimized className="h-3 w-auto" />
+                                        <span>
+                                            {tf.rich("tmdb", {
+                                                link: (chunks) => (
+                                                    <a href="https://www.themoviedb.org/" className={creditLinkClass}>
+                                                        {chunks}
+                                                    </a>
+                                                ),
+                                            })}
+                                        </span>
+                                    </p>
+                                    <p>
+                                        {tf.rich("justwatch", {
+                                            link: (chunks) => (
+                                                <a href="https://www.justwatch.com/" className={creditLinkClass}>
+                                                    {chunks}
+                                                </a>
+                                            ),
+                                        })}
+                                    </p>
+                                </SiteFooter>
                             }
                         >
-                            <div className="mx-auto w-full max-w-7xl">{children}</div>
+                            {children}
                         </AppShell>
                         <ServiceWorkerRegistration />
                     </Providers>

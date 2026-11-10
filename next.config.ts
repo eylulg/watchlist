@@ -1,6 +1,5 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
-import path from "node:path";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
@@ -11,17 +10,7 @@ const securityHeaders = [
     { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
 ];
 
-/** The design system is linked from a sibling folder, so Turbopack's root must include it. */
-const workspaceRoot = path.resolve(import.meta.dirname, "..");
-
-/** The linked library has its own node_modules. Next already bundles its own React, but React Aria Components keeps router context in module state, so it needs one copy. */
-const sharedPackages = ["react-aria-components"];
-
 const nextConfig: NextConfig = {
-    turbopack: {
-        root: workspaceRoot,
-        resolveAlias: Object.fromEntries(sharedPackages.map((name) => [name, `./node_modules/${name}`])),
-    },
     reactStrictMode: true,
     poweredByHeader: false,
     // The TMDB key is read with process.env on the server only. Nothing in `env` here, on purpose:

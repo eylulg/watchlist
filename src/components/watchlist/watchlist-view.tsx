@@ -11,11 +11,9 @@ import { BookmarkPlus } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import type { Selection } from "react-aria-components";
-import { LinkButton } from "@/components/app/link-button";
 import { EmptyResults } from "@/components/app/states";
 import { pageIntroClass, pageTitleClass, statusTextClass } from "@/components/app/styles";
-import { useRouter } from "@/i18n/navigation";
-import { focusFirstControl } from "@/lib/focus";
+import { getPathname, useRouter } from "@/i18n/navigation";
 import {
     SORT_OPTIONS,
     STATUS_FILTERS,
@@ -44,7 +42,7 @@ export const WatchlistView = () => {
     const { items, isPersisted } = useWatchlist();
     const headingRef = useRef<HTMLHeadingElement>(null);
     const listRef = useRef<HTMLUListElement>(null);
-    const filtersRef = useRef<HTMLDivElement>(null);
+    const statusFilterRef = useRef<HTMLButtonElement>(null);
 
     const query = parseWatchlistQuery(new URLSearchParams(searchParams.toString()));
     const visible = items ? filterAndSort(items, query, locale) : [];
@@ -74,7 +72,7 @@ export const WatchlistView = () => {
 
     function handleClearFilters() {
         setQuery({ status: "all", type: "all" });
-        focusFirstControl(filtersRef.current);
+        statusFilterRef.current?.focus();
     }
 
     // The removed row held focus, so move it to the row that takes its place, or to the heading.
@@ -122,7 +120,7 @@ export const WatchlistView = () => {
                     title={t("emptyTitle")}
                     description={t("emptyDescription")}
                     icon={BookmarkPlus}
-                    actions={<LinkButton href="/search">{t("emptyAction")}</LinkButton>}
+                    actions={<Button href={getPathname({ href: "/search", locale })}>{t("emptyAction")}</Button>}
                 />
             ) : (
                 <>
@@ -132,8 +130,9 @@ export const WatchlistView = () => {
                         <h2 id="list-heading" className="sr-only">
                             {t("listHeading")}
                         </h2>
-                        <div ref={filtersRef} className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:max-w-3xl">
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:max-w-3xl">
                             <Select
+                                ref={statusFilterRef}
                                 label={tf("status")}
                                 value={query.status}
                                 onChange={handleStatusFilter}
@@ -172,7 +171,7 @@ export const WatchlistView = () => {
                         {visible.length === 0 ? (
                             <EmptyResults
                                 title={t("noMatchesTitle")}
-                                headingAs="h3"
+                                headingLevel={3}
                                 description={t("noMatchesDescription")}
                                 actions={
                                     isFiltered && (

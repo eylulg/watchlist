@@ -11,11 +11,20 @@
     "watchlist": "Watchlist",
     "settings": "Settings",
     "skipToContent": "Skip to content",
-    "watchlistWithCount": "Watchlist ({count})"
+    "watchlistWithCount": "Watchlist ({count})",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "Footer": {
     "tmdb": "This product uses the TMDB API but is not endorsed or certified by TMDB. Data and images from <link>The Movie Database (TMDB)</link>.",
-    "justwatch": "Streaming availability data provided by <link>JustWatch</link>."
+    "justwatch": "Streaming availability data provided by <link>JustWatch</link>.",
+    "intro": "Part of Eylül Güneş's projects",
+    "projectsNav": "Projects",
+    "source": "(source)",
+    "profilesNav": "Profiles",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "builtWith": "Built with @eylulg/ui"
   },
   "Common": {
     "movie": "Movie",
@@ -233,5 +242,17 @@
     "title": "Page not found",
     "description": "This page does not exist, or the title was removed from TMDB.",
     "home": "Go home"
+  },
+  "Theme": {
+    "ariaLabel": "Colour theme",
+    "light": "Light theme",
+    "dark": "Dark theme",
+    "system": "System theme"
+  },
+  "Projects": {
+    "label": "Projects",
+    "heading": "Eylül Güneş's projects",
+    "youAreHere": "You are here",
+    "sourceCode": "(source code)"
   }
 }

@@ -8,7 +8,6 @@ import { Skeleton } from "@eylulg/ui/skeleton";
 import { BookmarkPlus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { focusFirstControl } from "@/lib/focus";
 import { type WatchStatus, type WatchlistTitle, itemKey } from "@/lib/watchlist/schema";
 import { useWatchlist, watchlistActions } from "@/lib/watchlist/store";
 import { StatusSelect } from "./status-select";
@@ -24,8 +23,8 @@ interface WatchlistControlProps {
 export const WatchlistControl = ({ title, runtime }: WatchlistControlProps) => {
     const t = useTranslations("Watchlist");
     const { items } = useWatchlist();
-    const statusRef = useRef<HTMLDivElement>(null);
-    const addRef = useRef<HTMLDivElement>(null);
+    const statusRef = useRef<HTMLButtonElement>(null);
+    const addRef = useRef<HTMLButtonElement>(null);
     const key = itemKey(title);
     const item = items?.find((entry) => itemKey(entry) === key);
     const needsRuntime = item !== undefined && item.runtime === null && runtime !== null;
@@ -40,14 +39,14 @@ export const WatchlistControl = ({ title, runtime }: WatchlistControlProps) => {
         flushSync(() => {
             watchlistActions.add({ ...title, runtime });
         });
-        focusFirstControl(statusRef.current);
+        statusRef.current?.focus();
     }
 
     function handleRemove() {
         flushSync(() => {
             watchlistActions.remove(key);
         });
-        focusFirstControl(addRef.current);
+        addRef.current?.focus();
     }
 
     function handleStatusChange(status: WatchStatus) {
@@ -60,11 +59,9 @@ export const WatchlistControl = ({ title, runtime }: WatchlistControlProps) => {
 
     if (!item) {
         return (
-            <div ref={addRef}>
-                <Button size="md" iconLeading={BookmarkPlus} onPress={handleAdd}>
-                    {t("add")}
-                </Button>
-            </div>
+            <Button ref={addRef} size="md" iconLeading={BookmarkPlus} onPress={handleAdd}>
+                {t("add")}
+            </Button>
         );
     }
 

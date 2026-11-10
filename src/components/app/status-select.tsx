@@ -11,8 +11,8 @@ interface StatusSelectProps {
     /** Visible label. Omit it when several selects share one, and name each with `ariaLabel`. */
     label?: string;
     ariaLabel?: string;
-    /** The wrapper, so a caller can move focus to the select after it appears. */
-    ref?: Ref<HTMLDivElement>;
+    /** The select button, so a caller can move focus to it after it appears. */
+    ref?: Ref<HTMLButtonElement>;
 }
 
 export const StatusSelect = ({ value, onChange, label, ariaLabel, ref }: StatusSelectProps) => {
@@ -24,8 +24,9 @@ export const StatusSelect = ({ value, onChange, label, ariaLabel, ref }: StatusS
     }
 
     return (
-        <div ref={ref} className="w-44">
+        <div className="w-44">
             <Select
+                ref={ref}
                 label={label}
                 aria-label={ariaLabel}
                 value={value}
