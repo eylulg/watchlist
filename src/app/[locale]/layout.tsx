@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { AppShell, SiteFooter, themeInitScript } from "@eylulg/ui/chrome";
+import interLatin from "@fontsource-variable/inter/files/inter-latin-wght-normal.woff2";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
@@ -61,6 +62,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
     return (
         <html lang={locale} suppressHydrationWarning>
             <head>
+                {/* The one font file the first paint uses. The other Inter subsets load only when a page needs their characters. */}
+                <link rel="preload" href={interLatin} as="font" type="font/woff2" crossOrigin="anonymous" />
                 {/* Applies the saved theme before first paint, so there is no flash of the wrong theme. */}
                 <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
             </head>
