@@ -4,18 +4,18 @@
   "runs": 3,
   "routes": {
     "home": {
-      "performance": 97,
+      "performance": 100,
       "jsGzipKb": 294.9,
       "cssGzipKb": 13.3,
       "requests": 59,
-      "lcpMs": 2157,
+      "lcpMs": 984,
       "cls": 0,
       "tbtMs": 5,
       "medianOf": {
-        "performance": 97,
+        "performance": 100,
         "cls": 0,
-        "lcpMs": 2156,
-        "tbtMs": 4,
+        "lcpMs": 985,
+        "tbtMs": 7,
         "jsGzipKb": 294.9
       }
     },
@@ -24,14 +24,14 @@
       "jsGzipKb": 322.2,
       "cssGzipKb": 13.3,
       "requests": 47,
-      "lcpMs": 754,
+      "lcpMs": 755,
       "cls": 0,
-      "tbtMs": 8,
+      "tbtMs": 7,
       "medianOf": {
         "performance": 100,
         "cls": 0,
-        "lcpMs": 755,
-        "tbtMs": 8,
+        "lcpMs": 756,
+        "tbtMs": 7,
         "jsGzipKb": 322.2
       }
     },
@@ -40,13 +40,13 @@
       "jsGzipKb": 312.8,
       "cssGzipKb": 13.3,
       "requests": 34,
-      "lcpMs": 903,
+      "lcpMs": 904,
       "cls": 0,
       "tbtMs": 2,
       "medianOf": {
         "performance": 100,
         "cls": 0,
-        "lcpMs": 903,
+        "lcpMs": 904,
         "tbtMs": 2,
         "jsGzipKb": 312.8
       }
@@ -56,14 +56,14 @@
       "jsGzipKb": 340.1,
       "cssGzipKb": 13.3,
       "requests": 28,
-      "lcpMs": 4054,
+      "lcpMs": 4063,
       "cls": 0,
-      "tbtMs": 3,
+      "tbtMs": 22,
       "medianOf": {
         "performance": 87,
         "cls": 0,
-        "lcpMs": 4054,
-        "tbtMs": 3,
+        "lcpMs": 4063,
+        "tbtMs": 20,
         "jsGzipKb": 340.1
       }
     }
@@ -72,8 +72,8 @@
     "initialCls": 0,
     "totalCls": 3.303,
     "appendedCls": 3.303,
-    "appendedPages": 0,
-    "clsPerAppendedPage": 0,
+    "appendedPages": 4,
+    "clsPerAppendedPage": 0.826,
     "cardsAfterScroll": 100
   },
   "homePosters": {
