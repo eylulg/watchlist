@@ -1,6 +1,7 @@
+import { cx } from "@eylulg/ui/cx";
 import { useFormatter, useTranslations } from "next-intl";
 import { Poster } from "@/components/app/poster";
-import { pageTitleClass, sectionTitleClass } from "@/components/app/styles";
+import { pageTitleClass, sectionTitleClass, stableHeightClass } from "@/components/app/styles";
 import { Thumb } from "@/components/app/thumb";
 import { Link } from "@/i18n/navigation";
 import { DETAIL_POSTER_SIZES } from "@/lib/tmdb/images";
@@ -15,7 +16,7 @@ export const PersonView = ({ person }: { person: PersonDetail }) => {
     const creditCount = person.filmography.reduce((sum, year) => sum + year.credits.length, 0);
 
     return (
-        <article className="flex flex-col gap-10">
+        <article className={cx(stableHeightClass, "flex flex-col gap-10")}>
             <div className="flex flex-col gap-6 md:flex-row md:gap-10">
                 <div className="w-48 shrink-0 self-center overflow-hidden rounded-2xl ring-1 ring-default md:w-64 md:self-start">
                     <Poster

@@ -1,7 +1,9 @@
 import { Suspense } from "react";
+import { cx } from "@eylulg/ui/cx";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { pageIntroClass, pageTitleClass } from "@/components/app/styles";
+import { pageIntroClass, pageTitleClass, stableHeightClass } from "@/components/app/styles";
+import { WatchlistSkeleton } from "@/components/watchlist/watchlist-skeleton";
 import { WatchlistView } from "@/components/watchlist/watchlist-view";
 import { resolveLocale } from "@/lib/route-params";
 
@@ -21,9 +23,12 @@ export default async function WatchlistPage({ params }: PageProps) {
     return (
         <Suspense
             fallback={
-                <div className="flex flex-col gap-2" aria-busy="true">
-                    <h1 className={pageTitleClass}>{t("title")}</h1>
-                    <p className={pageIntroClass}>{t("intro")}</p>
+                <div className={cx(stableHeightClass, "flex flex-col gap-8")} aria-busy="true">
+                    <div className="flex flex-col gap-2">
+                        <h1 className={pageTitleClass}>{t("title")}</h1>
+                        <p className={pageIntroClass}>{t("intro")}</p>
+                    </div>
+                    <WatchlistSkeleton />
                 </div>
             }
         >

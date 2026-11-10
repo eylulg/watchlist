@@ -5,14 +5,13 @@ import { flushSync } from "react-dom";
 import { Button } from "@eylulg/ui/button";
 import { cx } from "@eylulg/ui/cx";
 import { Select, SelectItem } from "@eylulg/ui/select";
-import { Skeleton } from "@eylulg/ui/skeleton";
 import { Tag, TagGroup } from "@eylulg/ui/tag";
 import { BookmarkPlus } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import type { Selection } from "react-aria-components";
 import { EmptyResults } from "@/components/app/states";
-import { pageIntroClass, pageTitleClass, statusTextClass } from "@/components/app/styles";
+import { pageIntroClass, pageTitleClass, stableHeightClass, statusTextClass } from "@/components/app/styles";
 import { getPathname, useRouter } from "@/i18n/navigation";
 import {
     SORT_OPTIONS,
@@ -29,6 +28,7 @@ import { ImportExport } from "./import-export";
 import { RowList } from "./row-list";
 import { SharePanel } from "./share-panel";
 import { WatchlistRow } from "./watchlist-row";
+import { WatchlistSkeleton } from "./watchlist-skeleton";
 import { WatchlistStats } from "./watchlist-stats";
 
 const DEFAULT_QUERY: WatchlistQuery = { status: "all", type: "all", sort: "added-desc" };
@@ -103,15 +103,15 @@ export const WatchlistView = () => {
 
     if (items === null) {
         return (
-            <div className="flex flex-col gap-6" aria-busy="true">
+            <div className={cx(stableHeightClass, "flex flex-col gap-8")} aria-busy="true">
                 {heading}
-                <Skeleton shape="rect" className="h-24 rounded-xl" />
+                <WatchlistSkeleton />
             </div>
         );
     }
 
     return (
-        <div className="flex flex-col gap-8">
+        <div className={cx(stableHeightClass, "flex flex-col gap-8")}>
             {heading}
 
             {!isPersisted && (

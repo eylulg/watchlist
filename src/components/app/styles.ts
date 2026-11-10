@@ -13,3 +13,9 @@ export const sideLinkClass = cx(inlineLinkClass, "self-start text-sm");
 export const cardClass = "h-full";
 export const posterGridClass = "grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6";
 export const statusTextClass = "text-sm text-tertiary";
+/**
+ * Pages whose content streams in or renders in the browser reserve one viewport of height in both the
+ * placeholder and the final view. The footer then starts below the fold and never jumps into view when the
+ * content arrives.
+ */
+export const stableHeightClass = "min-h-dvh";

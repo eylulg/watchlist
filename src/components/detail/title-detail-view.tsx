@@ -1,11 +1,12 @@
 import { Badge } from "@eylulg/ui/badge";
+import { cx } from "@eylulg/ui/cx";
 import { Skeleton } from "@eylulg/ui/skeleton";
 import { useFormatter, useTranslations } from "next-intl";
 import { Carousel } from "@/components/app/carousel";
 import { Star } from "@/components/app/icons";
 import { PersonCard } from "@/components/app/person-card";
 import { Poster } from "@/components/app/poster";
-import { inlineLinkClass, pageTitleClass, sectionTitleClass } from "@/components/app/styles";
+import { inlineLinkClass, pageTitleClass, sectionTitleClass, stableHeightClass } from "@/components/app/styles";
 import { TitleCard } from "@/components/app/title-card";
 import { WatchlistControl } from "@/components/app/watchlist-control";
 import { Link } from "@/i18n/navigation";
@@ -41,7 +42,7 @@ export const TitleDetailView = ({ detail, region }: TitleDetailViewProps) => {
     if (detail.mediaType === "tv" && detail.numberOfSeasons) facts.push(t("seasonCount", { count: detail.numberOfSeasons }));
 
     return (
-        <article className="flex flex-col gap-10 md:gap-12">
+        <article className={cx(stableHeightClass, "flex flex-col gap-10 md:gap-12")}>
             <div className="flex flex-col gap-6 md:flex-row md:gap-10">
                 <div className="w-48 shrink-0 self-center overflow-hidden rounded-2xl shadow-lg ring-1 ring-default md:w-72 md:self-start">
                     <Poster path={detail.posterPath} alt={t("posterAlt", { title: detail.title })} sizes={DETAIL_POSTER_SIZES} priority />

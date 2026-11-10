@@ -1,7 +1,8 @@
+import { cx } from "@eylulg/ui/cx";
 import { useTranslations } from "next-intl";
 import { Poster } from "@/components/app/poster";
 import { CardGrid } from "@/components/app/states";
-import { pageTitleClass, sectionTitleClass } from "@/components/app/styles";
+import { pageTitleClass, sectionTitleClass, stableHeightClass } from "@/components/app/styles";
 import { TitleCard } from "@/components/app/title-card";
 import { DETAIL_POSTER_SIZES, GRID_POSTER_SIZES } from "@/lib/tmdb/images";
 import type { CollectionDetail } from "@/lib/tmdb/types";
@@ -10,7 +11,7 @@ export const CollectionView = ({ collection }: { collection: CollectionDetail })
     const t = useTranslations("Collection");
 
     return (
-        <article className="flex flex-col gap-10">
+        <article className={cx(stableHeightClass, "flex flex-col gap-10")}>
             <div className="flex flex-col gap-6 md:flex-row md:gap-10">
                 <div className="w-40 shrink-0 self-center overflow-hidden rounded-2xl ring-1 ring-default md:w-56 md:self-start">
                     <Poster

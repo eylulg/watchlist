@@ -1,6 +1,7 @@
+import { cx } from "@eylulg/ui/cx";
 import { useFormatter, useTranslations } from "next-intl";
 import { ArrowLeft } from "@/components/app/icons";
-import { backLinkClass, pageTitleClass, sectionTitleClass } from "@/components/app/styles";
+import { backLinkClass, pageTitleClass, sectionTitleClass, stableHeightClass } from "@/components/app/styles";
 import { Thumb } from "@/components/app/thumb";
 import { Link } from "@/i18n/navigation";
 import { type SeasonDetail, titleHref } from "@/lib/tmdb/types";
@@ -10,7 +11,7 @@ export const SeasonView = ({ season, seriesTitle }: { season: SeasonDetail; seri
     const format = useFormatter();
 
     return (
-        <article className="flex flex-col gap-8">
+        <article className={cx(stableHeightClass, "flex flex-col gap-8")}>
             <div className="flex flex-col gap-2">
                 <Link href={titleHref({ mediaType: "tv", id: season.seriesId })} className={backLinkClass}>
                     <ArrowLeft aria-hidden="true" className="size-4" />
