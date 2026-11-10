@@ -35,6 +35,23 @@ const paged = (results: unknown[], totalPages = 1) => ({ page: 1, results, total
 const MOVIES = [movie(1, "Dune"), movie(2, "Arrival"), movie(3, "Blade Runner 2049")];
 const SERIES = [series(11, "Severance"), series(12, "Shogun")];
 
+/**
+ * The performance runs set MOCK_TMDB_POSTERS=1 for full pages of 20 results that each have a poster path, as the
+ * real API returns, and five search pages so infinite scroll can be measured. The suite leaves it unset.
+ */
+const FULL_PAGES = process.env.MOCK_TMDB_POSTERS === "1";
+const PAGE_SIZE = 20;
+const SEARCH_PAGES = 5;
+const generated = (kind: "movie" | "tv", page: number) =>
+    Array.from({ length: PAGE_SIZE }, (_, i) => {
+        const id = (kind === "movie" ? 1000 : 2000) + page * PAGE_SIZE + i;
+        const path = `/mock-poster-${String(id)}.jpg`;
+        const name = `Dune part ${String(id)}`;
+        return kind === "movie"
+            ? { ...movie(id, name, { poster_path: path }), media_type: "movie" }
+            : { ...series(id, name), poster_path: path, media_type: "tv" };
+    });
+
 const credits = {
     cast: [{ id: 52, name: "Timothée Chalamet", character: "Paul Atreides", profile_path: null, order: 0 }],
     crew: [{ id: 60, name: "Denis Villeneuve", job: "Director", department: "Directing", profile_path: null }],
@@ -52,14 +69,22 @@ const providers = {
 const routes: [RegExp, (match: RegExpMatchArray, url: URL) => unknown][] = [
     [
         /^\/3\/trending\/all\/\w+$/,
-        () => paged([...MOVIES.map((m) => ({ ...m, media_type: "movie" })), ...SERIES.map((s) => ({ ...s, media_type: "tv" }))]),
+        () =>
+            FULL_PAGES
+                ? paged([...generated("movie", 0).slice(0, 10), ...generated("tv", 0).slice(0, 10)])
+                : paged([...MOVIES.map((m) => ({ ...m, media_type: "movie" })), ...SERIES.map((s) => ({ ...s, media_type: "tv" }))]),
     ],
-    [/^\/3\/movie\/(popular|top_rated)$/, () => paged(MOVIES)],
-    [/^\/3\/tv\/(popular|top_rated)$/, () => paged(SERIES)],
+    [/^\/3\/movie\/(popular|top_rated)$/, () => paged(FULL_PAGES ? generated("movie", 1) : MOVIES)],
+    [/^\/3\/tv\/(popular|top_rated)$/, () => paged(FULL_PAGES ? generated("tv", 1) : SERIES)],
     [
         /^\/3\/search\/(multi|movie|tv|person)$/,
         (match, url) => {
             const query = (url.searchParams.get("query") ?? "").toLowerCase();
+            if (FULL_PAGES && match[1] !== "person") {
+                const page = Number(url.searchParams.get("page") ?? 1);
+                const kind = match[1] === "tv" ? "tv" : "movie";
+                return { ...paged(generated(kind, page + 2), SEARCH_PAGES), page, total_results: SEARCH_PAGES * PAGE_SIZE };
+            }
             const titles = [
                 ...MOVIES.map((m) => ({ ...m, media_type: "movie" })),
                 ...SERIES.map((s) => ({ ...s, media_type: "tv" })),
