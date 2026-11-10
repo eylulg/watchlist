@@ -35,3 +35,4 @@ AGENTS.md
 
 # design system checkout made by CI
 ui-src/
+.lighthouseci/
