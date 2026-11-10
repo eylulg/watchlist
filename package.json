@@ -23,7 +23,7 @@
     "check:bundle": "node scripts/check-client-bundle.mjs",
     "e2e": "playwright test",
     "e2e:mock-tmdb": "node e2e/mock-tmdb/server.ts",
-    "relink": "npm install ../ui --install-links",
+    "relink": "rm -rf node_modules/@eylulg/ui && npm install ../ui --install-links",
     "prepare": "husky"
   },
   "dependencies": {
