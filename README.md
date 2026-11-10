@@ -50,7 +50,7 @@ Portfolio/
 ```
 
 ```bash
-npm install && npm install ../ui --install-links
+npm install && npm run relink   # relink repeats the copied install after the library is rebuilt
 cp .env.example .env
 # set TMDB_API_KEY in .env (a v3 key, or a v4 read access token starting with "eyJ")
 npm run dev
