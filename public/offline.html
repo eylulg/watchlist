@@ -6,19 +6,23 @@
         <meta name="color-scheme" content="light dark" />
         <title>Offline · Watchlist</title>
         <style>
+            /* The values are the watchlist variant's tokens of @eylulg/ui: stone grays and the rose brand. */
             :root {
                 color-scheme: light dark;
                 --bg: #ffffff;
-                --fg: #101828;
-                --muted: #475467;
-                --brand: #6941c6;
+                --fg: #1c1916;
+                --muted: #5f5853;
+                --brand: #c2244f;
+                --brand-hover: #a41940;
+                --ring: #a41940;
             }
             @media (prefers-color-scheme: dark) {
                 :root {
-                    --bg: #0c111d;
-                    --fg: #f5f5f6;
-                    --muted: #94969c;
-                    --brand: #b692f6;
+                    --bg: #0f0d0b;
+                    --fg: #f8f6f5;
+                    --muted: #a9a19c;
+                    --brand-hover: #e54167;
+                    --ring: #ffa3ae;
                 }
             }
             body {
@@ -29,9 +33,14 @@
                 background: var(--bg);
                 color: var(--fg);
                 font:
-                    16px/1.5 -apple-system,
+                    16px/1.5 "Inter Variable",
+                    "Inter",
+                    ui-sans-serif,
+                    system-ui,
+                    -apple-system,
                     "Segoe UI",
                     Roboto,
+                    "Helvetica Neue",
                     Arial,
                     sans-serif;
             }
@@ -45,42 +54,68 @@
             }
             p {
                 color: var(--muted);
-                margin: 0 0 1rem;
+                margin: 0 0 1.5rem;
             }
-            section + section {
-                margin-top: 1.5rem;
+            [data-lang] {
+                display: none;
+            }
+            [data-lang="en"] {
+                display: block;
+            }
+            html[lang="tr"] [data-lang],
+            html[lang="de"] [data-lang] {
+                display: none;
+            }
+            html[lang="tr"] [data-lang="tr"],
+            html[lang="de"] [data-lang="de"] {
+                display: block;
             }
             button {
                 font: inherit;
                 font-weight: 600;
                 color: #ffffff;
-                background: #7f56d9;
+                background: var(--brand);
                 border: 0;
-                border-radius: 0.5rem;
-                padding: 0.625rem 1rem;
+                border-radius: 0.75rem;
+                padding: 0.5rem 1rem;
+                min-height: 2.5rem;
                 cursor: pointer;
             }
+            button:hover {
+                background: var(--brand-hover);
+            }
             button:focus-visible {
-                outline: 2px solid var(--brand);
+                outline: 2px solid var(--ring);
                 outline-offset: 2px;
             }
         </style>
     </head>
     <body>
         <main>
-            <section lang="en">
+            <section data-lang="en">
                 <h1>You are offline</h1>
                 <p>Watchlist needs a connection to load movies and series. Your saved list is safe on this device.</p>
+                <button type="button" onclick="location.reload()">Try again</button>
             </section>
-            <section lang="tr">
-                <h2 style="font-size: 1.125rem; margin: 0 0 0.25rem">Çevrimdışısınız</h2>
+            <section data-lang="tr">
+                <h1>Çevrimdışısınız</h1>
                 <p>Watchlist, film ve dizileri yüklemek için bağlantıya ihtiyaç duyar. Kayıtlı listeniz bu cihazda güvende.</p>
+                <button type="button" onclick="location.reload()">Tekrar dene</button>
             </section>
-            <section lang="de">
-                <h2 style="font-size: 1.125rem; margin: 0 0 0.25rem">Du bist offline</h2>
+            <section data-lang="de">
+                <h1>Du bist offline</h1>
                 <p>Watchlist braucht eine Verbindung, um Filme und Serien zu laden. Deine gespeicherte Liste bleibt auf diesem Gerät.</p>
+                <button type="button" onclick="location.reload()">Erneut versuchen</button>
             </section>
-            <button type="button" onclick="location.reload()">Try again · Tekrar dene · Erneut versuchen</button>
         </main>
+        <script>
+            (function () {
+                var language = (navigator.language || "en").slice(0, 2);
+                var lang = language === "tr" || language === "de" ? language : "en";
+                document.documentElement.lang = lang;
+                var title = { en: "Offline", tr: "Çevrimdışı", de: "Offline" };
+                document.title = title[lang] + " · Watchlist";
+            })();
+        </script>
     </body>
 </html>
