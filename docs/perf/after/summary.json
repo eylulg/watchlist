@@ -8,14 +8,14 @@
       "jsGzipKb": 270.8,
       "cssGzipKb": 13.3,
       "requests": 58,
-      "lcpMs": 1261,
+      "lcpMs": 1260,
       "cls": 0,
-      "tbtMs": 3,
+      "tbtMs": 2,
       "medianOf": {
         "performance": 100,
         "cls": 0,
-        "lcpMs": 1261,
-        "tbtMs": 3,
+        "lcpMs": 1260,
+        "tbtMs": 2,
         "jsGzipKb": 270.8
       }
     },
@@ -24,14 +24,14 @@
       "jsGzipKb": 305.6,
       "cssGzipKb": 13.3,
       "requests": 46,
-      "lcpMs": 755,
+      "lcpMs": 754,
       "cls": 0,
       "tbtMs": 2,
       "medianOf": {
         "performance": 100,
         "cls": 0,
         "lcpMs": 755,
-        "tbtMs": 6,
+        "tbtMs": 4,
         "jsGzipKb": 305.6
       }
     },
@@ -46,8 +46,8 @@
       "medianOf": {
         "performance": 100,
         "cls": 0,
-        "lcpMs": 903,
-        "tbtMs": 1,
+        "lcpMs": 904,
+        "tbtMs": 2,
         "jsGzipKb": 288.7
       }
     },
@@ -56,13 +56,13 @@
       "jsGzipKb": 316,
       "cssGzipKb": 13.3,
       "requests": 27,
-      "lcpMs": 3980,
+      "lcpMs": 3904,
       "cls": 0,
       "tbtMs": 2,
       "medianOf": {
         "performance": 88,
         "cls": 0,
-        "lcpMs": 3981,
+        "lcpMs": 3905,
         "tbtMs": 2,
         "jsGzipKb": 316
       }

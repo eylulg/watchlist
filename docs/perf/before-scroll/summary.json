@@ -1,0 +1,24 @@
+{
+  "label": "before-scroll",
+  "baseUrl": "http://localhost:4805",
+  "runs": 3,
+  "routes": {},
+  "infiniteScroll": {
+    "steps": {
+      "initialCls": 0,
+      "totalCls": 3.303,
+      "appendedCls": 3.303,
+      "appendedPages": 4,
+      "clsPerAppendedPage": 0.826,
+      "cardsAfterScroll": 100
+    },
+    "jump": {
+      "initialCls": 0,
+      "totalCls": 3.303,
+      "appendedCls": 3.303,
+      "appendedPages": 4,
+      "clsPerAppendedPage": 0.826,
+      "cardsAfterScroll": 100
+    }
+  }
+}
