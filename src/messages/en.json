@@ -174,7 +174,7 @@
   "Stats": {
     "title": "Statistics",
     "total": "Titles",
-    "split": "{movies} movies, {series} series",
+    "split": "{movies, plural, one {# movie} other {# movies}}, {series, plural, one {# series} other {# series}}",
     "toWatch": "To watch",
     "watching": "Watching",
     "watched": "Watched",

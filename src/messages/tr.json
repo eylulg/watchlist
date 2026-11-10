@@ -174,7 +174,7 @@
   "Stats": {
     "title": "İstatistikler",
     "total": "Yapım",
-    "split": "{movies} film, {series} dizi",
+    "split": "{movies, plural, other {# film}}, {series, plural, other {# dizi}}",
     "toWatch": "İzlenecek",
     "watching": "İzleniyor",
     "watched": "İzlendi",

@@ -39,6 +39,13 @@ describe("WatchlistView", () => {
         expect(within(screen.getByRole("region", { name: "Statistics" })).getByText("1.9")).toBeInTheDocument();
     });
 
+    it("uses the singular in the title count of a one title list", async () => {
+        storeWatchlist([ITEMS[2] ?? watchlistItem()]);
+        renderWithProviders(<WatchlistView />, { url: "/en/watchlist" });
+
+        expect(await screen.findByText("1 movie, 0 series")).toBeInTheDocument();
+    });
+
     it("changes a status and keeps it in storage", async () => {
         const { user } = renderWatchlist();
 

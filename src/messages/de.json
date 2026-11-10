@@ -174,7 +174,7 @@
   "Stats": {
     "title": "Statistik",
     "total": "Titel",
-    "split": "{movies} Filme, {series} Serien",
+    "split": "{movies, plural, one {# Film} other {# Filme}}, {series, plural, one {# Serie} other {# Serien}}",
     "toWatch": "Noch sehen",
     "watching": "Schaue ich",
     "watched": "Gesehen",
