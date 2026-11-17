@@ -2,8 +2,6 @@
 
 A personal movie and series watchlist on top of [The Movie Database (TMDB)](https://www.themoviedb.org/). Browse and search the catalogue, then keep your own list: what you want to watch, what you are watching and what you have seen, with your rating and a note for each title.
 
-> The repository is still called `movies-series-website-demo` from its 2021 origins and may be renamed to `watchlist`.
-
 <!-- Screenshot placeholder: add docs/screenshot.png (home page, 1280px wide) and replace this comment with:
 ![Watchlist home page with trending and popular rows](docs/screenshot.png) -->
 
@@ -46,7 +44,7 @@ You need Node 22 or newer (Node 24 recommended, see `.nvmrc`), a free TMDB API k
 ```text
 Portfolio/
   ui/                              # github.com/eylulg/ui, run npm install && npm run build once
-  movies-series-website-demo/      # this app
+  watchlist/                       # this app
 ```
 
 ```bash
