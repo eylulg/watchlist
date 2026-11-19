@@ -34,10 +34,6 @@ jobs:
 
       - uses: ./.github/actions/setup-ui
 
-      - name: Commit messages
-        if: github.event_name == 'pull_request'
-        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
-
       - name: Typecheck
         run: npm run typecheck
 

@@ -71,7 +71,7 @@ Open <http://localhost:3000>. `.env` is gitignored; never commit a real key.
 | `npm run check:bundle` | Fail if anything that could reveal the TMDB key is in the client build |
 | `npm run e2e`          | Playwright end to end tests against a mock TMDB                        |
 
-Husky runs lint-staged on every commit and commitlint checks commit messages against Conventional Commits.
+Husky runs lint-staged on every commit. Commit messages are plain sentences in the past tense.
 
 ## Tests
 
