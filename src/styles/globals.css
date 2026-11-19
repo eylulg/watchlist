@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@import "@eylulg/ui/fonts.css";
+@import "@eylulg/ui/theme.css";
+@import "@eylulg/ui/themes/watchlist.css";
+@source "../../node_modules/@eylulg/ui/dist";
+
+@utility scrollbar-hide {
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    scrollbar-width: none;
+}
+
+/* Hide the default clear button (X) from search inputs. */
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}

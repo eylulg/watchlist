@@ -1,40 +1,83 @@
 {
-  "name": "cra-demo-streaming",
-  "version": "0.1.0",
+  "name": "watchlist",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.9",
-    "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.6.3",
-    "axios": "^0.21.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.2",
-    "web-vitals": "^1.1.0"
+  "version": "2.0.0",
+  "type": "module",
+  "description": "Watchlist: a personal movie and series watchlist on top of TMDB, built with Next.js.",
+  "license": "MIT",
+  "author": "Eylül Güneş",
+  "engines": {
+    "node": ">=22"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "next typegen && tsc --noEmit --pretty",
+    "lint": "eslint . --max-warnings 0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "knip": "knip",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check:bundle": "node scripts/check-client-bundle.mjs",
+    "perf:measure": "node scripts/measure-performance.mjs",
+    "perf:budget": "lhci autorun",
+    "e2e": "playwright test",
+    "e2e:mock-tmdb": "node e2e/mock-tmdb/server.ts",
+    "relink": "rm -rf node_modules/@eylulg/ui && npm install ../ui --install-links && git checkout -- package-lock.json",
+    "prepare": "husky"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "dependencies": {
+    "@eylulg/ui": "file:../ui",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@tailwindcss/postcss": "^4.3.5",
+    "@tanstack/react-query": "^5.107.1",
+    "@tanstack/react-virtual": "^3.14.26",
+    "lucide-react": "^1.71.0",
+    "lz-string": "^1.5.0",
+    "next": "^16.4.5",
+    "next-intl": "^4.14.9",
+    "react": "^19.3.1",
+    "react-aria-components": "^1.22.1",
+    "react-dom": "^19.3.1",
+    "server-only": "^0.0.1",
+    "tailwindcss": "^4.3.5",
+    "zod": "^4.6.7"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@eslint/js": "^9.39.5",
+    "@lhci/cli": "^0.16.0",
+    "@next/eslint-plugin-next": "^16.4.5",
+    "@playwright/test": "^1.65.0",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.14.0",
+    "husky": "^9.1.7",
+    "jsdom": "^31.0.0",
+    "knip": "^6.44.2",
+    "lighthouse": "^13.6.0",
+    "lint-staged": "^17.6.0",
+    "msw": "^2.15.0",
+    "postcss": "^8.5.32",
+    "prettier": "^3.9.10",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "typescript": "~5.9",
+    "typescript-eslint": "^8.72.2",
+    "vite": "^7.3.8",
+    "vitest": "^4.1.12",
+    "vitest-axe": "^0.1.0"
   }
 }

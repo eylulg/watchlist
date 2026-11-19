@@ -1,0 +1,18 @@
+{
+  "ci": {
+    "collect": {
+      "startServerCommand": "sh -c 'MOCK_TMDB_POSTERS=1 MOCK_TMDB_PORT=4806 node e2e/mock-tmdb/server.ts & TMDB_API_BASE_URL=http://127.0.0.1:4806/3 npx next start -p 4805'",
+      "startServerReadyPattern": "Ready",
+      "url": ["http://localhost:4805/en", "http://localhost:4805/en/search?q=dune", "http://localhost:4805/en/movie/1"],
+      "numberOfRuns": 3,
+      "settings": { "onlyCategories": ["performance"] }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.9 }],
+        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
+        "resource-summary:script:size": ["error", { "maxNumericValue": 330000 }]
+      }
+    }
+  }
+}

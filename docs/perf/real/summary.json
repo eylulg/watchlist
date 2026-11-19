@@ -1,0 +1,64 @@
+{
+  "label": "real",
+  "baseUrl": "http://localhost:4805",
+  "runs": 3,
+  "routes": {
+    "home": {
+      "performance": 95,
+      "jsGzipKb": 270.8,
+      "cssGzipKb": 13.3,
+      "requests": 77,
+      "lcpMs": 3009,
+      "cls": 0,
+      "tbtMs": 4,
+      "medianOf": {
+        "performance": 95,
+        "cls": 0,
+        "lcpMs": 3009,
+        "tbtMs": 4,
+        "jsGzipKb": 270.8
+      }
+    },
+    "search": {
+      "performance": 87,
+      "jsGzipKb": 305.6,
+      "cssGzipKb": 13.3,
+      "requests": 41,
+      "lcpMs": 4056,
+      "cls": 0,
+      "tbtMs": 6,
+      "medianOf": {
+        "performance": 87,
+        "cls": 0,
+        "lcpMs": 4056,
+        "tbtMs": 8,
+        "jsGzipKb": 305.6
+      }
+    },
+    "movie": {
+      "performance": 100,
+      "jsGzipKb": 285,
+      "cssGzipKb": 13.3,
+      "requests": 58,
+      "lcpMs": 904,
+      "cls": 0,
+      "tbtMs": 2,
+      "medianOf": {
+        "performance": 100,
+        "cls": 0,
+        "lcpMs": 904,
+        "tbtMs": 3,
+        "jsGzipKb": 285
+      }
+    }
+  },
+  "homePosters": {
+    "posterRequests": 64,
+    "widthsRequested": [
+      256
+    ],
+    "imgElements": 101,
+    "eagerImgs": 0,
+    "highPriorityImgs": 0
+  }
+}
