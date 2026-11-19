@@ -1,0 +1,2 @@
+# The CI workflow sets TMDB_API_KEY to a fixed placeholder (ci-placeholder-...), not a real key.
+bcad358bec4d7288db87e543801dc88fd060edd2:.github/workflows/ci.yml:generic-api-key:18
