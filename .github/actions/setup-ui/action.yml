@@ -1,25 +1,25 @@
 name: Install dependencies with the design system
 description: >
-  Builds @eylulg/ui from source and links it, because the app depends on file:../ui and
-  actions/checkout cannot write outside the workspace.
+  Builds @eylulg/ui from source beside the app and installs against it, because the app depends on
+  file:../ui and actions/checkout cannot write outside the workspace.
 
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v7
       with:
         repository: eylulg/ui
         path: ui-src
 
     - name: Build the design system
       shell: bash
-      working-directory: ui-src
       run: |
-        npm ci
-        npm run build
+        mv ui-src ../ui
+        npm --prefix ../ui ci
+        npm --prefix ../ui run build
 
-    - name: Point the dependency at the checkout
+    # install-links copies the library in, as the local relink does. A symlink would give
+    # TypeScript two copies of the React types. npm ci cannot be used: the lockfile records a link.
+    - name: Install the app against the built library
       shell: bash
-      run: |
-        npm pkg set "dependencies.@eylulg/ui=file:./ui-src"
-        npm install --no-audit --no-fund
+      run: npm install --no-audit --no-fund --install-links
