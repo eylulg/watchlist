@@ -80,14 +80,13 @@ Husky runs lint-staged on every commit. Commit messages are plain sentences in t
 
 ## Deploy
 
-The app targets [Vercel](https://vercel.com/). **Vercel cannot resolve `file:../ui`**, because only this repository is cloned there. Until `@eylulg/ui` is published to npm, a Vercel deploy fails at install. Once it is published, change the dependency to the npm version (`^1.0.0`) and nothing else changes.
+The app deploys to [Vercel](https://vercel.com/). `@eylulg/ui` is not on npm yet, so `vercel.json` sets an install command that clones the public `eylulg/ui` repository into `ui-src`, builds it, points the dependency at it for that build only and installs the app with `--install-links`. Local development and CI keep using `file:../ui`.
 
-1. Publish `@eylulg/ui` and switch the dependency to `^1.0.0`.
-2. Import the repository in Vercel. The Next.js preset needs no changes.
-3. Add `TMDB_API_KEY` under **Settings > Environment Variables** for Production and Preview. Do not prefix it with `NEXT_PUBLIC_`.
-4. Deploy. Every pull request gets a preview deployment.
+1. Import the repository in Vercel. The framework preset is Next.js, the root is the repository root, and the install command comes from `vercel.json`. The build command is the default (`next build`).
+2. Under **Settings > Environment Variables** add `TMDB_API_KEY` (secret, Production and Preview, never prefixed with `NEXT_PUBLIC_`) and `SITE_URL` (the public origin, for example `https://watchlist.vercel.app`).
+3. Deploy. Without `TMDB_API_KEY` the app still builds and serves; pages that need TMDB show an error message instead of data.
 
-CI (`.github/workflows/ci.yml`) first checks out `eylulg/ui` into `ui-src`, builds it and points the dependency at it with `npm pkg set` (the composite action in `.github/actions/setup-ui`; the lockfile change is not committed), then runs typecheck, lint, format, knip, tests, build, the client bundle check, Playwright and a gitleaks secret scan on every push to `master` and every pull request.
+CI (`.github/workflows/ci.yml`) first checks out `eylulg/ui` into `ui-src`, builds it and points the dependency at it with `npm pkg set` (the composite action in `.github/actions/setup-ui`; the lockfile change is not committed), then runs typecheck, lint, format, knip, tests, build, the client bundle check, Playwright and a gitleaks secret scan on every push to `main` and every pull request.
 
 ## Credits
 
