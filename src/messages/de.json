@@ -18,12 +18,11 @@
   "Footer": {
     "tmdb": "Dieses Produkt nutzt die TMDB-API, wird aber nicht von TMDB unterstützt oder zertifiziert. Daten und Bilder von <link>The Movie Database (TMDB)</link>.",
     "justwatch": "Streaming-Verfügbarkeit bereitgestellt von <link>JustWatch</link>.",
-    "intro": "Teil der Projekte von Eylül Güneş",
     "projectsNav": "Projekte",
-    "source": "(Quellcode)",
     "profilesNav": "Profile",
     "github": "GitHub",
     "linkedin": "LinkedIn",
+    "codeNote": "Der Code jedes Projekts liegt auf GitHub.",
     "builtWith": "Gebaut mit @eylulg/ui"
   },
   "Common": {

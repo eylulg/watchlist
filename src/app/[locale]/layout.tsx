@@ -80,12 +80,11 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
                 <SiteFooter
                   currentId='watchlist'
                   labels={{
-                    intro: tf('intro'),
                     projectsNav: tf('projectsNav'),
-                    source: tf('source'),
                     profilesNav: tf('profilesNav'),
                     github: tf('github'),
                     linkedin: tf('linkedin'),
+                    codeNote: tf('codeNote'),
                     builtWith: tf('builtWith'),
                   }}
                 >

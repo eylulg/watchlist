@@ -18,12 +18,11 @@
   "Footer": {
     "tmdb": "Bu ürün TMDB API'sini kullanır ancak TMDB tarafından onaylanmamış veya sertifikalandırılmamıştır. Veriler ve görseller <link>The Movie Database (TMDB)</link> kaynaklıdır.",
     "justwatch": "Yayın platformu verileri <link>JustWatch</link> tarafından sağlanır.",
-    "intro": "Eylül Güneş’in projelerinden biri",
     "projectsNav": "Projeler",
-    "source": "(kaynak)",
     "profilesNav": "Profiller",
     "github": "GitHub",
     "linkedin": "LinkedIn",
+    "codeNote": "Her projenin kodu GitHub'da.",
     "builtWith": "@eylulg/ui ile geliştirildi"
   },
   "Common": {
