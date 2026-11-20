@@ -1,6 +1,6 @@
 'use client';
 
-import { ProjectSwitcher, ThemeToggle, TopNav } from '@eylulg/ui/chrome';
+import { ThemeToggle, TopNav } from '@eylulg/ui/chrome';
 import { useTranslations } from 'next-intl';
 import { Link, usePathname } from '@/i18n/navigation';
 import { useWatchlist } from '@/lib/watchlist/store';
@@ -16,7 +16,6 @@ const NAV_ITEMS = [
 export const Nav = () => {
   const t = useTranslations('Nav');
   const tt = useTranslations('Theme');
-  const tp = useTranslations('Projects');
   const pathname = usePathname();
   const { items } = useWatchlist();
   const saved = items?.length ?? 0;
@@ -26,12 +25,6 @@ export const Nav = () => {
     light: tt('light'),
     dark: tt('dark'),
     system: tt('system'),
-  };
-  const projectLabels = {
-    label: tp('label'),
-    heading: tp('heading'),
-    youAreHere: tp('youAreHere'),
-    sourceCode: tp('sourceCode'),
   };
 
   const links = NAV_ITEMS.map((item) => ({
@@ -51,12 +44,7 @@ export const Nav = () => {
       LinkComponent={Link}
       links={links}
       labels={{ openMenu: t('openMenu'), closeMenu: t('closeMenu') }}
-      actions={
-        <>
-          <ProjectSwitcher currentId='watchlist' labels={projectLabels} />
-          <ThemeToggle labels={themeLabels} />
-        </>
-      }
+      actions={<ThemeToggle labels={themeLabels} />}
       compactActions={<ThemeToggle compact labels={themeLabels} />}
     />
   );
