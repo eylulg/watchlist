@@ -310,11 +310,5 @@
     "light": "Light theme",
     "dark": "Dark theme",
     "system": "System theme"
-  },
-  "Projects": {
-    "label": "Projects",
-    "heading": "Eylül Güneş's projects",
-    "youAreHere": "You are here",
-    "sourceCode": "(source code)"
   }
 }

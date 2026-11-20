@@ -310,11 +310,5 @@
     "light": "Açık tema",
     "dark": "Koyu tema",
     "system": "Sistem teması"
-  },
-  "Projects": {
-    "label": "Projeler",
-    "heading": "Eylül Güneş’in projeleri",
-    "youAreHere": "Buradasınız",
-    "sourceCode": "(kaynak kod)"
   }
 }

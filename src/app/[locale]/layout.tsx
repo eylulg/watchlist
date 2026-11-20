@@ -40,10 +40,6 @@ export async function generateMetadata({ params }: LayoutProps): Promise<Metadat
     applicationName: t('title'),
     manifest: '/manifest.webmanifest',
     appleWebApp: { capable: true, title: t('title'), statusBarStyle: 'black-translucent' },
-    icons: {
-      icon: [{ url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' }],
-      apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180' }],
-    },
   };
 }
 

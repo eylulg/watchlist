@@ -310,11 +310,5 @@
     "light": "Helles Design",
     "dark": "Dunkles Design",
     "system": "Systemdesign"
-  },
-  "Projects": {
-    "label": "Projekte",
-    "heading": "Projekte von Eylül Güneş",
-    "youAreHere": "Sie sind hier",
-    "sourceCode": "(Quellcode)"
   }
 }
