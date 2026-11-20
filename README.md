@@ -34,7 +34,7 @@ Vitest runs with MSW standing in for TMDB, so the API layer and the search route
 
 ## Deploy
 
-Vercel, Next.js preset, repository root. `vercel.json` clones and builds `eylulg/ui` during install, because the library is not on npm yet.
+Vercel, Next.js preset, repository root. `vercel.json` clones and builds `eylulg/ui` from its main branch during install, so the app uses the latest library code before it is released to npm.
 
 1. Import the repository in Vercel.
 2. Add the environment variables below.
