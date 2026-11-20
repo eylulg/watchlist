@@ -37,3 +37,6 @@ AGENTS.md
 ui-src/
 .lighthouseci/
 results.sarif
+
+# The design system, cloned and built by the Vercel install command
+ui-src/
